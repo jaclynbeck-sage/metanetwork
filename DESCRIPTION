@@ -52,6 +52,7 @@ Imports:
   graphics,
   grid,
   Hmisc (>= 3.15),
+  IRanges
   igraph,
   knitr,
   lars (>= 1.2),
