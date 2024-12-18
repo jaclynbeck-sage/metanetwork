@@ -34,6 +34,7 @@ Imports:
   bit64,
   Biobase,
   BiocManager,
+  BiocVersion,
   c3net,
   caroline,
   cluster,
