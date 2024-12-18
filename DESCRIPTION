@@ -52,7 +52,7 @@ Imports:
   graphics,
   grid,
   Hmisc (>= 3.15),
-  IRanges
+  IRanges,
   igraph,
   knitr,
   lars (>= 1.2),
@@ -73,6 +73,7 @@ Imports:
   parmigene,
   plyr,
   WGCNA (>= 1.46),
+  S4Vectors,
   stats,
   stringr,
   synapser,
