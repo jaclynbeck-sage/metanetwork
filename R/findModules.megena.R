@@ -4,7 +4,7 @@
 #' matrix using MEGENA. 
 #'
 #' @param data Required. An n x n upper triangular adjacency in the matrix class 
-#' format.
+#' format. # JB TODO this is wrong? Currently 'data' is the original expression data
 #' @param method Optional. Method for correlation. either pearson or spearman. 
 #' (Default = "pearson")
 #' @param FDR.cutoff Optional. FDR threshold to define significant correlations 
@@ -40,6 +40,7 @@ findModules.megena <- function(data, method = "pearson", FDR.cutoff = 0.05,
                               
   ijw <- MEGENA::calculate.correlation(data,
                                        doPerm = cor.perm, 
+                                       FDR.cutoff = FDR.cutoff,
                                        output.corTable = FALSE,
                                        output.permFDR = FALSE)
 
@@ -78,18 +79,20 @@ findModules.megena <- function(data, method = "pearson", FDR.cutoff = 0.05,
                                         'moduleSize'= megena_Res$module.size[i]))
   }
 
+  # TODO JB it doesn't make sense why they're doing top_n on moduleNumber, which is a string?
+  # Especially after already doing top_n on moduleSize
   gene_modules = gene_modules %>% 
-    dplyr::group_by(.data$Gene.ID) %>%
-    dplyr::top_n(1, .data$moduleSize) %>%
-    dplyr::top_n(1, .data$moduleNumber) %>%
-    dplyr::select(-.data$moduleSize) %>%
-    dplyr::mutate(moduleNumber = factor(.data$moduleNumber),
-                    moduleNumber = as.numeric(.data$moduleNumber))
+    dplyr::group_by(Gene.ID) %>%
+    dplyr::top_n(1, moduleSize) %>%
+    dplyr::top_n(1, moduleNumber) %>%
+    dplyr::select(-moduleSize) %>%
+    dplyr::mutate(moduleNumber = factor(moduleNumber),
+                    moduleNumber = as.numeric(moduleNumber))
 
   filteredModules = gene_modules %>%  
-    dplyr::group_by(.data$moduleNumber) %>% 
-    dplyr::summarise(counts = length(unique(.data$Gene.ID))) %>% 
-    dplyr::filter(.data$counts >= 30)
+    dplyr::group_by(moduleNumber) %>% 
+    dplyr::summarise(counts = length(unique(Gene.ID))) %>% 
+    dplyr::filter(counts >= 30)
   
   gene_modules$moduleNumber[!(gene_modules$moduleNumber %in% filteredModules$moduleNumber)] = 0
 

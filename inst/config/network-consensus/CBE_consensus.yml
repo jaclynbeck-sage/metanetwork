@@ -1,11 +1,11 @@
 default:
   input_profile:
-    input_folderid: syn28570383
-    project_id: syn29403363
-    input_proj_id: syn28572544
-    is_csv: FALSE
-    temp_storage_loc: /root/temp
-    temp_input_loc: /root
+    input_folderid: syn51769643
+    project_id: syn51769643
+    input_proj_id: syn7984097
+    is_csv: TRUE
+    temp_storage_loc: /home/rstudio/temp/
+    temp_input_loc: /home/rstudio/
     pattern_id: _Network
     run_id: Network
   provenance:
@@ -19,8 +19,8 @@ default:
       grant: U01AG046152
       species: Human
       organ: brain
-      tissue: ['A1C','CgG','M1','MTG','S1','V1C']
-      study: ["Allen","SMART-Seq2"]
+      tissue: ['dorsolateral prefrontal cortex', 'Head of caudate nucleus', 'posterior cingulate cortex']
+      study: ["ROSMAP","rnaSeqReprocessing"]
       consortium: AMP-AD
       assay: rnaSeq
     code_annotations:
@@ -29,9 +29,9 @@ default:
         ref_name: main
         repository_path: inst/runscripts/Consensus_Wrapper.R
     activity_name: ConsensusBuild
-    activity_description: 'Using the networks to prepare a consensus network from Cerebellum data'
+    activity_description: 'Using the networks to prepare a consensus network from ROSMAP data'
   output_profile:
     output_path: Consensus
     md5_output_path: Consensus_md5.out
     output_name: 'Consensus Network'
-    error_path: /root/error
+    error_path: /home/rstudio/error/

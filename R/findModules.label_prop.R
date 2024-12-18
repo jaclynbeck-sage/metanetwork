@@ -12,7 +12,7 @@
 findModules.label_prop <- function(adj, nperm = 10, min.module.size = 30){
   
   # Error functions
-  if(class(adj) != "matrix")
+  if(!is(adj, "matrix"))
     stop('Adjacency matrix should be of class matrix')
   
   if(dim(adj)[1] != dim(adj)[2])

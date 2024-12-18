@@ -1,3 +1,6 @@
+# TODO JB the findModules.X functions have a "path" argument that is never defined
+# but might be used?
+
 # Calling in Libraries ----------------------------------------------------
 
 library(dplyr, quietly = TRUE)
@@ -46,7 +49,7 @@ synLogin(email = req_args$synapse_user, password = req_args$synapse_pass)
 input_file = synGet(config$input_profile$input_proj_id,downloadLocation = config$input_profile$temp_input_loc)
 bic_file = synGet(config$input_profile$bic_file, downloadLocation = config$input_profile$temp_input_loc)
 fileName = input_file$path
-project = Project(config$input_profile$project_id)
+project = Project(config$input_profile$project_id) # TODO JB this creates a new project with a new synID, with name = old synID. Weird.
 project <- synStore(project)
 
 #Creating parallel cores
@@ -90,12 +93,11 @@ gc()
 #CFinder = metanetwork::findModules.CFinder(adj, '/home/sage/CFinder-2.0.6--1448/', nperm = 3, min.module.size = 30)
 
 # GANXIS
-ga_loc = synGet('syn7806859',downloadLocation = '/home/sage')
-temp_command <- paste0("unzip ",ga_loc$path," -d /home/sage/")
-system(temp_command)
-GANXiS = metanetwork::findModules.GANXiS(adj, '/home/sage/GANXiS_v3.0.2/', nperm = 3, min.module.size = 30)
-GANXiS['algorithms'] = 'GANXiS'
-cat('Completed GANXiS algorithm \n')
+#ga_loc = synGet('syn7806859',downloadLocation = config$input_profile$temp_input_loc)
+#temp_command <- paste0("unzip ",ga_loc$path," -d ", config$input_profile$temp_input_loc)
+#GANXiS = metanetwork::findModules.GANXiS(adj, '/home/sage/GANXiS_v3.0.2/', nperm = 3, min.module.size = 30)
+#GANXiS['algorithms'] = 'GANXiS'
+#cat('Completed GANXiS algorithm \n')
 
 #Fast Greedy Algorithm
 fast_greedy = metanetwork::findModules.fast_greedy(adj, nperm = 3, min.module.size = 30)
@@ -123,6 +125,7 @@ infomap = metanetwork::findModules.infomap(adj, nperm = 3, min.module.size = 30)
 infomap['algorithms'] = 'infomap'
 cat('Completed Infomap algorithm \n')
 
+# TODO JB this crashes on the hierarchical clustering step
 #Link Communities
 linkcommunities = metanetwork::findModules.linkcommunities(adj, nperm = 3, min.module.size = 30)
 linkcommunities['algorithms'] = 'linkcommunities'
@@ -140,6 +143,7 @@ synID_input = config$input_profile$input_synid
 data = synGet(synID_input, downloadLocation = config$input_profile$temp_storage_loc)
 data = reader::reader(data$path)
 
+# TODO JB megena::calculate.correlation finds 0 things that pass FDR.cutoff on rosmap data... that doesn't seem right
 megena = metanetwork::findModules.megena(data, method = "pearson", FDR.cutoff = 0.05, module.pval = 0.05, hub.pval = 0.05,doPar = TRUE)
 megena['algorithms'] = 'megena'
 cat('Completed MEGENA algorithm \n')
@@ -221,6 +225,7 @@ for (filenumber in 1:length(algorithms)){
     ), silent = TRUE
   )
 
+  # TODO JB I don't know why it seems to be uploading the same file twice to 2 diff locations?
   ENRICH_OBJ <- synapser::synStore( synapser::File( 
     path = temp_out,
     name = alg,
@@ -238,7 +243,7 @@ for (filenumber in 1:length(algorithms)){
   cat(md5, '\n', file = config$output_profile$md5_output_path, sep = '')
 
   if(filenumber == 1){
-    table <- synBuildTable("Gene Module Result", project, eval(as.symbol(alg)))
+    table <- synBuildTable("Gene Module Result", config$input_profile$project_id, eval(as.symbol(alg)))
     table <- synStore(table)
     tableID <- table$tableId
     #check

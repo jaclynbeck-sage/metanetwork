@@ -12,7 +12,7 @@
 #' @export
 findModules.spinglass <- function(adj, nperm = 10, path, min.module.size = 30){
   # Error functions
-  if(class(adj) != "matrix")
+  if(!is(adj, "matrix"))
     stop('Adjacency matrix should be of class matrix')
   
   if(dim(adj)[1] != dim(adj)[2])
@@ -33,6 +33,7 @@ findModules.spinglass <- function(adj, nperm = 10, path, min.module.size = 30){
     
     # Find modules 
     mod = findModules.spinglass.once(adj1, min.module.size)
+    mod = as.data.frame(mod)
     
     # Compute local and global modularity
     adj1[lower.tri(adj1)] = 0

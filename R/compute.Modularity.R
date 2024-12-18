@@ -15,7 +15,7 @@
 #' @export compute.Modularity
 compute.Modularity <- function(adj, mod, method = 'Newman1'){
   # Error functions
-  if(class(adj) != "matrix")
+  if(!is(adj, "matrix"))
     stop('Adjacency matrix should be of class matrix')
   
   if(dim(adj)[1] != dim(adj)[2])

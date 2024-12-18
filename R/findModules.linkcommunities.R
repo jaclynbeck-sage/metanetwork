@@ -15,7 +15,7 @@ findModules.linkcommunities <- function(adj, nperm = 10, path, min.module.size =
   # Note: For this function to work get the package linkcomm from CRAN
   
   # Error functions
-  if(class(adj) != "matrix")
+  if(!is(adj, "matrix"))
     stop('Adjacency matrix should be of class matrix')
   
   if(dim(adj)[1] != dim(adj)[2])

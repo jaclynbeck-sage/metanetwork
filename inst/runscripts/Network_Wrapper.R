@@ -18,6 +18,11 @@ library(parallel)
 library(doParallel)
 #library(utilityFunctions) -->installation error
 
+## TODOs from Jaclyn: 
+#   * file paths need a / at the end with this code, it's not robust
+#   * No parallel interface is registered for 'light' algorithms
+#   * Why are there md5 sums?
+
 # Obtaining the data - From User --------------------------------------------
 
 option_list <- list(make_option(c("-u","--synapse_user"), type="character", action = "store",
@@ -36,7 +41,7 @@ config <- config::get(file = req_args$config_file)
 setwd(config$input_profile$temp_storage_loc)
 
 #Linking with Project
-synLogin(email = req_args$synapse_user, password = req_args$synapse_pass)
+synLogin(authToken = req_args$synapse_authToken)
 project = Project(config$input_profile$project_id)
 project <- synStore(project)
 
@@ -73,7 +78,7 @@ for (method in net_methods){# Assuming we have more methods - not developing for
          "c3net" = c3netWrapper(data, pval = config$input_profile$p_val_c3net, config$output_profile$output_path),# What does this path define in main function?
          "mrnet" = mrnetWrapper(data=data, path = NULL, pval = config$input_profile$p_val_mrnet, outputpath=config$output_profile$output_path,  tool_storage_loc = config$input_profile$temp_storage_loc),
          "wgcna" = wgcnaTOM(data=data, path = NULL, pval = config$input_profile$p_val_wgcna, outputpath=config$output_profile$output_path, 
-                            config$input_profile$rsquaredcut, config$input_profile$defaultnaPower),
+                            config$input_profile$rsquaredCut, config$input_profile$defaultnaPower),
          
          "lassoAIC" = mpiWrapper(data, nodes = config$computing_specs$medium_ncores, pathv = NULL, regressionFunction = method,
                                  outputpath = config$output_profile$output_path),
@@ -100,7 +105,7 @@ for (method in net_methods){# Assuming we have more methods - not developing for
          "tigress" = mpiWrapper(data, nodes = config$computing_specs$heavy_ncores, pathv = NULL, regressionFunction = method,
                                 outputpath = config$output_profile$output_path))
   
-  output_filename <- list.files(pattern = method )
+  output_filename <- list.files(pattern = method ) # TODO JB this doesn't actually work
 }
 if(config$computing_specs$heavy_ncores>0){
   mpi.close.Rslaves()

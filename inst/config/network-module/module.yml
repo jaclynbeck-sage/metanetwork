@@ -1,11 +1,11 @@
 default:
   input_profile:
-    project_id: syn25791892
-    input_synid: syn26340641
-    input_proj_id: syn27042832  
-    bic_file: syn27042833 
-    temp_storage_loc: /root/temp
-    temp_input_loc: /root/
+    project_id: syn51769643
+    input_synid: syn7984097
+    input_proj_id: syn51902073
+    bic_file: syn51902070 
+    temp_storage_loc: /home/rstudio/temp/
+    temp_input_loc: /home/rstudio/
   provenance:
     annotations:
       data_type: ['clinical','geneExpression']
@@ -29,7 +29,7 @@ default:
     activity_name: 'Module Building Process'
     activity_description: 'Using the consensus network to prepare gene modules from syn21266454 data'
   output_profile:
-    output_path: /root/out
+    output_path: /home/rstudio/meta_out/
     md5_output_path: rosmap_modulesmd5.out
-    output_name: 'rosmpa Modules'
-    error_path: /root/error
+    output_name: 'rosmap Modules'
+    error_path: /home/rstudio/error/

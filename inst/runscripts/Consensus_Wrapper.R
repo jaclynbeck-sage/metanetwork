@@ -34,7 +34,7 @@ Sys.setenv(R_CONFIG_ACTIVE = "default")
 config <- config::get(file = req_args$config_file)
 
 #Linking with Project
-synLogin(email = req_args$synapse_user, password = req_args$synapse_pass)
+synLogin(authToken = req_args$synapse_authToken)
 input_file = synGet(config$input_profile$input_proj_id,downloadLocation = config$input_profile$temp_input_loc)
 fileName = input_file$path
 project = Project(config$input_profile$project_id)

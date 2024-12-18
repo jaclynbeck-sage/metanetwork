@@ -58,11 +58,11 @@ buildConsensus = function(outputpath, networkFolderId, fileName, pattern_id, bar
    options(stringsAsFactors = F)
    # load Dataset
    cat('turning data into data matrix\n')
-   if( isTRUE(iscsv) ){
-    dataSet <- readr::read_csv(fileName, row.names=1)
-   }else{ 
+   #if( isTRUE(iscsv) ){ # TODO JB this isn't necessary
+  #  dataSet <- readr::read_csv(fileName, row.names=1)
+   #}else{ 
     dataSet <- data.table::fread(fileName) %>% as.matrix(rownames=1)
-   }
+   #}
    #-#dataSet <- data.matrix(dataSet)
    dataSet <- t(dataSet)
    cat('build bicNetworks\n')
