@@ -25,10 +25,10 @@ default:
       consortium: AMP-AD
       assay: rnaSeq
     code_annotations:
-        repository: PradoVarathan/Reprocessing_Metnetwork_Analysis
+        repository: jaclynbeck-sage/metanetwork
         ref: branch
         ref_name: main
-        repository_path: Network_Wrapper.R
+        repository_path: inst/runscripts/Network_Wrapper.R
     activity_name: wgcna_rosmap_network
     activity_description: 'Using wgcna to prepare network from syn7984097 ROSMAP data'
   output_profile:
