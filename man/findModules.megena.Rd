@@ -19,7 +19,7 @@ findModules.megena(
 }
 \arguments{
 \item{data}{Required. An n x n upper triangular adjacency in the matrix class 
-format.}
+format. # JB TODO this is wrong? Currently 'data' is the original expression data}
 
 \item{method}{Optional. Method for correlation. either pearson or spearman. 
 (Default = "pearson")}

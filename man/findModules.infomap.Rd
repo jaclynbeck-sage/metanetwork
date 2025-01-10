@@ -20,6 +20,6 @@ GeneModules = n x 3 dimensional data frame with column names as Gene.ID,
 moduleNumber, and moduleLabel.
 }
 \description{
-This function wraps an iterative process of finding modules with 
+This function wraps an iterative process of finding modules with
 igraph::graph.adjacency()
 }

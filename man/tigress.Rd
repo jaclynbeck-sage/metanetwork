@@ -15,6 +15,6 @@ tigress(y, x)
 Vector of coexpression values of gene Y to columns of X
 }
 \description{
-This function implements Trustful Inference of Gene REgulation with Stability 
-Selection (TIGRESS) algoritm..
+This function implements Trustful Inference of Gene REgulation with Stability
+Selection (TIGRESS) algoritm.
 }

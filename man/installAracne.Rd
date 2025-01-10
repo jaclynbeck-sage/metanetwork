@@ -2,17 +2,17 @@
 % Please edit documentation in R/installAracne.R
 \name{installAracne}
 \alias{installAracne}
-\title{This function applies ARACNE on the data}
+\title{This function installs the ARACNE system Function}
 \usage{
-installAracne(path = NULL, tool_storage_loc)
+installAracne(tool_storage_loc)
 }
 \arguments{
-\item{path}{Optional. Path is currently not a functional argument. This function
-automatically installs ARACNe from `inst/aracne`. Default = NULL.}
-
-\item{tool_storage_loc}{Required. Provides the directory inside docker to 
-temporarily store the ARACNE files and package. (Default = config$input_profile$temp_storage_loc)}
+\item{tool_storage_loc}{Required. Provides the directory to temporarily store
+the ARACNE files and package.}
+}
+\value{
+the file path to the installation folder for ARACNE
 }
 \description{
-This function installs the ARACNE system Function
+This function automatically installs ARACNE from `inst/aracne`.
 }

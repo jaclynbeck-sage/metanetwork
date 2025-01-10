@@ -18,7 +18,7 @@ GeneModules = n x 3 dimensional data frame with column names as Gene.ID,
 moduleNumber, and moduleLabel.
 }
 \description{
-This function iteratively wraps a function that a tries to find densely 
-connected subgraphs in a graph by calculating the leading non-negative 
+This function iteratively wraps a function that a tries to find densely
+connected subgraphs in a graph by calculating the leading non-negative
 eigenvector of the modularity matrix of the graph.
 }

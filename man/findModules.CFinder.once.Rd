@@ -2,7 +2,7 @@
 % Please edit documentation in R/findModules.CFinder.once.R
 \name{findModules.CFinder.once}
 \alias{findModules.CFinder.once}
-\title{This function tries to get modules from network adjacency matrix using Link 
+\title{This function tries to get modules from network adjacency matrix using Link
 communities algorithm.}
 \usage{
 findModules.CFinder.once(adj, path, min.module.size, i)
@@ -21,6 +21,6 @@ GeneModules = n x 3 dimensional data frame with column names as Gene.ID,
 moduleNumber, and moduleLabel.
 }
 \description{
-This function tries to get modules from network adjacency matrix using Link 
+This function tries to get modules from network adjacency matrix using Link
 communities algorithm.
 }

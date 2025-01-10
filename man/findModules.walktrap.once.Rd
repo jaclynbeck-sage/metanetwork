@@ -16,6 +16,6 @@ GeneModules = n x 3 dimensional data frame with column names as Gene.ID,
 moduleNumber, and moduleLabel.
 }
 \description{
-This function tries to get modules from network adjacency matrix using igraph's 
+This function tries to get modules from network adjacency matrix using igraph's
 walktrap clusting function.
 }

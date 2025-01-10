@@ -7,13 +7,13 @@
 compute.Modularity(adj, mod, method = "Newman1")
 }
 \arguments{
-\item{adj}{Required. An n x n upper triangular adjacency in the matrix class 
+\item{adj}{Required. An n x n upper triangular adjacency in the matrix class
 format.}
 
-\item{mod}{Required. An n x 3 dimensional data frame with column names as 
+\item{mod}{Required. An n x 3 dimensional data frame with column names as
 Gene.ID, moduleNumber, and moduleLabel.}
 
-\item{method}{Optional. If 'Newman1' is specified modularity is instituded in 
+\item{method}{Optional. If 'Newman1' is specified modularity is instituded in
 as-per the Clauset, Newman model in the function igraph::graph.modularity()
 (Default = 'Newman1')}
 }

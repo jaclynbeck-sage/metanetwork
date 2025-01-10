@@ -8,16 +8,17 @@ genie3(y, x)
 }
 \arguments{
 \item{y}{Required. A response vector. If a factor, classification is assumed,
-otherwise regression is assumed. If omitted, randomForest will run in 
+otherwise regression is assumed. If omitted, randomForest will run in
 unsupervised mode.}
 
-\item{x}{Required. A data frame or a matrix of predictors, or a formula 
+\item{x}{Required. A data frame or a matrix of predictors, or a formula
 describing the model to be fitted (for the print method, an randomForest object).}
 }
 \value{
-A matrix of importance measure, one row for each predictor variable. 
+A matrix of importance measure, one row for each predictor variable.
 The column(s) are different importance measures.
 }
 \description{
 This function runs genie3 random forest network analysis on
+JB TODO fix documentation
 }

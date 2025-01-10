@@ -7,10 +7,10 @@
 compute.LocalModularity(adj, mod)
 }
 \arguments{
-\item{adj}{Required. An n x n upper triangular adjacency in the matrix class 
+\item{adj}{Required. An n x n upper triangular adjacency in the matrix class
 format.}
 
-\item{mod}{Required. An n x 3 dimensional data frame with column names as 
+\item{mod}{Required. An n x 3 dimensional data frame with column names as
 Gene.ID, moduleNumber, and moduleLabel.}
 }
 \value{

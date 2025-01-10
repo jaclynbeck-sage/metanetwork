@@ -5,7 +5,6 @@ library(glmnet, quietly = TRUE)
 library(randomForest, quietly = TRUE)
 library(Hmisc, quietly = TRUE)
 library(lars, quietly = TRUE)
-library(WGCNA, quietly = TRUE)
 library(synapser, quietly = TRUE)
 library(metanetwork, quietly = TRUE)
 library(githubr, quietly = TRUE)
@@ -16,12 +15,11 @@ library(data.table, quietly = TRUE)
 library(parmigene, quietly = TRUE)
 library(WGCNA, quietly = TRUE)
 library(reader, quietly = TRUE)
+
 # Obtaining the data - From User --------------------------------------------
 
-option_list <- list(make_option(c("-u","--synapse_user"), type="character", action = "store",
-                                help = "Synapse User name"),
-                    make_option(c("-p","--synapse_pass"), type="character", action = "store",
-                                help = "Synapse User Password"),
+option_list <- list(make_option(c("-u","--synapse_authToken"), type="character", action = "store",
+                                help = "Synapse auth token"),
                     make_option(c("-c","--config_file"), type="character", action = "store",
                                 help = "Path to the complete config file"))
 req_args <- parse_args(OptionParser(option_list=option_list))
@@ -108,7 +106,8 @@ for(ent in 1:length(child_names)){
 message('Buildig Consensus Networks')
 outputpath <- gsub( '//', '/', paste0(outputpath,'/'))
 buildConsensus(outputpath = outputpath, networkFolderId = networkFolderId,
-  pattern_id = run_id, fileName = fileName,
+  #pattern_id = run_id,
+  fileName = fileName,
   bar = out_list, iscsv = config$input_profile$is_csv)
 
 
@@ -125,14 +124,14 @@ dataFolder <- synStore(dataFolder)
 #file2 <- synStore(file2)
 all.annotations <- NULL
 try(
-  all.annotations <- synGetAnnotations(config$input_profile$input_synid), 
+  all.annotations <- synGetAnnotations(config$input_profile$input_synid),
   silent = TRUE
 )
 checkAnnotations <- function(annotations, config){
-  
+
   namer <- c("data_type", "resource_type", "metadata_type", "ismodelsystem", "ismultispecimen",
     "fileformat", "grant", "species", "organ", "tissue", "study", "consortium", "assay" )
-  names(namer) <- c('dataType', 'resourceType', 'metadataType', 'isModelSystem', 'isMultiSpecimen', 
+  names(namer) <- c('dataType', 'resourceType', 'metadataType', 'isModelSystem', 'isMultiSpecimen',
     'fileFormat', 'grant', 'species', 'organ', 'tissue', 'study', 'consortium' , 'assay')
 
   annot_default <- list(

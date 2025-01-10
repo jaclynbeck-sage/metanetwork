@@ -11,15 +11,15 @@ findModules.consensusKmeans(
 )
 }
 \arguments{
-\item{partition.adj}{Required. A partition.adj = n x m adjacency matrix, where 
-n is the number of genes and m = number of clustering methods * number of 
+\item{partition.adj}{Required. A partition.adj = n x m adjacency matrix, where
+n is the number of genes and m = number of clustering methods * number of
 clusters in each method.}
 
 \item{min.module.size}{Optional. An integer between 1 and n genes (Default = 20)}
 
-\item{usepam}{Optional. A logical for input into pam based kmeans clustering 
+\item{usepam}{Optional. A logical for input into pam based kmeans clustering
 to find the number of clusters with the function `fpc::pamk`. If TRUE, pam is
-used, otherwise clara (recommended for large datasets with 2,000 or more 
+used, otherwise clara (recommended for large datasets with 2,000 or more
 observations; dissimilarity matrices can not be used with clara). (Default = 20)}
 }
 \value{

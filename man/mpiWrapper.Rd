@@ -2,7 +2,7 @@
 % Please edit documentation in R/mpiWrapper.R
 \name{mpiWrapper}
 \alias{mpiWrapper}
-\title{Runs Sparrow Regression}
+\title{MPI wrapper to run different network algorithms}
 \usage{
 mpiWrapper(
   data,
@@ -22,8 +22,8 @@ mpiWrapper(
 
 \item{pathv}{Required.}
 
-\item{regressionFunction}{Required. Character vector specifying the specific 
-sparrow regression function to deploy. Options are one of c("sparrowZ", 
+\item{regressionFunction}{Required. Character vector specifying the specific
+sparrow regression function to deploy. Options are one of c("sparrowZ",
 "sparrow2Z", "sparrow2ZFDR")}
 
 \item{outputpath}{Required. The output path to save the resulting coexpression
@@ -40,6 +40,5 @@ NULL. Saves a sparrow network object to paste0(`outputpath`,
 `regressionFunction`,'Network.csv')
 }
 \description{
-This function Sparrow Regression wrapped with the Rmpi::mpi parralel implementation.
-User specifies between sparrowZ, sparrow2Z, or sparrow2ZFDR implementation.
+JB TODO update documentation
 }

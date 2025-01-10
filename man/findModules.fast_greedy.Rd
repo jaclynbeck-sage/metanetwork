@@ -18,6 +18,6 @@ GeneModules = n x 3 dimensional data frame with column names as Gene.ID,
 moduleNumber, and moduleLabel.
 }
 \description{
-This function wraps permutations of finding modules with 
+This function wraps permutations of finding modules with
 igraph::cluster_fast_greedy().
 }

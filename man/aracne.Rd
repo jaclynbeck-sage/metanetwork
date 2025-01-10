@@ -4,41 +4,36 @@
 \alias{aracne}
 \title{This function applies ARACNE on the data}
 \usage{
-aracne(
-  data,
-  path = NULL,
-  pval = NULL,
-  outputpath,
-  na_fill = NULL,
-  tool_storage_loc
-)
+aracne(data, pval = NULL, outputpath, na_fill = NULL, tool_storage_loc)
 }
 \arguments{
-\item{data}{Required. The gene expression matrix with rows as sample IDs and
-columns as Gene or feature IDs}
-
-\item{path}{Optional. String containing the path to the aracne compiled 
-executable. (Default = NULL)}
+\item{data}{Required. The gene expression matrix with genes as rows and
+samples as columns.}
 
 \item{pval}{Optional. Cutoff p-value to determine a coexpressed edge. (Default = 0.05)}
 
 \item{outputpath}{Required. The path the resulting network should be saved to.}
 
-\item{na_fill}{Optional. Value to replace `NA` values with ideally, a large 
-negative number or use min(data). (Default = NULL)}
+\item{na_fill}{Optional. Value to replace `NA` values with. Ideally, a large
+negative number or use min(data). If NULL, NA values will be removed
+entirely. (Default = NULL)}
 
-\item{tool_storage_loc}{Required. Provides the directory inside docker to 
-temporarily store the ARACNE files and package. (Default = config$input_profile$temp_storage_loc)}
+\item{tool_storage_loc}{Required. Provides the directory to temporarily store
+the ARACNE files and package.
+
+# TODO remove this file plus installAracne plus the zip file}
 }
 \value{
-A Co-Expression Network saved to the path `outputpath` and titled
- `aracneThresholdNetwork.csv` (if `pval` < 1) or as `aracneNetwork.csv` if 
- `pval` is set to 1.
+the filename containing the network data. The name will be either
+  `outputpath/aracneThresholdNetwork.csv` (if `pval` < 1) or
+  `outputpath/aracneNetwork.csv` if `pval` is set to 1.
 }
 \description{
-This function takes in a gene expression matrix of gene expression and applies
-the ARACNE gene co-expression network analysis frame work to find coexpressed
-gene pairs in the matrix. The ARACNE framework is also installed from within
-the package located in the `inst/tools/` direcctory. For more information on the 
-ARACNE framework see: <https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-7-S1-S7>
+This function takes in a gene expression matrix and applies the ARACNE gene
+co-expression network analysis framework to find coexpressed gene pairs in
+the matrix. The ARACNE framework is also installed from within the package
+located in the `inst/tools/` directory. For more information on the ARACNE
+framework see:
+<https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-7-S1-S7>
+and <https://califano.c2b2.columbia.edu/aracne>
 }

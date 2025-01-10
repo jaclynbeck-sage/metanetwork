@@ -4,14 +4,7 @@
 \alias{buildConsensus}
 \title{This function builds the Consensus Network from the component network}
 \usage{
-buildConsensus(
-  outputpath,
-  networkFolderId,
-  fileName,
-  pattern_id,
-  bar,
-  iscsv = TRUE
-)
+buildConsensus(outputpath, networkFolderId, fileName, bar, iscsv = TRUE)
 }
 \arguments{
 \item{outputpath}{Required. Local directory to load files from and save files to.}
@@ -19,9 +12,7 @@ buildConsensus(
 \item{networkFolderId}{Required. The Synapse parent ID of the folder containing
 the folders with the individual networks.}
 
-\item{fileName}{Required. The input file path.}
-
-\item{pattern_id}{Required. A character vector too match in the file names of 
+\item{fileName}{Required. The input file path.
 the children entities in `project_id`.}
 
 \item{bar}{Required. File paths object with network paths}

@@ -1,24 +1,20 @@
 #' This function builds the Consensus Network from the component network
-#' 
+#'
 #' This function builds a consensus co-expression network.
-#' 
-#' @param outputpath Required. Local directory to load files from and save files to. 
+#'
+#' @param outputpath Required. Local directory to load files from and save files to.
 #' @param networkFolderId Required. The Synapse parent ID of the folder containing
 #' the folders with the individual networks.
 #' @param fileName Required. The input file path.
-#' @param bar Required. File paths object with network paths 
+#' the children entities in `project_id`.
+#' @param bar Required. File paths object with network paths
 #' @param iscsv Optional. Is the data matrix a csv file. If not assumes it is tab delimited. (Default = TRUE).
-#' @inheritParams synGetFiles
-#' 
-#' @export 
+#'
+#' @export
 #' @return Saves a rankc consensus network to `outputpath` and saves the BICNetwork
 #'  object to `outputpath` if `fileName` is specified
-#' 
-buildConsensus = function(outputpath, networkFolderId, fileName, pattern_id, bar, iscsv = TRUE){
-  
-  #get all networks from Synapse
-  #bar <- synGetFiles(networkFolderId, downloadLocation = outputpath, pattern_id = pattern_id)
-  
+#'
+buildConsensus = function(outputpath, networkFolderId, fileName, bar, iscsv = TRUE){
   loadNetwork <- function(file){
     sparrowNetwork <- data.table::fread(file,stringsAsFactors=FALSE,data.table=F)
     rownames(sparrowNetwork) <- sparrowNetwork$V1
@@ -34,11 +30,11 @@ buildConsensus = function(outputpath, networkFolderId, fileName, pattern_id, bar
     }
     return(names)
   }
-  
+
   networkFiles <- getPaths(bar)
   networks <- lapply(networkFiles,loadNetwork)
   networks <- lapply(networks,data.matrix)
-  
+
   networks$rankConsensus <- metanetwork::rankConsensus(networks)
   cat('built rank consensus\n')
   cat('write rank consensus\n')
@@ -60,7 +56,7 @@ buildConsensus = function(outputpath, networkFolderId, fileName, pattern_id, bar
    cat('turning data into data matrix\n')
    #if( isTRUE(iscsv) ){ # TODO JB this isn't necessary
   #  dataSet <- readr::read_csv(fileName, row.names=1)
-   #}else{ 
+   #}else{
     dataSet <- data.table::fread(fileName) %>% as.matrix(rownames=1)
    #}
    #-#dataSet <- data.matrix(dataSet)
