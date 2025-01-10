@@ -10,6 +10,12 @@ library(tibble, quietly = TRUE)
 
 ## TODOs from Jaclyn:
 #   * No parallel interface is registered for 'light' algorithms
+#   * There needs to be some way to tell which orientation the data is in
+#     (gene x sample or sample x gene), because it needs to be gene x sample for
+#     winsorize() but sample x gene for everything else. This isn't documented
+#     in a clear way anywhere.
+#   * Provenance needs to be streamlined
+#   * Synapse upload should be optional
 
 # Obtaining the data - From User --------------------------------------------
 
@@ -94,7 +100,8 @@ for (method in net_methods) {
     "mrnet" = mrnetWrapper(data,
                            pval = config$input_profile$mrnet_p_val,
                            outputpath = config$output_profile$output_path,
-                           tool_storage_loc = config$input_profile$temp_storage_loc),
+                           tool_storage_loc = config$input_profile$temp_storage_loc,
+                           debug_save = config$output_profile$debug_save),
     "wgcna" = wgcnaTOM(data,
                        outputpath = config$output_profile$output_path,
                        RsquaredCut = config$input_profile$wgcna_RsquaredCut,
