@@ -5,7 +5,7 @@ default:
     na_fill: NULL
     temp_storage_loc: /home/rstudio/meta_out/temp/
     c3net_alpha: 0.01
-    mrnet_p_val: 1
+    mrnet_k: 3
     wgcna_RsquaredCut: 0.80
     wgcna_defaultPower: 6
   output_profile:
