@@ -40,7 +40,7 @@ if (!dir.exists(config$output_profile$output_path)) {
 synLogin(authToken = req_args$synapse_authToken)
 
 # Data
-synID_input <- config$input_profile$input_synid
+synID_input <- config$input_profile$expr_matrix_synid
 data <- synGet(synID_input,
                downloadLocation = config$input_profile$temp_storage_loc,
                ifcollision = "overwrite.local")
@@ -83,7 +83,6 @@ if (is.null(config$input_profile$na_fill)) {
 # like the intention is that net_methods is only one method at a time? Or that
 # the intention was to allow multiple methods but the upload/provenance code
 # was never moved into the for loop.
-# JB TODO add debug_save arguments once that's put in the config files
 for (method in net_methods) {
   # Assuming we have more methods - not developing for now # JB TODO I don't know what this comment means
   switch(
@@ -91,9 +90,9 @@ for (method in net_methods) {
     "c3net" = c3netWrapper(data,
                            outputpath = config$output_profile$output_path,
                            c3net_alpha = config$input_profile$c3net_alpha,
-                           debug_save = FALSE),
+                           debug_save = config$output_profile$debug_save),
     "mrnet" = mrnetWrapper(data,
-                           pval = config$input_profile$p_val_mrnet,
+                           pval = config$input_profile$mrnet_p_val,
                            outputpath = config$output_profile$output_path,
                            tool_storage_loc = config$input_profile$temp_storage_loc),
     "wgcna" = wgcnaTOM(data,
@@ -101,7 +100,7 @@ for (method in net_methods) {
                        RsquaredCut = config$input_profile$wgcna_RsquaredCut,
                        defaultPower = config$input_profile$wgcna_defaultPower,
                        ncores = config$computing_specs$light_ncores,
-                       debug_save = FALSE),
+                       debug_save = config$output_profile$debug_save),
     # TODO all of these use the exact same arguments except for medium vs heavy cores,
     # this could be condensed
     "lassoAIC" = mpiWrapper(data,
@@ -178,7 +177,7 @@ if (config$computing_specs$medium_ncores > 0) {
 
 # Obtaining the data - For provenance --------------------------------------------
 
-all.annotations <- synGetAnnotations(config$input_profile$input_synid)
+all.annotations <- synGetAnnotations(config$input_profile$expr_matrix_synid)
 
 # TODO this function is broken, calling annotations$item isn't subbing in the
 # value of 'item'
@@ -228,7 +227,7 @@ try(thisFile <- githubr::getPermlink(
 silent = TRUE)
 
 ## Store the file
-dataFolder <- Folder(method, parent = config$input_profile$project_id)
+dataFolder <- Folder(method, parent = config$output_profile$project_id)
 dataFolder <- synStore(dataFolder)
 
 #### - push the config file req_args$config_file
@@ -239,7 +238,7 @@ config_file <- synapser::File(path = req_args$config_file,
 
 Config_OBJ <- synapser::synStore(
   config_file,
-  used = config$input_profile$input_synid,
+  used = config$input_profile$expr_matrix_synid,
   activityName = config$provenance$activity_name,
   executed = thisFile,
   activityDescription = config$provenance$activity_description,
@@ -256,26 +255,12 @@ output_files <- list.files(config$output_profile$output_path,
                            pattern = method,
                            full.names = TRUE)
 
-# JB TODO this is a little over-complicated
-#if (method == "wgcna") {
-#  filePath <- gsub("//", "/", output_files)
-#  syn_name <- gsub("\\.txt", "", gsub("\\.csv", "", basename(filePath)))
-#  syn_name <- gsub("wgcna", "wgcna ", gsub("Network", " Network", syn_name))
-#  syn_name <- gsub("Power", "Power ", gsub("Soft", "Soft ", syn_name))
-#  syn_name <- gsub("Overlap", " Overlap ", syn_name)
-#} else {
-#  filePath <- gsub("//", "/", output_files)
-#  syn_name <- config$output_profile$output_name
-#}
-
 for (file in output_files) {
-  network_file <- synapser::File(path = file,
-                                 #name = syn_name[which(filePath == file)],
-                                 parentId = dataFolder$id)
+  network_file <- synapser::File(path = file, parentId = dataFolder$id)
 
   ENRICH_OBJ <- synapser::synStore(
     network_file,
-    used = c(config$input_profile$input_synid, syn_config),
+    used = c(config$input_profile$expr_matrix_synid, syn_config),
     activityName = config$provenance$activity_name,
     #executed = thisFile, # TODO temporary
     activityDescription = config$provenance$activity_description,
