@@ -1,10 +1,10 @@
-#' Runs Consensus Clustering Algorithm 
+#' Runs Consensus Clustering Algorithm
 #'
-#' A modiefed parallel version of code imported from 
-#' https://github.com/Bioconductor-mirror/ConsensusClusterPlus 1.11.1. Taken out 
+#' A modiefed parallel version of code imported from
+#' https://github.com/Bioconductor-mirror/ConsensusClusterPlus 1.11.1. Taken out
 #' of findModules.consensusCluster.R
 #'
-#' @param d Required. A matrix where columns=items/samples and rows are features. 
+#' @param d Required. A matrix where columns=items/samples and rows are features.
 #' For example, a gene expression matrix of genes in rows and microarrays in columns.
 #' OR ExpressionSet object. (Default = NULL)
 #' @param kGrid Optional. (Default = NULL)
@@ -13,21 +13,21 @@
 #'  (Default = 0.8)
 #' @param pFeature Optional. A numerical value. proportion of features to sample.
 #' (Default = 1)
-#' @param clusterAlg Optional. A character value. cluster algorithm. "hc" 
-#' heirarchical (hclust) or "km" for kmeans. (Default = "kmeans") 
+#' @param clusterAlg Optional. A character value. cluster algorithm. "hc"
+#' heirarchical (hclust) or "km" for kmeans. (Default = "kmeans")
 #' @param innerLinkage Optional. A heirarchical linkage method for subsampling.
 #' (Default = "average")
-#' @param distance Optional. A character value. sample distance measures: 
+#' @param distance Optional. A character value. sample distance measures:
 #' "pearson","spearman", or "euclidean". (Default = "pearson")
-#' @param weightsItem Optional. A numerical vector. weights to be used for 
+#' @param weightsItem Optional. A numerical vector. weights to be used for
 #' sampling items. (Default = NULL)
-#' @param weightsFeature Optional. AN umerical vector. weights to be used for 
+#' @param weightsFeature Optional. AN umerical vector. weights to be used for
 #' sampling features. (Default = NULL)
-#' @param verbose Optional. A boolean when set to TRUE, prints messages to the 
+#' @param verbose Optional. A boolean when set to TRUE, prints messages to the
 #' screen to indicate progress. This is useful for large datasets.(Default = FALSE)
 #' @param corUse Optional. Use all cores avaiable. (Default = "Everything")
 #'
-#' @return Clustered consensus matrix. areaUnderCDF = areaK, 
+#' @return Clustered consensus matrix. areaUnderCDF = areaK,
 #' consensus.matrix = cns.mtrx
 #' @param repCount Optional. Replicate count. (Default = NULL)
 #' @importFrom magrittr %>%
@@ -39,19 +39,19 @@ run.consensus.cluster <- function( d,
                                    pItem=NULL,
                                    pFeature=NULL,
                                    innerLinkage=NULL,
-                                   distance=NULL, 
+                                   distance=NULL,
                                    clusterAlg=NULL,
                                    weightsItem=NULL,
                                    weightsFeature=NULL,
                                    verbose=NULL,
                                    corUse=NULL) {
-  
+
   n = ifelse( diss, ncol( as.matrix(d) ), ncol(d) )
-  
-  if (is.null( distance ) ) distance <- 'euclidean'  
-  
+
+  if (is.null( distance ) ) distance <- 'euclidean'
+
   acceptable.distance <- c( "euclidean", "maximum", "manhattan", "canberra", "binary","minkowski", "pearson", "spearman" )
-  
+
   main.dist.obj <- NULL
   if ( diss ){
     main.dist.obj <- d
@@ -67,40 +67,40 @@ run.consensus.cluster <- function( d,
   } else { ## d is a data matrix
     ## we're not sampling over the features
     if ( ( clusterAlg != "kmeans" ) && ( is.null( pFeature ) || ( ( pFeature == 1 ) && is.null( weightsFeature ) ) ) ) {
-      # only generate a main.dist.object IFF 
-      #    1) d is a distance matrix, 
-      #    2) we're not sampling the features, and 
+      # only generate a main.dist.object IFF
+      #    1) d is a distance matrix,
+      #    2) we're not sampling the features, and
       #    3) the algorithm isn't 'kmeans'
       if ( inherits( distance, "character" ) ) {
-        if ( ! distance %in%  acceptable.distance  &  ( class(try(get(distance),silent=T))!="function") ) 
+        if ( ! distance %in%  acceptable.distance  &  ( !inherits(try(get(distance),silent=T), "function") ) )
           stop("unsupported distance.")
         if(distance=="pearson" | distance=="spearman"){
           main.dist.obj <- stats::as.dist( 1-stats::cor(d,method=distance,use=corUse ))
-        } else if( class(try(get(distance),silent=T))=="function"){
+        } else if( inherits(try(get(distance),silent=T), "function") ){
           main.dist.obj <- get(distance)( t( d )   )
         } else {
           main.dist.obj <- stats::dist( t(d), method=distance )
         }
-        attr( main.dist.obj, "method" ) <- distance  
+        attr( main.dist.obj, "method" ) <- distance
       } else {
         stop("unsupported distance specified.")
       }
-      
+
     } else {
       ## pFeature < 1 or a weightsFeature != NULL
       ## since d is a data matrix, the user wants to sample over the gene features, so main.dist.obj is left as NULL
     }
   }
-  
-  cls = plyr::llply(seq(1, repCount, 1), 
-                    .fun = function(i, verbose, d, kGrid, pItem, pFeature, weightsItem, weightsFeature, 
+
+  cls = plyr::llply(seq(1, repCount, 1),
+                    .fun = function(i, verbose, d, kGrid, pItem, pFeature, weightsItem, weightsFeature,
                                     main.dist.obj, clusterAlg, distance, acceptable.distance,
                                     corUse, innerLinkage){
                       if(verbose){
                         message(paste("random subsample",i));
                       }
-                      
-                      # Function to sub sample 
+
+                      # Function to sub sample
                       sampleCols <- function( d,
                                               pSamp=NULL,
                                               pRow=NULL,
@@ -109,11 +109,11 @@ run.consensus.cluster <- function( d,
                         ## returns a list with the sample columns, as well as the sub-matrix & sample features (if necessary)
                         ## if no sampling over the features is performed, the submatrix & sample features are returned as NAs
                         ## to reduce memory overhead
-                        
+
                         space <- ifelse( inherits( d, "dist" ), ncol( as.matrix(d) ), ncol(d) )
                         sampleN <- floor(space*pSamp)
                         sampCols <- sort( sample(space, sampleN, replace = FALSE, prob = weightsItem) )
-                        
+
                         this_sample <- sampRows <- NA
                         if ( inherits( d, "matrix" ) ) {
                           if ( (! is.null( pRow ) ) &&
@@ -132,12 +132,12 @@ run.consensus.cluster <- function( d,
                                       subrows=sampRows,
                                       subcols=sampCols ) )
                       }
-                      
+
                       # Take expression matrix sample, samples and genes
                       sample_x = sampleCols( d, pItem, pFeature, weightsItem, weightsFeature )
-                      
+
                       # Compute distance (if not supplied)
-                      this_dist = NA 
+                      this_dist = NA
                       if ( ! is.null( main.dist.obj ) ) {
                         boot.cols <- sample_x$subcols
                         this_dist <- as.matrix( main.dist.obj )[ boot.cols, boot.cols ]
@@ -149,13 +149,13 @@ run.consensus.cluster <- function( d,
                         #   3) both
                         # so we can't use a main distance object and for every iteration, we will have to re-calculate either
                         #   1) the distance matrix (because we're also sampling the features as well), or
-                        #   2) the submat (if using kmeans) 
-                        
+                        #   2) the submat (if using kmeans)
+
                         if ( clusterAlg != "kmeans" )  {
-                          if ( ! distance %in% acceptable.distance &  ( class(try(get(distance),silent=T))!="function")  )
+                          if ( ! distance %in% acceptable.distance &  ( !inherits(try(get(distance),silent=T), "function")  ))
                             stop("unsupported distance.")
-                          
-                          if( ( class(try(get(distance),silent=T))=="function") ){
+
+                          if( inherits(try(get(distance),silent=T), "function") ){
                             this_dist <- get(distance)( t( sample_x$submat ) )
                           } else {
                             if( distance == "pearson" | distance == "spearman"){
@@ -164,7 +164,7 @@ run.consensus.cluster <- function( d,
                               this_dist <- stats::dist( t( sample_x$submat ), method= distance  )
                             }
                           }
-                          attr( this_dist, "method" ) <- distance  
+                          attr( this_dist, "method" ) <- distance
                         } else {
                           # if we're not sampling the features, then grab the colslice
                           if ( is.null( pFeature ) || ( ( pFeature == 1 ) && is.null( weightsFeature ) ) ) {
@@ -174,22 +174,22 @@ run.consensus.cluster <- function( d,
                               stop( "error submat is NA" )
                             }
                             this_dist <- sample_x$submat
-                          } 
+                          }
                         }
                       }
-                      
+
                       # Cluster samples using HC (hier. clustering)
                       this_cluster = NA
                       if(clusterAlg == "hc"){
                         this_cluster = fastcluster::hclust(this_dist, method = innerLinkage)
                       }
-                      
+
                       # For every k cluster and identify memebers
                       cls = plyr::llply(kGrid, .fun = function(k, verbose, clusterAlg, this_dist, this_cluster, mConsist, sample_x){
                         if(verbose){
                           message(paste("  k =",k))
                         }
-                        
+
                         this_assignment=NA
                         if(clusterAlg == "hc"){
                           # Prune to k for hc
@@ -202,9 +202,9 @@ run.consensus.cluster <- function( d,
                           # Optional cluterArg Hook.
                           this_assignment <- get(clusterAlg)(this_dist, k)
                         }
-                        
-                        # Get connectivity matrix				
-                        names( this_assignment ) <- sample_x[[3]] 
+
+                        # Get connectivity matrix
+                        names( this_assignment ) <- sample_x[[3]]
                         cls <- lapply( unique( this_assignment ), function(clustnum) {
                           as.numeric( names( this_assignment[ this_assignment %in% clustnum ] ) )
                         })  # list samples by clusterId
@@ -214,15 +214,15 @@ run.consensus.cluster <- function( d,
                       .parallel = F,
                       .paropts = list(.packages = c('cluster', 'fastcluster')))
                       names(cls) = kGrid
-                      
+
                       return(cls)
                     },
-                    verbose, d, kGrid, pItem, pFeature, weightsItem, weightsFeature, 
+                    verbose, d, kGrid, pItem, pFeature, weightsItem, weightsFeature,
                     main.dist.obj, clusterAlg, distance, acceptable.distance,
                     corUse, innerLinkage,
                     .parallel = F,
                     .paropts = list(.packages = c('cluster', 'fastcluster')))
-  
+
   # Compute consensus fraction and area under the cdf curve
   areaK = rep(0,length(cls[[1]]))
   names(areaK) = names(cls[[1]])
@@ -235,11 +235,11 @@ run.consensus.cluster <- function( d,
       }
     }
     cns.mtrx = cns.mtrx / repCount
-    
-    # Empirical CDF distribution. default number of breaks is 100    
+
+    # Empirical CDF distribution. default number of breaks is 100
     h = graphics::hist(cns.mtrx, plot=FALSE, breaks = seq(0,1,by=1/100))
     h$counts = cumsum(h$counts)/sum(h$counts)
-    
+
     # Calculate area under CDF curve, by histogram method.
     thisArea = 0
     for (bi in 1:(length(h$breaks)-1)){

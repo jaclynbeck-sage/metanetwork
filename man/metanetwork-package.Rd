@@ -12,18 +12,13 @@ Version: \tab 1.0\cr
 Date: \tab 2014-12-20\cr
 License: \tab GPLv3\cr
 }
-~~ An overview of how to use the package, including the most important functions ~~
+TODO
 }
 \author{
 Ben Logsdon
 Maintainer: Ben Logsdon <ben.logsdon@sagebase.org>
-~~ The author and/or maintainer of the package ~~
 }
 \references{
-references?
+references TODO
 }
 \keyword{ package }
-\seealso{
-~~ Optional links to other man pages, e.g. ~~
-~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
-}

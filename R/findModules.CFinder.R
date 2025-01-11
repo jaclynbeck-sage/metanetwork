@@ -1,32 +1,32 @@
 #' Find Modules with CFinder
-#' 
+#'
 #' Function to get modules from network adjacency matrix using CFinder algorithm
-#' 
+#'
 #' @param adj A n x n upper triangular adjacency in the matrix class format.
 #' @param path File path location of CFinder.
 #' @param nperm Optional. Number of permutation on the gene ordering. (Default = 10)
 #' @param min.module.size Optional. Integer between 1 and n genes. (Default = 30)
-#' 
+#'
 #' @return  eneModules = n x 3 dimensional data frame with column names as Gene.ID,
 #' moduleNumber, and moduleLabel.
-#' 
+#'
 #' @importFrom magrittr %>%
 #' @export
 findModules.CFinder <- function(adj, path, nperm = 10, min.module.size = 30){
   # Error functions
-  if(class(adj) != "matrix")
+  if(!inherits(adj, "matrix"))
     stop('Adjacency matrix should be of class matrix')
-  
+
   if(dim(adj)[1] != dim(adj)[2])
     stop('Adjacency matrix should be symmetric')
-  
+
   if(!all(adj[lower.tri(adj)] == 0))
     stop('Adjacency matrix should be upper triangular')
-  
+
   # Make adjacency matrix symmetric
   adj = adj + t(adj)
   adj[diag(adj)] = 0
-  
+
   # Compute modules by permuting the labels nperm times
   all.modules = plyr::llply(1:nperm, .fun= function(i, adj, path, min.module.size){
     # Permute gene ordering
@@ -36,7 +36,7 @@ findModules.CFinder <- function(adj, path, nperm = 10, min.module.size = 30){
     Q = NA
     Qds = NA;
     tryCatch({
-      # Find modules 
+      # Find modules
       mod = findModules.CFinder.once(adj1, path, min.module.size, i)
       # Compute local and global modularity
       adj1[lower.tri(adj1)] = 0
@@ -45,11 +45,11 @@ findModules.CFinder <- function(adj, path, nperm = 10, min.module.size = 30){
     }, error = function(e){
       mod = NA;Q=NA;Qds=NA;
     })
-    
+
     return(list(mod = mod, Q = Q, Qds = Qds))
-  }, adj, path, min.module.size, 
+  }, adj, path, min.module.size,
   .parallel = F)
-  
+
   # Find the best module based on Q and Qds
   tmp = plyr::ldply(all.modules, function(x){
     data.frame(Q = x$Q, Qds = x$Qds)
@@ -57,8 +57,8 @@ findModules.CFinder <- function(adj, path, nperm = 10, min.module.size = 30){
     stats::na.omit() %>%
     dplyr::mutate(r = base::rank(Q, na.last = F)+base::rank(Qds, na.last = F))
   ind = which.max(tmp$r)
-  
+
   mod = all.modules[[ind]]$mod
-  
+
   return(mod)
 }

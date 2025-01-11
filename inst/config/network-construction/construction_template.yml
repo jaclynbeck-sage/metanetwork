@@ -1,7 +1,7 @@
 default:
   input_profile:
     expr_matrix_synid: syn8303260
-    network_method: ["wgcna"]
+    network_method: ["c3net", "wgcna", "mrnet"]
     na_fill: NULL
     temp_storage_loc: /home/rstudio/meta_out/temp/
     c3net_alpha: 0.01
@@ -17,24 +17,8 @@ default:
     medium_ncores: 0
     heavy_ncores: 0
   provenance:
-    annotations:
-      data_type: ['clinical','geneExpression']
-      resource_type: metadata
-      metadata_type: 'analytical covariates'
-      ismodelsystem: FALSE
-      ismultispecimen: TRUE
-      fileformat: csv
-      grant: U01AG046152
-      species: Human
-      organ: brain
-      tissue: ['dorsolateral prefrontal cortex', 'Head of caudate nucleus', 'posterior cingulate cortex']
-      study: ["ROSMAP","rnaSeqReprocessing"]
-      consortium: AMP-AD
-      assay: rnaSeq
     code_annotations:
         repository: jaclynbeck-sage/metanetwork
         ref: branch
         ref_name: main
         repository_path: inst/runscripts/Network_Wrapper.R
-    activity_name: wgcna_rosmap_network
-    activity_description: 'Using wgcna to prepare network from syn7984097 ROSMAP data'
