@@ -74,7 +74,7 @@ if (is.null(config$input_profile$na_fill)) {
   }
 }
 
-net_methods <- config$input_profile$network_method
+net_methods <- config$input_profile$network_methods
 
 # TODO temp
 data <- data[1:200, 1:1000]

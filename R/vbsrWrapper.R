@@ -21,7 +21,7 @@ vbsrWrapper <- function(x, y, fdr = 0.05, ...) {
   thres <- fdrThres(pval, fdr = fdr)
 
   if (sum(pval < thres) > 0) {
-    newz <- fastlm(y, x[, pval < thres])
+    newz <- fastlm_z(y, x[, pval < thres])
     result_2z[pval < thres] <- newz
   }
 
@@ -30,31 +30,6 @@ vbsrWrapper <- function(x, y, fdr = 0.05, ...) {
   rownames(networks) <- c("Z", "2Z")
 
   return(networks)
-}
-
-
-#' Fast Linear Modeling
-#'
-#' This function returns results from a fast linear model TODO
-#'
-#' @param y Required. A vector of response values
-#' @param x Required. A vector or matrix of the same number of observations/rows
-#' as y
-#' @return A vector of ZValues
-fastlm <- function(y, x) {
-  # If x is a single vector, this makes it an n x 1 matrix
-  X <- as.matrix(x)
-  n1 <- nrow(X)
-  X <- cbind(rep(1, n1), as.matrix(x))
-
-  ginv <- solve(t(X) %*% X)
-  Xhat <- ginv %*% t(X)
-  betahat <- Xhat %*% y
-
-  sig <- (mean((y - X %*% betahat)^2)) * ((n1) / (n1 - ncol(X)))
-  zval <- betahat / (sqrt(sig * (diag(ginv))))
-
-  return(zval[-1])
 }
 
 
