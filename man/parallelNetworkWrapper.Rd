@@ -7,6 +7,7 @@
 parallelNetworkWrapper(
   data,
   regressionFunction,
+  log_file_path = ".",
   n_cores = 1,
   cluster_type = "FORK",
   regulatorIndex = NULL,
@@ -14,12 +15,15 @@ parallelNetworkWrapper(
 )
 }
 \arguments{
-\item{data}{Required. Expression matrix to be used for network construction,
-which should have samples as rows and genes as columns.}
+\item{data}{Expression matrix to be used for network construction, which
+should have samples as rows and genes as columns.}
 
-\item{regressionFunction}{Required. The name of the regression function to use,
-which should exactly match the name of a function in this package. Current
-options are: lassoIC, lassoCV, ridgeIC, ridgeCV, sparrowZ}
+\item{regressionFunction}{The name of the regression function to use. Current
+options are: lassoIC, lassoCV, ridgeIC, ridgeCV, vbsr}
+
+\item{log_file_path}{Optional. The folder path to where log files should be
+stored. Log files capture any output during parallel execution. If omitted,
+log files will be stored in the working directory.}
 
 \item{n_cores}{Optional. The number of parallel cores to use.}
 
@@ -27,10 +31,12 @@ options are: lassoIC, lassoCV, ridgeIC, ridgeCV, sparrowZ}
 "PSOCK" if running on Windows.}
 
 \item{regulatorIndex}{Optional. A vector of numerical indexes into
-`colnames(data)` for a subset of genes that should be used in the network,
-rather than using the full gene set.}
+`colnames(data)` for a subset of genes that should be used in the network.
+All genes in `data` will be tested against this subset, rather than against
+every gene.}
 
-\item{...}{TODO}
+\item{...}{Optional. Additional arguments that are passed through to the
+network algorithm.}
 }
 \value{
 TODO

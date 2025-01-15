@@ -2,18 +2,22 @@
 #'
 #' Wrapper to run network detection in a parallel fashion
 #'
-#' @param data Required. Expression matrix to be used for network construction,
-#' which should have samples as rows and genes as columns.
-#' @param regressionFunction Required. The name of the regression function to use,
-#' which should exactly match the name of a function in this package. Current
-#' options are: lassoIC, lassoCV, ridgeIC, ridgeCV, sparrowZ
+#' @param data Expression matrix to be used for network construction, which
+#'   should have samples as rows and genes as columns.
+#' @param regressionFunction The name of the regression function to use. Current
+#'   options are: lassoIC, lassoCV, ridgeIC, ridgeCV, vbsr
+#' @param log_file_path Optional. The folder path to where log files should be
+#' stored. Log files capture any output during parallel execution. If omitted,
+#' log files will be stored in the working directory.
 #' @param n_cores Optional. The number of parallel cores to use.
 #' @param cluster_type Optional. Use "FORK" if running on a Unix system, and
 #' "PSOCK" if running on Windows.
 #' @param regulatorIndex Optional. A vector of numerical indexes into
-#' `colnames(data)` for a subset of genes that should be used in the network,
-#' rather than using the full gene set.
-#' @param ... TODO
+#'   `colnames(data)` for a subset of genes that should be used in the network.
+#'   All genes in `data` will be tested against this subset, rather than against
+#'   every gene.
+#' @param ... Optional. Additional arguments that are passed through to the
+#'   network algorithm.
 #'
 #' @return TODO
 #'
@@ -22,6 +26,7 @@
 #'
 #' @export
 parallelNetworkWrapper <- function(data, regressionFunction,
+                                   log_file_path = ".",
                                    n_cores = 1, cluster_type = "FORK",
                                    regulatorIndex = NULL, ...) {
   data <- as.matrix(data)
@@ -29,7 +34,8 @@ parallelNetworkWrapper <- function(data, regressionFunction,
   clust <- NULL
   if (n_cores > 1) {
     clust <- parallel::makeCluster(n_cores, type = cluster_type,
-                                   outfile = file.path(paste0(regressionFunction, "_log.txt")))
+                                   outfile = file.path(log_file_path,
+                                                       paste0(regressionFunction, "_log.txt")))
     doParallel::registerDoParallel(clust)
   }
 
@@ -56,13 +62,14 @@ parallelNetworkWrapper <- function(data, regressionFunction,
     fxnArgs$y <- as.matrix(data[, gene_query])
     fxnArgs$x <- as.matrix(data[, setdiff(genes_use, gene_query)])
 
-    if (regressionFunction %in% c('sparrowZ', 'sparrow2Z')) {
-      fxnArgs$n_orderings <- 12
-    }
+    # Special case: the vbsr function is called "vbsrWrapper" to avoid name
+    # collisions with the "vbsr" function in the vbsr package.
+    if (regressionFunction == "vbsr") {
+      try(res <- do.call(vbsrWrapper, c(fxnArgs, list(...))))
 
-    try(res <- do.call(regressionFunction,
-                       c(fxnArgs, list(...))),
-        silent = TRUE)
+    } else {
+      try(res <- do.call(regressionFunction, c(fxnArgs, list(...))))
+    }
 
     if (!any(is.na(res))) {
       # Add 0-entries for the query gene, which are missing in the returned results
@@ -103,7 +110,7 @@ parallelNetworkWrapper <- function(data, regressionFunction,
   # Extract the matrices for each network type (e.g. "AIC", "lambda.min") from
   # the results list, combine them into one matrix, and write to a file. Then,
   # return the name of the file that was just generated.
-  networks <- sapply(net_types, function(net_type) {
+  networks <- lapply(net_types, function(net_type) {
     network <- do.call(rbind, lapply(results, "[[", net_type))
 
     # JB TODO why are we doing this? is it to make the matrix symmetrical?

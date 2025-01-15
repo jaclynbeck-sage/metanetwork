@@ -1,7 +1,7 @@
 default:
   input_profile:
     expr_matrix_synid: syn8303260
-    network_method: ["c3net", "wgcna", "mrnet", "lassoIC", "ridgeIC", "lassoCV", "ridgeCV"]
+    network_method: ["c3net", "wgcna", "mrnet", "lassoIC", "ridgeIC", "lassoCV", "ridgeCV", "vbsr"]
     na_fill: NULL
     temp_storage_loc: /home/rstudio/meta_out/temp/
   output_profile:
@@ -11,7 +11,8 @@ default:
   n_parallel_cores: 30
   # These arguments will be passed to the corresponding algorithm. Additional
   # algorithms can be added to this list. Along with these default values, any
-  # arguments accepted by the named function can be added here.
+  # arguments accepted by the function or its wrapper in this package can be
+  # added here.
   algorithm_arguments:
     c3net:
       alpha: 0.01
@@ -19,3 +20,6 @@ default:
       k: 3
     wgcna:
       RsquaredCut: 0.80
+    vbsr:
+      fdr: 0.05
+      n_orderings: 12
