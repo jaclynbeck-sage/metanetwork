@@ -1,24 +1,21 @@
 default:
   input_profile:
     expr_matrix_synid: syn8303260
-    network_method: ["c3net", "wgcna", "mrnet"]
+    network_method: ["c3net", "wgcna", "mrnet", "lassoIC", "ridgeIC", "lassoCV", "ridgeCV"]
     na_fill: NULL
     temp_storage_loc: /home/rstudio/meta_out/temp/
-    c3net_alpha: 0.01
-    mrnet_k: 3
-    wgcna_RsquaredCut: 0.80
-    wgcna_defaultPower: 6
   output_profile:
     output_path: /home/rstudio/meta_out/
     project_id: syn51769643
     debug_save: FALSE
-  computing_specs:
-    light_ncores: 4
-    medium_ncores: 0
-    heavy_ncores: 0
-  provenance:
-    code_annotations:
-        repository: jaclynbeck-sage/metanetwork
-        ref: branch
-        ref_name: main
-        repository_path: inst/runscripts/Network_Wrapper.R
+  n_parallel_cores: 30
+  # These arguments will be passed to the corresponding algorithm. Additional
+  # algorithms can be added to this list. Along with these default values, any
+  # arguments accepted by the named function can be added here.
+  algorithm_arguments:
+    c3net:
+      alpha: 0.01
+    mrnet:
+      k: 3
+    wgcna:
+      RsquaredCut: 0.80

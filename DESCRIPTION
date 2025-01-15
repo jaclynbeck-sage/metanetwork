@@ -25,7 +25,7 @@ Authors@R:
     comment = c(ORCID = "0000-0001-9895-1792"))
   )
 Description: Package to infer multiple types of coexpression network representations of high dimensional gene expression data.  Builds network ensembles, extract network statistics, and run enrichments on network features.
-Depends: R (>= 3.1.0)
+Depends: R (>= 3.5.0)
 License: MIT + file LICENSE
 Suggests:
     config,
@@ -33,7 +33,15 @@ Suggests:
     knitr,
     optparse,
     rmarkdown,
-    synapser
+    synapser,
+    c3net,
+    GENIE3,
+    glmnet (>= 2.0),
+    MEGENA,
+    parmigene,
+    tigress,
+    vbsr (>= 0.0.5),
+    WGCNA (>= 1.46)
 URL: https://github.com/Sage-Bionetworks/metanetwork,
     http://sage-bionetworks.github.io/metanetwork/
 Encoding: UTF-8
@@ -41,7 +49,6 @@ biocViews:
 Imports:
   bit64,
   Biobase,
-  c3net,
   cluster,
   data.table,
   dplyr (>= 0.4.1),
@@ -50,31 +57,26 @@ Imports:
   foreach,
   fpc,
   glasso,
-  glmnet (>= 2.0),
   graphics,
   grid,
   igraph,
-  lars (>= 1.2),
   linkcomm,
   magrittr,
   MASS,
   Matrix,
-  MEGENA,
-  randomForest (>= 4.6),
   rlang,
   parallel,
-  parmigene,
   plyr,
-  WGCNA (>= 1.46),
+  R.utils,
   stats,
   stringr,
-  utils,
-  vbsr (>= 0.0.5)
+  utils
 Additional_repositories:
   http://ran.synapse.org
 Remotes:
   blogsdon/vbsr/vbsr,
-  brian-bot/githubr
+  brian-bot/githubr,
+  jpvert/tigress
 VignetteBuilder:
   knitr
 RoxygenNote: 7.3.2

@@ -7,7 +7,7 @@
 fdrThres(pval, fdr = 0.05)
 }
 \arguments{
-\item{pval}{Required. A vector of uncorected P-Values.}
+\item{pval}{Required. A vector of uncorrected P-Values.}
 
 \item{fdr}{Optional. desired FDR cutoff. (Default = 0.05)
 as y}

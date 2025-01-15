@@ -82,8 +82,7 @@ if (is.null(config$input_profile$na_fill)) {
 
 net_methods <- config$input_profile$network_method
 
-medium_algorithms <- c("lassoAIC", "lassoBIC", "lassoCV1se", "lassoCVmin",
-                       "ridgeAIC", "ridgeBIC", "ridgeCV1se", "ridgeCVmin",
+medium_algorithms <- c("lassoIC", "lassoCV", "ridgeIC", "ridgeCV",
                        "sparrowZ", "sparrow2Z")
 
 heavy_algorithms <- c("genie3", "tigress")
@@ -113,13 +112,13 @@ for (method in net_methods) {
 
   } else if (method %in% medium_algorithms) {
     parallelNetworkWrapper(data,
-                           nodes = config$computing_specs$medium_ncores,
+                           n_cores = config$computing_specs$medium_ncores,
                            regressionFunction = method,
                            outputpath = config$output_profile$output_path)
 
   } else if (method %in% heavy_algorithms) {
     parallelNetworkWrapper(data,
-                           nodes = config$computing_specs$heavy_ncores,
+                           n_cores = config$computing_specs$heavy_ncores,
                            regressionFunction = method,
                            outputpath = config$output_profile$output_path)
   } else {

@@ -20,5 +20,5 @@ A list object containing values of a sparse network, the best fit
 minimum BIC, and
 }
 \description{
-(?)
+(?) TODO
 }

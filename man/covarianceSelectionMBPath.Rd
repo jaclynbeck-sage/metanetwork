@@ -21,5 +21,5 @@ A list object of containing the BIC estimate, bicNeighborhood (?) , neighborhood
 }
 \description{
 This function defines the covariance neighborhood between gene-gene edges
-in an expression matrix.
+in an expression matrix. TODO
 }

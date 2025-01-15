@@ -7,13 +7,13 @@
 rankConsensus(networks)
 }
 \arguments{
-\item{networks}{Required. A list object containing an individual network as 
+\item{networks}{Required. A list object containing an individual network as
 a list entry.}
 }
 \value{
 The best rank consensus network.
 }
 \description{
-This function ranks a list of consensus network objects and returns the best 
-rank network.
+This function ranks a list of consensus network objects and returns the best
+rank network. TODO
 }
