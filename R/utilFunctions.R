@@ -17,7 +17,8 @@ fastlm <- function(y, X) {
 
 #' Z value for fastlm
 #'
-#' TODO
+#' This function runs \code{fastlm} and returns the Z-values associated with the
+#' solution.
 #'
 #' @inheritParams fastlm
 #'
@@ -39,14 +40,14 @@ fastlm_z <- function(y, X) {
 
 #' Fast Linear Modeling BIC
 #'
-#' This function deploys matrix operations to calculate a model BIC given a vector
-#' of model coefficients. TODO
+#' This function runs \code{fastlm} and calculates the BIC score based on the
+#' solution. TODO
 #'
 #' @param x Optional. A numeric vector or matrix of model coefficients. If not set x
 #' becomes a vector of integers the from 1 to length(y). (?)
 #' @param y A numeric vector of model coefficients. If not set x
 #' becomes a vector of integers the from 1 to length(y). (?)
-#' @param correction A vector of correction factors
+#' @param correction A vector of correction factors, or a single numeric value.
 #'
 #' @return BIC estimate
 fastlm_bic <- function(y, x = NULL, correction = 1) {
@@ -65,4 +66,49 @@ fastlm_bic <- function(y, x = NULL, correction = 1) {
 
   # Calculate and return the BIC TODO verify this is correct
   return(n1 * (log(sig) + 1 + log(2 * pi)) + (ncol(X) + 1) * log(n1 * correction))
+}
+
+
+#' Load CSV File using data.table
+#'
+#' This function loads data from a CSV file using \code{data.table::fread},
+#' which is much faster than \code{read.table} or \code{read.csv}. The data can
+#' optionally be coerced to a matrix or left as a data.frame.
+#'
+#' @param filename The path to the file to load
+#' @param return_matrix Optional. If \code{TRUE}, the loaded data object will be
+#' coerced to a matrix. If \code{FALSE}, the data object will be a \code{data.frame}.
+#' @param ... Optional, other arguments to pass to \code{fread()}.
+#'
+#' @returns either a matrix or a data.frame, depending on the value of \code{return_matrix}
+loadCSVFile <- function(filename, return_matrix = TRUE, ...) {
+  object <- data.table::fread(file = filename, sep = ",", ...)
+  object <- tibble::column_to_rownames(object, var = colnames(object)[1])
+
+  if (return_matrix) {
+    object <- data.matrix(object)
+  }
+
+  return(object)
+}
+
+
+#' Write CSV File
+#'
+#' Convenience wrapper for \code{data.table::fwrite}, which is faster than
+#' \code{write.csv}.
+#'
+#' @param object The object to write to disk, which should be of a type supported
+#' by \code{fread}. This function assumes that the columns and rows are named.
+#' @param filename The path and name of the file where the object should be saved
+#' @param ... Optional. Additional arguments to \code{fread}.
+#'
+#' @returns Nothing
+writeCSVFile <- function(object, filename, ...) {
+  data.table::fwrite(object,
+                     file = filename,
+                     sep = ",",
+                     row.names = TRUE,
+                     col.names = TRUE,
+                     ...)
 }

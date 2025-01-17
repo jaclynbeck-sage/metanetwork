@@ -24,8 +24,8 @@ covarianceSelectionMBPath = function(X, rankedEdges, startI = 1) {
   flag <- c()
 
   for (count in 1:nedges) {
-    if (count %% 100 == 0) {
-      cat('count:', count, 'bic:', bicCurrent, '\n')
+    if (count %% 1000 == 0) {
+      cat('Count:', count, 'BIC:', bicCurrent, '\n')
     }
     gene1 <- colnames(X)[rankedEdges[count, 1]]
     gene2 <- colnames(X)[rankedEdges[count, 2]]

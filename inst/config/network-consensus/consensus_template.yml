@@ -1,15 +1,6 @@
 default:
   input_profile:
     expr_matrix_synid: syn8303260
-    input_folderid: syn51769643
-    project_id: syn51769643
-    input_proj_id: syn7984097
-    is_csv: TRUE
-    network_names: ["c3net", "genie3", "mrnet", "tigress", "wgcna", "lassoCV", "lassoIC", "ridgeCV", "ridgeIC", "vbsr"]
     temp_storage_loc: /home/rstudio/meta_out/temp/
-    pattern_id: _Network
-    run_id: Network
   output_profile:
     output_path: /home/rstudio/meta_out/consensus
-    output_name: 'Consensus Network'
-    error_path: /home/rstudio/meta_out/temp/

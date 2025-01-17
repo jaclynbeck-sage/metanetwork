@@ -33,10 +33,6 @@ input_file <- synapser::synGet(config$input_profile$expr_matrix_synid,
 fileName <- input_file$path
 
 outputpath <- config$output_profile$output_path
-networkFolderId <- config$input_profile$input_folderid
-pattern_id <- config$input_profile$pattern_id
-run_id <- config$input_profile$run_id
-network_names <- config$input_profile$network_names
 
 #child_obj <- synapser::synGetChildren(as.character(networkFolderId), includeTypes = list("folder"))
 #child_list <- as.list(child_obj)
@@ -95,26 +91,16 @@ network_names <- config$input_profile$network_names
 #}
 
 # TODO temporary
-network_files <- list.files("~/meta_out", pattern = ".csv", full.names = TRUE)
-names(network_files) <- sapply(network_files, function(nf) {
-  matches <- sapply(network_names, function(nn) {
-    grepl(nn, nf)
-  })
+network_files <- list.files("~/meta_out/ros_network_synapse", pattern = ".csv", full.names = TRUE)
+network_files <- network_files[!grepl("rankConsensus", network_files)]
 
-  names(matches)[which(matches)]
-})
+data <- loadCSVFile(fileName)
 
 message("Building Consensus Networks")
 
-buildConsensus(
-  outputpath = outputpath,
-  network_files = network_files,
-  networkFolderId = networkFolderId,
-  # pattern_id = run_id,
-  fileName = fileName,
-  bar = out_list,
-  iscsv = config$input_profile$is_csv
-)
+buildConsensus(network_files = network_files,
+               exprData = data,
+               outputpath = outputpath)
 
 
 # Obtaining the data - For provenance --------------------------------------------
