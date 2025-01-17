@@ -4,7 +4,7 @@
 \alias{compute.Modularity}
 \title{Find Global Modularity (Q)}
 \usage{
-compute.Modularity(adj, mod, method = "Newman1")
+compute.Modularity(adj, mod)
 }
 \arguments{
 \item{adj}{Required. An n x n upper triangular adjacency in the matrix class
@@ -12,14 +12,11 @@ format.}
 
 \item{mod}{Required. An n x 3 dimensional data frame with column names as
 Gene.ID, moduleNumber, and moduleLabel.}
-
-\item{method}{Optional. If 'Newman1' is specified modularity is instituded in
-as-per the Clauset, Newman model in the function igraph::graph.modularity()
-(Default = 'Newman1')}
 }
 \value{
 Q = modularity index.
 }
 \description{
-This function finds Function to find global modularity (Q) of a upper triangular adjacency matrix.
+This function calculates global modularity (Q) of a upper triangular
+adjacency matrix using \code{igraph::modularity}.
 }

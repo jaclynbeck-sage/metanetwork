@@ -2,18 +2,28 @@
 % Please edit documentation in R/rankConsensus.R
 \name{rankConsensus}
 \alias{rankConsensus}
-\title{Ranks Consensus networks}
+\title{Rank Consensus Networks}
 \usage{
-rankConsensus(networks)
+rankConsensus(network_files)
 }
 \arguments{
-\item{networks}{Required. A list object containing an individual network as
-a list entry.}
+\item{network_files}{A vector or list of file paths pointing to each individual
+network CSV that should be in the consensus. The contents of each file should
+be a square matrix with the columns and rows labeled with the gene names. All
+matrices must have the same sets of genes and be the same dimensions.}
 }
 \value{
-The best rank consensus network.
+A new NxN matrix that represents the consensus rank of each edge in
+the network.
 }
 \description{
-This function ranks a list of consensus network objects and returns the best
-rank network. TODO
+This function ranks edges in list of network objects and combines the ranks
+to create a consensus network.
+}
+\details{
+For each network in the list, its edges are ranked relative to each other.
+The ranks from all networks are added together, and those values are then
+ranked to create a final "consensus" of each edge. To conserve memory,
+this function uses a list of files to work on networks one at a time, rather
+than using a list of all networks loaded into memory at once.
 }

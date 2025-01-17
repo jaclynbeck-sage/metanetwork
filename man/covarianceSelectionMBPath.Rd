@@ -4,15 +4,13 @@
 \alias{covarianceSelectionMBPath}
 \title{Covariance based on Neighborhood Selection}
 \usage{
-covarianceSelectionMBPath(X, rankedEdges, numberObservations, startI = 1)
+covarianceSelectionMBPath(X, rankedEdges, startI = 1)
 }
 \arguments{
-\item{X}{Required. An expression matrix}
+\item{X}{An expression matrix where rows are samples and columns are genes.}
 
-\item{rankedEdges}{Required. An edge list in the form of a matrix where column
-one is gene one and column 2 is gene two}
-
-\item{numberObservations}{Required. The number of samples comprising the network (?)}
+\item{rankedEdges}{An edge list in the form of a matrix where column one is
+gene one and column 2 is gene two}
 
 \item{startI}{Optional. Start at the first edge in `rankedEdges` (Default = 1)}
 }

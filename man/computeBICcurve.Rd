@@ -4,20 +4,18 @@
 \alias{computeBICcurve}
 \title{This Function Computes a Network BIC Curve}
 \usage{
-computeBICcurve(network, exprData, maxEdges = NULL, exact = NULL)
+computeBICcurve(network, exprData, maxEdges = 2e+05)
 }
 \arguments{
 \item{network}{A network object}
 
-\item{exprData}{Expression data matrix}
+\item{exprData}{Expression matrix where rows are samples and columns are genes}
 
-\item{maxEdges}{Optional. (Default = NULL)}
-
-\item{exact}{Optional.  (Default = NULL)}
+\item{maxEdges}{Optional. Maximum number of edges to use.}
 }
 \value{
 A list object containing values of a sparse network, the best fit
-minimum BIC, and
+minimum BIC, and TODO
 }
 \description{
 (?) TODO

@@ -4,22 +4,24 @@
 \alias{buildConsensus}
 \title{This function builds the Consensus Network from the component network}
 \usage{
-buildConsensus(outputpath, networkFolderId, fileName, bar)
+buildConsensus(network_files, exprData, outputpath, max_edges = 2e+05)
 }
 \arguments{
-\item{outputpath}{Required. Local directory to load files from and save files to.}
+\item{network_files}{A vector of file paths pointing to each network matrix.}
 
-\item{networkFolderId}{Required. The Synapse parent ID of the folder containing
-the folders with the individual networks.}
+\item{exprData}{A matrix of the gene expression data used to generate the
+networks. Rows must be samples and columns must be genes.}
 
-\item{fileName}{Required. The input file path.
-the children entities in `project_id`.}
+\item{outputpath}{Path to the folder where the consensus network should be
+saved.}
 
-\item{bar}{Required. File paths object with network paths}
+\item{max_edges}{Optional. The maximum number of network edges to use when
+computing the BIC curve.}
 }
 \value{
-Saves a rank consensus network to `outputpath` and saves the BICNetwork
- object to `outputpath` if `fileName` is specified
+Nothing. Saves the rank consensus network to
+  \code{<outputpath>/rankConsensusNetwork.csv} and saves the BICNetwork
+  object to \code{<outputpath>/bicNetworks.rds}
 }
 \description{
 This function builds a consensus co-expression network. TODO

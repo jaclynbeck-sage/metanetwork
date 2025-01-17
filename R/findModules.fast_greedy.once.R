@@ -4,38 +4,42 @@
 #'
 #' @inheritParams findModules.CFinder
 #'
-#' @return  GeneModules = n x 3 dimensional data frame with column names as Gene.ID,
+#' @return GeneModules = n x 3 data frame with column names as Gene.ID,
 #' moduleNumber, and moduleLabel.
 #'
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
 #'
 #' @export
-findModules.fast_greedy.once <- function(adj, min.module.size){
+findModules.fast_greedy.once <- function(adj, min.module.size) {
   # Convert lsparseNetwork to igraph graph object
-  g = igraph::graph.adjacency(adj, mode = 'undirected', weighted = T, diag = F)
+  g <- igraph::graph_from_adjacency_matrix(adj,
+                                           mode = "undirected",
+                                           weighted = TRUE,
+                                           diag = FALSE)
 
   # Get modules using fast greedy method (http://arxiv.org/abs/cond-mat/0408187)
-  mod = igraph::cluster_fast_greedy(g)
+  mod <- igraph::cluster_fast_greedy(g)
 
   # Get individual clusters from the igraph community object
-  geneModules = igraph::membership(mod) %>%
-    unclass %>%
-    as.data.frame %>%
-    plyr::rename(c('.' = 'moduleNumber'))
+  geneModules <- igraph::membership(mod) %>%
+    unclass() %>%
+    as.data.frame() %>%
+    dplyr::rename(moduleNumber = ".")
 
-  geneModules = cbind(data.frame(Gene.ID = rownames(geneModules)),
-                      geneModules)
+  geneModules$Gene.ID <- rownames(geneModules)
 
   # Rename modules with size less than min module size to 0
-  filteredModules = geneModules %>%
+  filteredModules <- geneModules %>%
     dplyr::group_by(.data$moduleNumber) %>%
-    dplyr::summarise(counts = length(unique(.data$Gene.ID))) %>%
+    dplyr::summarise(counts = dplyr::n()) %>%
     dplyr::filter(.data$counts >= min.module.size)
-  geneModules$moduleNumber[!(geneModules$moduleNumber %in% filteredModules$moduleNumber)] = 0
+
+  excluded <- !(geneModules$moduleNumber %in% filteredModules$moduleNumber)
+  geneModules$moduleNumber[excluded] <- 0
 
   # Change cluster number to color labels
-  geneModules$moduleLabel = WGCNA::labels2colors(geneModules$moduleNumber)
+  geneModules$moduleLabel <- WGCNA::labels2colors(geneModules$moduleNumber)
 
-  return(geneModules)
+  return(geneModules[, c("Gene.ID", "moduleNumber", "moduleLabel")])
 }

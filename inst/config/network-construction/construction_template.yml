@@ -5,7 +5,7 @@ default:
     na_fill: NULL
     temp_storage_loc: /home/rstudio/meta_out/temp/
   output_profile:
-    output_path: /home/rstudio/meta_out/
+    output_path: /home/rstudio/meta_out/construction/
     project_id: syn51769643
     debug_save: FALSE
   n_parallel_cores: 30

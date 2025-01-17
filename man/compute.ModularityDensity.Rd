@@ -17,5 +17,7 @@ Gene.ID, moduleNumber, and moduleLabel.}
 Qds = module density.
 }
 \description{
-This function finds calculates modularity density.
+This function calculates modularity density. TODO needs review.
+TODO this might be combinable with compute.Modularity to avoid calling
+some of the igraph functions twice.
 }

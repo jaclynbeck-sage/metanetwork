@@ -12,7 +12,7 @@ findModules.fast_greedy.once(adj, min.module.size)
 \item{min.module.size}{Optional. Integer between 1 and n genes. (Default = 30)}
 }
 \value{
-GeneModules = n x 3 dimensional data frame with column names as Gene.ID,
+GeneModules = n x 3 data frame with column names as Gene.ID,
 moduleNumber, and moduleLabel.
 }
 \description{

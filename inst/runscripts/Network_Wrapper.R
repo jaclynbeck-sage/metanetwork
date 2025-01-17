@@ -18,6 +18,7 @@ option_list <- list(opt_parse::make_option(c("-u", "--synapse_authToken"),
                                            action = "store",
                                            help = "Path to the complete config file"))
 req_args <- opt_parse::parse_args(opt_parse::OptionParser(option_list = option_list))
+req_args$config_file <- "inst/config/network-construction/construction_template.yml"
 
 # Obtaining the data - From Synapse --------------------------------------------
 
@@ -76,9 +77,6 @@ if (is.null(config$input_profile$na_fill)) {
 
 net_methods <- config$input_profile$network_methods
 
-# TODO temp
-data <- data[1:200, 1:1000]
-
 for (method in net_methods) {
   message(paste0("Running method ", method, "..."))
 
@@ -88,7 +86,7 @@ for (method in net_methods) {
     list()
   }
 
-  tmp <- do.call(constructNetwork, args = c(
+  tmp <- do.call(metanetwork::constructNetwork, args = c(
     list(data = data,
          method_name = method,
          save_to_disk = TRUE,
