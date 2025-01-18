@@ -39,8 +39,6 @@
 #'   "lassoIC", "ridgeCV", "ridgeIC", and "vbsr".
 #' @param n_cores Optional. The number of cores to use for algorithms that can
 #'   use threads. A value of 1 (default) will result in no threading.
-#' @param cluster_type Optional. Use "FORK" if running on a Unix system, and
-#'   "PSOCK" if running on Windows.
 #' @param save_to_disk Optional. If `TRUE`, the network will be saved as a CSV
 #'   file with the location and name specified by the `output_filepath` and
 #'   `output_filename_base` arguments.
@@ -71,10 +69,13 @@
 #' # Run "mrnet", adding the "k" argument used in knnmi.all()
 #' data <- matrix(rnorm(50000), ncol = 1000)
 #' network_list <- constructNetwork(data, method_name = "mrnet", k = 7)
-constructNetwork <- function(data, method_name,
-                             n_cores = 1, cluster_type = "FORK",
-                             save_to_disk = FALSE, output_filepath = ".",
-                             output_filename_base = "network", ...) {
+constructNetwork <- function(data,
+                             method_name,
+                             n_cores = 1,
+                             save_to_disk = FALSE,
+                             output_filepath = ".",
+                             output_filename_base = "network",
+                             ...) {
   # Ensure data is a matrix
   data <- as.matrix(data)
 
@@ -92,7 +93,6 @@ constructNetwork <- function(data, method_name,
     vbsr = parallelNetworkWrapper(data,
                                   regressionFunction = method_name,
                                   n_cores = n_cores,
-                                  cluster_type = cluster_type,
                                   log_file_path = output_filepath,
                                   ...),
     # Default: unrecognized algorithm returns NULL
@@ -105,24 +105,17 @@ constructNetwork <- function(data, method_name,
   }
 
   if (save_to_disk) {
-    write_upper_tri <- function(mat, filename) {
-      data.table::fwrite(mat * upper.tri(mat),
-                         file = filename,
-                         sep = ",",
-                         row.names = TRUE,
-                         col.names = TRUE)
-    }
-
     output_prefix <- file.path(output_filepath, output_filename_base)
 
     if (inherits(networks, "matrix")) {
       output_filename <- paste0(output_prefix, ".csv")
-      write_upper_tri(networks, output_filename)
+      writeCSVFile(networks * upper.tri(networks), output_filename)
 
     } else if (is.list(networks)) {
       for (net_name in names(networks)) {
         output_filename <- paste0(output_prefix, "_", net_name, ".csv")
-        write_upper_tri(networks[[net_name]], output_filename)
+        writeCSVFile(networks[[net_name]] * upper.tri(networks[[net_name]]),
+                     output_filename)
       }
     }
   }

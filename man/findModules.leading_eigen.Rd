@@ -6,13 +6,6 @@
 \usage{
 findModules.leading_eigen(adj, nperm = 10, min.module.size = 30)
 }
-\arguments{
-\item{adj}{A n x n upper triangular adjacency in the matrix class format.}
-
-\item{nperm}{Optional. Number of permutation on the gene ordering. (Default = 10)}
-
-\item{min.module.size}{Optional. Integer between 1 and n genes. (Default = 30)}
-}
 \value{
 GeneModules = n x 3 dimensional data frame with column names as Gene.ID,
 moduleNumber, and moduleLabel.

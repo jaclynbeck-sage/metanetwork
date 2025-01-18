@@ -9,15 +9,15 @@
 
 # Obtaining the data - From User --------------------------------------------
 
-option_list <- list(opt_parse::make_option(c("-u", "--synapse_authToken"),
+option_list <- list(optparse::make_option(c("-u", "--synapse_authToken"),
                                            type = "character",
                                            action = "store",
                                            help = "Synapse auth token"),
-                    opt_parse::make_option(c("-c", "--config_file"),
+                    optparse::make_option(c("-c", "--config_file"),
                                            type = "character",
                                            action = "store",
                                            help = "Path to the complete config file"))
-req_args <- opt_parse::parse_args(opt_parse::OptionParser(option_list = option_list))
+req_args <- optparse::parse_args(optparse::OptionParser(option_list = option_list))
 req_args$config_file <- "inst/config/network-construction/construction_template.yml"
 
 # Obtaining the data - From Synapse --------------------------------------------

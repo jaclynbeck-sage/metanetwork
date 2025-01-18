@@ -6,11 +6,6 @@
 \usage{
 findModules.leading_eigen.once(adj, min.module.size)
 }
-\arguments{
-\item{adj}{A n x n upper triangular adjacency in the matrix class format.}
-
-\item{min.module.size}{Optional. Integer between 1 and n genes. (Default = 30)}
-}
 \value{
 GeneModules = n x 3 dimensional data frame with column names as Gene.ID,
 moduleNumber, and moduleLabel.

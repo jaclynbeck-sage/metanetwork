@@ -2,14 +2,13 @@
 % Please edit documentation in R/parallelNetworkWrapper.R
 \name{parallelNetworkWrapper}
 \alias{parallelNetworkWrapper}
-\title{Parallel Network Wrapper}
+\title{Parallel Network Construction Wrapper}
 \usage{
 parallelNetworkWrapper(
   data,
   regressionFunction,
   log_file_path = ".",
   n_cores = 1,
-  cluster_type = "FORK",
   regulatorIndex = NULL,
   ...
 )
@@ -27,20 +26,20 @@ log files will be stored in the working directory.}
 
 \item{n_cores}{Optional. The number of parallel cores to use.}
 
-\item{cluster_type}{Optional. Use "FORK" if running on a Unix system, and
-"PSOCK" if running on Windows.}
-
 \item{regulatorIndex}{Optional. A vector of numerical indexes into
-`colnames(data)` for a subset of genes that should be used in the network.
-All genes in `data` will be tested against this subset, rather than against
-every gene.}
+\code{colnames(data)} for a subset of genes that should be used in the
+network. All genes in \code{data} will be tested against this subset,
+rather than against every gene.}
 
 \item{...}{Optional. Additional arguments that are passed through to the
 network algorithm.}
 }
 \value{
-TODO
+a named list, where each item is a network matrix as returned by the
+  regression function. Regression functions may return multiple matrices or
+  only one. If there was an error, the list will be empty.
 }
 \description{
-Wrapper to run network detection in a parallel fashion
+Wrapper to run network detection in a parallel fashion, using a specified
+regression function.
 }

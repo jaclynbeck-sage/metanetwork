@@ -1,22 +1,24 @@
-#' Find Modules with iGraph Fast and Greedy algorithm
+#' Find Modules TODO
 #'
-#' This function wraps permutations of finding modules with
-#' igraph::cluster_fast_greedy().
+#' @param adj An n x n upper triangular adjacency matrix where "n" is the number
+#'   of genes.
+#' @param method Which method to use to find modules. Current options are:
+#'   fast_greedy, infomap, label_prop, leading_eigen, link_communities, louvain,
+#'   megena, spinglass, walktrap
+#' @param nperm Optional. Number of permutations on the gene ordering.
+#' @param min.module.size Optional. Integer between 1 and n genes.
 #'
-#' @inheritParams findModules.CFinder
-#'
-#' @return GeneModules = n x 3 dimensional data frame with column names as Gene.ID,
-#' moduleNumber, and moduleLabel.
+#' @return GeneModules = n x 3 data frame with column names as Gene.ID,
+#'   moduleNumber, and moduleLabel.
 #'
 #' @importFrom magrittr %>%
 #' @export
-findModules.fast_greedy <- function(adj, nperm = 10, min.module.size = 30) {
-  # Error functions
+findModules <- function(adj, method, nperm = 10, min.module.size = 30) {
   if (!inherits(adj, "matrix")) {
     stop("Adjacency matrix should be of class matrix")
   }
 
-  if (dim(adj)[1] != dim(adj)[2]) {
+  if (nrow(adj) != ncol(adj)) {
     stop("Adjacency matrix should be symmetric")
   }
 
@@ -28,7 +30,7 @@ findModules.fast_greedy <- function(adj, nperm = 10, min.module.size = 30) {
   adj <- adj + t(adj)
   adj[diag(adj)] <- 0
 
-  set.seed(nperm)
+  set.seed(nperm) # TODO better seed
 
   # Compute modules by permuting the labels nperm times
   all.modules <- plyr::llply(1:nperm, .fun = function(i, adj, min.module.size) {
@@ -36,8 +38,12 @@ findModules.fast_greedy <- function(adj, nperm = 10, min.module.size = 30) {
     ind <- sample(1:nrow(adj), nrow(adj), replace = FALSE)
     adj1 <- adj[ind, ind]
 
-    # Find modules
-    mod <- findModules.fast_greedy.once(adj1, min.module.size)
+    # Find modules TODO switch statement
+    if (method == "megena") {
+      # TODO
+    } else {
+      mod <- findModules.igraphWrapper(adj1, method, min.module.size)
+    }
 
     # Compute local and global modularity
     adj1[lower.tri(adj1)] <- 0
@@ -51,7 +57,7 @@ findModules.fast_greedy <- function(adj, nperm = 10, min.module.size = 30) {
   tmp <- plyr::ldply(all.modules, function(x) {
     data.frame(Q = x$Q, Qds = x$Qds)
   }) %>%
-    dplyr::mutate(r = base::rank(Q) + base::rank(Qds))
+    dplyr::mutate(r = base::rank(.data$Q) + base::rank(.data$Qds))
   ind <- which.max(tmp$r)
 
   mod <- all.modules[[ind]]$mod

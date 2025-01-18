@@ -8,7 +8,6 @@ constructNetwork(
   data,
   method_name,
   n_cores = 1,
-  cluster_type = "FORK",
   save_to_disk = FALSE,
   output_filepath = ".",
   output_filename_base = "network",
@@ -26,9 +25,6 @@ values are "c3net", "genie3", "mrnet", "tigress", "wgcna", "lassoCV",
 
 \item{n_cores}{Optional. The number of cores to use for algorithms that can
 use threads. A value of 1 (default) will result in no threading.}
-
-\item{cluster_type}{Optional. Use "FORK" if running on a Unix system, and
-"PSOCK" if running on Windows.}
 
 \item{save_to_disk}{Optional. If `TRUE`, the network will be saved as a CSV
 file with the location and name specified by the `output_filepath` and

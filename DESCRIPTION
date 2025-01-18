@@ -52,7 +52,6 @@ Imports:
   cluster,
   data.table,
   dplyr (>= 0.4.1),
-  doParallel,
   fastcluster,
   foreach,
   fpc,
@@ -68,9 +67,7 @@ Imports:
   parallel,
   plyr,
   R.utils,
-  stats,
-  stringr,
-  utils
+  stats
 Additional_repositories:
   http://ran.synapse.org
 Remotes:
