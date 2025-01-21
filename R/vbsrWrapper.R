@@ -20,6 +20,8 @@ vbsrWrapper <- function(x, y, fdr = 0.05, ...) {
   pval <- stats::pchisq(result^2, 1, lower.tail = F)
   thres <- fdrThres(pval, fdr = fdr)
 
+  # JB TODO it's possible that everything BUT where pval > thres is supposed to
+  # be zeroed out?
   if (sum(pval < thres) > 0) {
     newz <- fastlm_z(y, x[, pval < thres])
     result_2z[pval < thres] <- newz

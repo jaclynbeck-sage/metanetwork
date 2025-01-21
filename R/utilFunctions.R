@@ -27,7 +27,7 @@ fastlm_z <- function(y, X) {
   # If x is a single vector, this makes it an n x 1 matrix
   X <- as.matrix(X)
   n1 <- nrow(X)
-  X <- cbind(rep(1, n1, X))
+  X <- cbind(rep(1, n1), X)
 
   results <- fastlm(y, X)
 
