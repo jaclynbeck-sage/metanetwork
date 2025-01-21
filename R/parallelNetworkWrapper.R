@@ -43,8 +43,6 @@ parallelNetworkWrapper <- function(data, regressionFunction,
     genes_use <- colnames(data)[regulatorIndex]
   }
 
-  gene_number <- NULL # Necessary to pass R CMD check
-
   results <- parallel::parLapply(cl = clust,
                                  X = 1:ncol(data),
                                  fun = doRegressionFn,

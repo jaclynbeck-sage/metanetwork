@@ -39,7 +39,6 @@ compute.ModularityDensity <- function(adj, mod) {
   igraph::V(g)$moduleNumber <- mod[igraph::V(g)$name, "moduleNumber"]
 
   # Get number of edges between communities
-  ci <- cj <- NULL # needed for R CMD check
 
   # JB TODO theoretically modules don't overlap, so this code unnecessarily loops
   # through all module comparisons. I think it's just effectively counting the
