@@ -116,28 +116,42 @@ doRegressionFn <- function(gene_number, data, genes_use, regressionFunction, ...
     try(res <- do.call(regressionFunction, c(fxnArgs, list(...))))
   }
 
+  # Add 0-entries for the query gene, which are missing in the returned results
   if (!any(is.na(res))) {
-    # Add 0-entries for the query gene, which are missing in the returned results
-    res <- cbind(res, 0)
-    colnames(res)[ncol(res)] <- gene_query
+    # Some functions return a named vector instead of a matrix.
+    if (!inherits(res, "matrix")) {
+      res <- c(res, 0)
+      names(res)[length(res)] <- gene_query
+      res <- res[genes_use]
+
+    } else {
+      res <- cbind(res, 0)
+      colnames(res)[ncol(res)] <- gene_query
+      res <- res[, genes_use]
+    }
   } else {
     res <- matrix(0, ncol = length(genes_use),
-                  dimnames = list("", genes_use))
+                  dimnames = list(gene_query, genes_use))
   }
-
-  # Put back in correct order
-  res <- res[, genes_use]
 
   # If res has more than one row (i.e. results from more than one criterion),
   # separate each row into its own list, and ensure it is a 1 x n_genes matrix
   # where the row name is the query gene.
-  # If res has only one row, this will be a one-item list.
-  res_list <- lapply(rownames(res), function(rname) {
-    res_l <- matrix(res[rname, ], nrow = 1, ncol = ncol(res),
-                    dimnames = list(gene_query, genes_use))
-    res_l
-  })
-  names(res_list) <- rownames(res)
+  if (inherits(res, "matrix") && nrow(res) > 1) {
+    res_list <- lapply(rownames(res), function(rname) {
+      res_l <- matrix(res[rname, ], nrow = 1, ncol = ncol(res),
+                      dimnames = list(gene_query, genes_use))
+      res_l
+    })
+
+    names(res_list) <- rownames(res)
+
+  } else {
+    # If res has only one row or is a vector, this will be a one-item list with a one-row matrix
+    res <- matrix(res, nrow = 1, dimnames = list(gene_query, genes_use))
+    res_list <- list(res)
+    names(res_list) <- regressionFunction
+  }
 
   return(res_list)
 }
