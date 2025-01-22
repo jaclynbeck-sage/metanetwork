@@ -110,7 +110,7 @@ constructNetwork <- function(data,
 
   # For GENIE: Make sure all rows and columns of the network matrices are in the same order
   # as 'data' and that it's symmetrical across the diagonal
-  if (method_name == "genie") {
+  if (method_name == "genie3") {
     networks <- networks[colnames(data), colnames(data)]
     networks <- networks / 2 + t(networks) / 2
   }
