@@ -14,7 +14,7 @@
 #' in the interval [alpha, 1].
 #' @param ... Optional. Other arguments to pass to \code{lars::lars}
 #'
-#' @return Vector of coexpression values of gene Y to columns of X
+#' @return A named vector of co-expression values of gene Y to columns of X
 #' @export
 tigress <- function(x,
                     y,

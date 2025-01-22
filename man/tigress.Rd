@@ -21,7 +21,7 @@ in the interval [alpha, 1].}
 \item{...}{Optional. Other arguments to pass to \code{lars::lars}}
 }
 \value{
-Vector of coexpression values of gene Y to columns of X
+A named vector of co-expression values of gene Y to columns of X
 }
 \description{
 This function implements Trustful Inference of Gene REgulation with Stability

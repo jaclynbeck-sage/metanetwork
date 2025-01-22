@@ -13,7 +13,6 @@
 #'        information matrix, and generates 3 separate networks from
 #'        \code{parmigene::aracne.m}, \code{parmigene::mrnet}, and
 #'        \code{parmigene::clr}.
-#'  \item \code{tigress}: uses \code{tigress::tigress}
 #'  \item \code{wgcna}: uses \code{WGCNA::pickSoftThreshold}` to pick a power
 #'        for the adjacency matrix, calculates the matrix with
 #'        \code{WGCNA::adjacency}, and computes the topological overlap matrix
@@ -27,6 +26,11 @@
 #'        lasso or ridge regression, respectively, to construct the network. The
 #'        two networks generated using the best \code{lambda} (determined by the
 #'        best AIC or BIC) are returned.
+#'  \item \code{tigress}: uses \code{metanetwork::tigress} to construct the
+#'        network using the TIGRESS algorithm. NOTE: there is an R package for
+#'        this algorithm called \code{tigress}, however the package does not
+#'        parallelize in a memory-efficient way and takes much longer to run
+#'        than this package's implementation.
 #'  \item \code{vbsr}: uses \code{vbsr::vbsr} to compute the network using
 #'        variational Bayes spike regression.
 #' }
@@ -34,9 +38,9 @@
 #' @param data A matrix, or an object that can be coerced to a matrix,
 #'   containing gene expression values. Rows should be samples and columns
 #'   should be genes.
-#' @param method_name The name of the method to use. Current accepted
-#'   values are "c3net", "genie3", "mrnet", "tigress", "wgcna", "lassoCV",
-#'   "lassoIC", "ridgeCV", "ridgeIC", and "vbsr".
+#' @param method_name The name of the method to use. Current accepted values are
+#'   "c3net", "genie3", "mrnet", "wgcna", "lassoCV", "lassoIC", "ridgeCV",
+#'   "ridgeIC", "tigress", and "vbsr".
 #' @param n_cores Optional. The number of cores to use for algorithms that can
 #'   use threads. A value of 1 (default) will result in no threading.
 #' @param save_to_disk Optional. If `TRUE`, the network will be saved as a CSV
@@ -109,13 +113,18 @@ constructNetwork <- function(data,
 
     if (inherits(networks, "matrix")) {
       output_filename <- paste0(output_prefix, ".csv")
-      writeCSVFile(networks * upper.tri(networks), output_filename)
+      writeUpperTri(networks, output_filename)
 
     } else if (is.list(networks)) {
-      for (net_name in names(networks)) {
-        output_filename <- paste0(output_prefix, "_", net_name, ".csv")
-        writeCSVFile(networks[[net_name]] * upper.tri(networks[[net_name]]),
-                     output_filename)
+      if (length(networks) == 1) {
+        output_filename <- paste0(output_prefix, ".csv")
+        writeUpperTri(networks[[1]], output_filename)
+
+      } else {
+        for (net_name in names(networks)) {
+          output_filename <- paste0(output_prefix, "_", net_name, ".csv")
+          writeUpperTri(networks[[net_name]], output_filename)
+        }
       }
     }
   }

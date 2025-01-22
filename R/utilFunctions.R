@@ -112,3 +112,17 @@ writeCSVFile <- function(object, filename, ...) {
                      col.names = TRUE,
                      ...)
 }
+
+
+#' Write upper triangular matrix
+#'
+#' Convenience wrapper for \code{writeCSVFile} which converts a matrix to an
+#' upper triangular matrix before writing to a CSV file.
+#'
+#' @inheritParams writeCSVFile
+#' @param object A square matrix or other object coercible to a matrix.
+#'
+#' @returns Nothing
+writeUpperTri <- function(object, filename, ...) {
+  writeCSVFile(object * upper.tri(object), filename, ...)
+}
