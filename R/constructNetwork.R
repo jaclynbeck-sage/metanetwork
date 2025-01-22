@@ -108,6 +108,13 @@ constructNetwork <- function(data,
     return(list())
   }
 
+  # For GENIE: Make sure all rows and columns of the network matrices are in the same order
+  # as 'data' and that it's symmetrical across the diagonal
+  if (method_name == "genie") {
+    networks <- networks[colnames(data), colnames(data)]
+    networks <- networks / 2 + t(networks) / 2
+  }
+
   if (save_to_disk) {
     output_prefix <- file.path(output_filepath, output_filename_base)
 
