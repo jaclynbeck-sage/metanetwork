@@ -41,25 +41,6 @@ data <- synapser::synGet(synID_input,
                          downloadLocation = config$input_profile$temp_storage_loc,
                          ifcollision = "overwrite.local")
 
-# Provenance -------------------------------------------------------------------
-
-# Pull Git Provenance
-#thisRepo <- NULL
-#thisFile <- NULL
-
-#try(thisRepo <- githubr::getRepo(
-#  repository = config$provenance$code_annotations$repository,
-#  ref = config$provenance$code_annotations$ref,
-#  refName = config$provenance$code_annotations$ref_name
-#),
-#silent = TRUE)
-
-#try(thisFile <- githubr::getPermlink(
-#  repository = thisRepo,
-#  repositoryPath = config$provenance$code_annotations$repository_path
-#),
-#silent = TRUE)
-
 # Performing the analysis ------------------------------------------------------
 
 # Much faster than using reader or read.csv
@@ -95,28 +76,4 @@ for (method in net_methods) {
          n_cores = config$n_parallel_cores),
     algorithm_args # "..." in the constructNetwork function
   ))
-
-  ## Upload to Synapse
-
-  #dataFolder <- synapser::Folder(method, parent = config$output_profile$project_id)
-  #dataFolder <- synapser::synStore(dataFolder)
-
-  #config_file <- synapser::File(path = req_args$config_file,
-  #                              parentId = dataFolder$id)
-
-  #Config_OBJ <- synapser::synStore(config_file,
-  #                                 used = config$input_profile$expr_matrix_synid,
-  #                                 executed = thisFile,
-  #                                 forceVersion = FALSE)
-
-  #syn_config <- Config_OBJ$id
-
-  #for (file in output_files) {
-  #  network_file <- synapser::File(path = file, parentId = dataFolder$id)
-
-  #  Network_OBJ <- synapser::synStore(network_file,
-  #                                    used = c(config$input_profile$expr_matrix_synid, syn_config),
-  #                                    executed = thisFile,
-  #                                    forceVersion = FALSE)
-  #
 }

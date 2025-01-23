@@ -62,7 +62,7 @@ Clustered consensus matrix. areaUnderCDF = areaK,
 consensus.matrix = cns.mtrx
 }
 \description{
-A modiefed parallel version of code imported from
+A modified parallel version of code imported from
 https://github.com/Bioconductor-mirror/ConsensusClusterPlus 1.11.1. Taken out
 of findModules.consensusCluster.R
 }

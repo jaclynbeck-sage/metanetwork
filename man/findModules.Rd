@@ -2,7 +2,8 @@
 % Please edit documentation in R/findModules.R
 \name{findModules}
 \alias{findModules}
-\title{Find Modules TODO}
+\title{Find Modules TODO
+TODO WGCNA and any other algorithms used in construction that also do modules}
 \usage{
 findModules(adj, method, nperm = 10, min.module.size = 30)
 }
@@ -24,4 +25,5 @@ GeneModules = n x 3 data frame with column names as Gene.ID,
 }
 \description{
 Find Modules TODO
+TODO WGCNA and any other algorithms used in construction that also do modules
 }

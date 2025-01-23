@@ -1,7 +1,7 @@
 default:
   input_profile:
     expr_matrix_synid: syn8303260
-    network_methods: ["c3net", "genie3", "mrnet", "tigress", "wgcna", "lassoCV", "lassoIC", "ridgeCV", "ridgeIC", "vbsr"]
+    network_methods: ["c3net", "mrnet", "wgcna", "genie3", "lassoCV", "lassoIC", "ridgeCV", "ridgeIC", "tigress", "vbsr"]
     na_fill: NULL
     temp_storage_loc: /home/rstudio/meta_out/temp/
   output_profile:

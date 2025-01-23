@@ -4,11 +4,11 @@
 \alias{findModules.igraphWrapper}
 \title{Find Modules using igraph}
 \usage{
-findModules.igraphWrapper(adj, method, min.module.size, ...)
+findModules.igraphWrapper(adj, method, min.module.size = 30, ...)
 }
 \arguments{
 \item{adj}{An adjacency matrix which should be n x n, where n is the number
-of genes}
+of genes. The matrix should be square and symmetric across the diagonal.}
 
 \item{method}{Which method to use to find modules. Current options supported
 by this wrapper are: fast_greedy, infomap, label_prop, leading_eigen,
@@ -27,12 +27,19 @@ moduleNumber, and moduleLabel.
 This function finds modules with one of igraph's cluster functions, as
 specified in the arguments.
 }
+\details{
+TODO set random seed
+}
 \references{
 Fast greedy method: http://arxiv.org/abs/cond-mat/0408187
 
 Infomap algorithm: http://arxiv.org/abs/physics/0512106
 
 Label propagation algorithm: Raghavan, U.N. and Albert, R. and Kumara, S.: Near linear time algorithm to detect community structures in large-scale networks. Phys Rev E 76, 036106. (2007)
+
+Leading eigen algorithm: MEJ Newman: Finding community structure using the eigenvectors of matrices, Physical Review E 74 036104, 2006
+
+Link communities: TODO
 
 Louvain method: Vincent D. Blondel, Jean-Loup Guillaume, Renaud Lambiotte, Etienne Lefebvre: Fast unfolding of communities in large networks. J. Stat. Mech. (2008) P10008
 

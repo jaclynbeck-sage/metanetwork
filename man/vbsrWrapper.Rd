@@ -18,7 +18,7 @@ n = the number of rows in x (the number of samples).}
 \item{...}{Other parameters accepted by `vbsr::vbsr()`}
 }
 \value{
-A coexpression value ??
+A network matrix constructed from the Z-values of the fit
 }
 \description{
 This function wraps variable bays spike regression of a genes expression across

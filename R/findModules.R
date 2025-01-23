@@ -1,4 +1,5 @@
 #' Find Modules TODO
+#' TODO WGCNA and any other algorithms used in construction that also do modules
 #'
 #' @param adj An n x n upper triangular adjacency matrix where "n" is the number
 #'   of genes.
@@ -26,14 +27,14 @@ findModules <- function(adj, method, nperm = 10, min.module.size = 30) {
     stop("Adjacency matrix should be upper triangular")
   }
 
-  # Make adjacency matrix symmetric
+  # Make the upper-triangular adjacency matrix symmetric
   adj <- adj + t(adj)
-  adj[diag(adj)] <- 0
 
   set.seed(nperm) # TODO better seed
 
   # Compute modules by permuting the labels nperm times
-  all.modules <- plyr::llply(1:nperm, .fun = function(i, adj, min.module.size) {
+  # TODO parallel?
+  all.modules <- lapply(1:nperm, function(i, adj, min.module.size) {
     # Permute gene ordering
     ind <- sample(1:nrow(adj), nrow(adj), replace = FALSE)
     adj1 <- adj[ind, ind]

@@ -64,8 +64,9 @@
 #' @param ... Optional, additional arguments to pass through to the individual
 #'   algorithm function call(s).
 #'
-#' @returns a named list, where each item is a network matrix. If there was an
-#'   error, the list will be empty.
+#' @returns a single matrix, or a named list where each item is a matrix, for
+#'   algorithms that return more than one network. If there was an error, the
+#'   list will be empty.
 #'
 #' @export
 #'

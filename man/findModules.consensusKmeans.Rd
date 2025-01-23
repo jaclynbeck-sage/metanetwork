@@ -2,7 +2,7 @@
 % Please edit documentation in R/findModules.consensusKmeans.R
 \name{findModules.consensusKmeans}
 \alias{findModules.consensusKmeans}
-\title{Finds Moduless With Kmeans Clustering}
+\title{Finds Modules With Kmeans Clustering}
 \usage{
 findModules.consensusKmeans(
   partition.adj,

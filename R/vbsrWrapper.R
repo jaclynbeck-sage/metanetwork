@@ -8,7 +8,7 @@
 #' @param fdr Optional. FDR threshold cut off for edge determination. (Default = 0.05)
 #' @param ... Other parameters accepted by `vbsr::vbsr()`
 #'
-#' @return A coexpression value ??
+#' @return A network matrix constructed from the Z-values of the fit
 #' @export
 vbsrWrapper <- function(x, y, fdr = 0.05, ...) {
   # JB TODO why are we using Z values and not beta values?

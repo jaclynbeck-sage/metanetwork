@@ -51,8 +51,9 @@ Default: "network"}
 algorithm function call(s).}
 }
 \value{
-a named list, where each item is a network matrix. If there was an
-  error, the list will be empty.
+a single matrix, or a named list where each item is a matrix, for
+  algorithms that return more than one network. If there was an error, the
+  list will be empty.
 }
 \description{
 Construct a network matrix or matrices using the specified method.
