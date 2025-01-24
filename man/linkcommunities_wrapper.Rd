@@ -4,10 +4,14 @@
 \alias{linkcommunities_wrapper}
 \title{Linkcommunities wrapper}
 \usage{
-linkcommunities_wrapper(g, ...)
+linkcommunities_wrapper(g, min.module.size = 30, ...)
 }
 \arguments{
 \item{g}{An \code{igraph} graph}
+
+\item{min.module.size}{Optional. The minimum number of genes per module,
+which is used here to avoid assigning genes to clusters with fewer than
+\code{min.module.size} nodes in them.}
 
 \item{...}{Optional. Other arguments accepted by
 \code{linkcomm::linkcommunities}.}

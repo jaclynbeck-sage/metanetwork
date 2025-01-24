@@ -4,7 +4,7 @@
 \alias{findModules.igraphWrapper}
 \title{Find Modules using igraph}
 \usage{
-findModules.igraphWrapper(adj, method, min.module.size = 30, ...)
+findModules.igraphWrapper(adj, method, min.module.size = 30, n_cores = 1, ...)
 }
 \arguments{
 \item{adj}{An adjacency matrix which should be n x n, where n is the number
@@ -14,7 +14,11 @@ of genes. The matrix should be square and symmetric across the diagonal.}
 by this wrapper are: fast_greedy, infomap, label_prop, leading_eigen,
 link_communities, louvain, spinglass, walktrap}
 
-\item{min.module.size}{Optional. Integer between 1 and n genes.}
+\item{min.module.size}{Optional. How many genes need to be in a module for it
+to be considered valid.}
+
+\item{n_cores}{Optional. For "megena" only, how many cores to use when
+computing in parallel. If n_cores = 1, megena will not compute in parallel.}
 
 \item{...}{Optional. Additional arguments to pass through to the cluster
 algorithm.}

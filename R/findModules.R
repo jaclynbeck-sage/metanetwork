@@ -8,13 +8,15 @@
 #'   megena, spinglass, walktrap
 #' @param nperm Optional. Number of permutations on the gene ordering.
 #' @param min.module.size Optional. Integer between 1 and n genes.
+#' @param ... Optional. Additional arguments to be passed to the individual
+#'   clustering functions
 #'
 #' @return GeneModules = n x 3 data frame with column names as Gene.ID,
 #'   moduleNumber, and moduleLabel.
 #'
 #' @importFrom magrittr %>%
 #' @export
-findModules <- function(adj, method, nperm = 10, min.module.size = 30) {
+findModules <- function(adj, method, nperm = 10, min.module.size = 30, ...) {
   if (!inherits(adj, "matrix")) {
     stop("Adjacency matrix should be of class matrix")
   }
@@ -40,11 +42,7 @@ findModules <- function(adj, method, nperm = 10, min.module.size = 30) {
     adj1 <- adj[ind, ind]
 
     # Find modules TODO switch statement
-    if (method == "megena") {
-      # TODO
-    } else {
-      mod <- findModules.igraphWrapper(adj1, method, min.module.size)
-    }
+    mod <- findModules.igraphWrapper(adj1, method, min.module.size, ...)
 
     # Compute local and global modularity
     adj1[lower.tri(adj1)] <- 0

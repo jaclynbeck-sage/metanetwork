@@ -10,7 +10,10 @@
 #' @param method Which method to use to find modules. Current options supported
 #'   by this wrapper are: fast_greedy, infomap, label_prop, leading_eigen,
 #'   link_communities, louvain, spinglass, walktrap
-#' @param min.module.size Optional. Integer between 1 and n genes.
+#' @param min.module.size Optional. How many genes need to be in a module for it
+#'   to be considered valid.
+#' @param n_cores Optional. For "megena" only, how many cores to use when
+#'   computing in parallel. If n_cores = 1, megena will not compute in parallel.
 #' @param ... Optional. Additional arguments to pass through to the cluster
 #'   algorithm.
 #'
@@ -27,7 +30,11 @@
 #' @references Walktrap algorithm: http://arxiv.org/abs/physics/0512106
 #'
 #' @export
-findModules.igraphWrapper <- function(adj, method, min.module.size = 30, ...) {
+findModules.igraphWrapper <- function(adj,
+                                      method,
+                                      min.module.size = 30,
+                                      n_cores = 1,
+                                      ...) {
   # Convert network matrix to igraph graph object
   g <- igraph::graph_from_adjacency_matrix(adj,
                                            mode = "undirected",
@@ -41,6 +48,7 @@ findModules.igraphWrapper <- function(adj, method, min.module.size = 30, ...) {
     leading_eigen = igraph::cluster_leading_eigen(g, ...),
     link_communities = linkcommunities_wrapper(g, ...),
     louvain = igraph::cluster_louvain(g, ...),
+    megena = findModules.megena(g, n_cores = n_cores, ...),
     spinglass = spinglass_wrapper(g, min.module.size, ...),
     walktrap = igraph::cluster_walktrap(g, ...),
     # Default: unrecognized method
@@ -51,9 +59,9 @@ findModules.igraphWrapper <- function(adj, method, min.module.size = 30, ...) {
     # TODO
   }
 
-  # The spinglass and linkcommunities wrappers return a vector, but other
-  # algorithms return a "communities" object. The membership vector needs to be
-  # extracted.
+  # The spinglass, linkcommunities, and megena wrappers return a vector, but
+  # other algorithms return a "communities" object. The membership vector needs
+  # to be extracted.
   if (inherits(mod, "communities")) {
     mod <- igraph::membership(mod)
   }
@@ -106,6 +114,7 @@ findModules.igraphWrapper <- function(adj, method, min.module.size = 30, ...) {
 #'
 #' @returns a named vector where the names are gene names and the values are
 #'   module membership.
+#' @export
 spinglass_wrapper <- function(g, min.module.size = 30, ...) {
   # Decompose into connected components with at least min.module.size components
   sg_list <- igraph::decompose(g, min.vertices = min.module.size)
@@ -137,28 +146,45 @@ spinglass_wrapper <- function(g, min.module.size = 30, ...) {
 #' extracts the cluster membership from the returned object.
 #'
 #' @param g An \code{igraph} graph
+#' @param min.module.size Optional. The minimum number of genes per module,
+#'   which is used here to avoid assigning genes to clusters with fewer than
+#'   \code{min.module.size} nodes in them.
 #' @param ... Optional. Other arguments accepted by
 #'   \code{linkcomm::linkcommunities}.
 #'
 #' @returns a named vector where the names are gene names and the values are
 #'   module membership.
-linkcommunities_wrapper <- function(g, ...) {
+#' @export
+linkcommunities_wrapper <- function(g, min.module.size = 30, ...) {
   elist <- igraph::as_edgelist(g)
 
   comm <- linkcomm::getLinkCommunities(elist, ...)
 
-  # Extract cluster information for each node / gene
-  nodes <- comm$nodeclusters
-  nodes$clusterSize <- comm$clustsizes[nodes$cluster]
-
-  # Genes can be in multiple clusters, so we assign each gene to the largest
-  # cluster it belongs to. The nodeclusters data frame is in order by ascending
+  # Genes can be in multiple clusters, so we assign each gene to the cluster
+  # where it has the most edges. The edges data frame is in order by ascending
   # cluster number, so if there are ties in size, the cluster with the smaller
   # ID will always be chosen.
-  node_vec <- sapply(unique(nodes$node), function(gene) {
-    clusts <- subset(nodes, nodes$node == gene)
-    largest <- clusts$cluster[which.max(clusts$clusterSize)]
-    return(as.numeric(largest))
+
+  # We only work with "node1", so we need to make sure that nodes that only
+  # exist in "node2" get included. We do this by reversing the edges so that
+  # edges are bi-directional.
+  edges <- rbind(
+    comm$edges,
+    data.frame(
+      node1 = comm$edges$node2,
+      node2 = comm$edges$node1,
+      cluster = comm$edges$cluster
+    )
+  )
+  edges$clusterSize <- comm$clustsizes[edges$cluster]
+  edges <- subset(edges, edges$clusterSize >= min.module.size)
+
+  # Assign genes to the cluster where they have the most edges.
+  node_vec <- sapply(unique(edges$node1), function(gene) {
+    clusts <- subset(edges, edges$node1 == gene)
+    n_edges <- table(clusts$cluster)
+    mem <- names(n_edges)[which.max(n_edges)]
+    return(as.numeric(mem))
   })
 
   return(node_vec)

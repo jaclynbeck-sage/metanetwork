@@ -20,8 +20,8 @@ containing gene expression values. Rows should be samples and columns
 should be genes.}
 
 \item{method_name}{The name of the method to use. Current accepted values are
-"c3net", "genie3", "mrnet", "wgcna", "lassoCV", "lassoIC", "ridgeCV",
-"ridgeIC", "tigress", and "vbsr".}
+"c3net", "genie3", "megena", "mrnet", "wgcna", "lassoCV", "lassoIC",
+"ridgeCV", "ridgeIC", "tigress", and "vbsr".}
 
 \item{n_cores}{Optional. The number of cores to use for algorithms that can
 use threads. A value of 1 (default) will result in no threading.}
@@ -66,6 +66,7 @@ using the provided path and base file name. Current methods available are:
 \itemize{
  \item \code{c3net}: uses \code{c3net::c3net()}
  \item \code{genie3}: uses \code{GENIE3::GENIE3()}
+ \item \code{megena}: uses \code{MEGENA::calculate.PFN()} to rank edges
  \item \code{mrnet}: uses \code{parmigene::knnmi.all} to calculate a mutual
        information matrix, and generates 3 separate networks from
        \code{parmigene::aracne.m}, \code{parmigene::mrnet}, and
