@@ -5,8 +5,7 @@
 #'
 #' TODO set random seed
 #'
-#' @param adj An adjacency matrix which should be n x n, where n is the number
-#'   of genes. The matrix should be square and symmetric across the diagonal.
+#' @param g An \code{igraph} graph
 #' @param method Which method to use to find modules. Current options supported
 #'   by this wrapper are: fast_greedy, infomap, label_prop, leading_eigen,
 #'   link_communities, louvain, spinglass, walktrap
@@ -30,17 +29,11 @@
 #' @references Walktrap algorithm: http://arxiv.org/abs/physics/0512106
 #'
 #' @export
-findModules.igraphWrapper <- function(adj,
+findModules.igraphWrapper <- function(g,
                                       method,
                                       min.module.size = 30,
                                       n_cores = 1,
                                       ...) {
-  # Convert network matrix to igraph graph object
-  g <- igraph::graph_from_adjacency_matrix(adj,
-                                           mode = "undirected",
-                                           weighted = TRUE,
-                                           diag = FALSE)
-
   mod <- switch(method,
     fast_greedy = igraph::cluster_fast_greedy(g, ...),
     infomap = igraph::cluster_infomap(g, ...),
@@ -70,27 +63,31 @@ findModules.igraphWrapper <- function(adj,
                             moduleNumber = as.numeric(mod))
 
   # Reassign modules smaller than min.module.size to module 0
-  mod_sizes <- table(geneModules$moduleNumber)
+  mod_sizes <- table(mod)
   excluded <- names(mod_sizes)[mod_sizes < min.module.size]
 
-  geneModules$moduleNumber[geneModules$moduleNumber %in% excluded] <- 0
+  mod[mod %in% excluded] <- 0
 
-  # Add back any genes that are missing from the geneModules data frame
-  missing <- setdiff(colnames(adj), geneModules$Gene.ID)
+  # Add back any genes that are missing from vector
+  gene_names <- names(igraph::V(g))
+  missing <- setdiff(gene_names, names(mod))
 
   if (length(missing) > 0) {
-    geneModules <- rbind(geneModules,
-                         data.frame(Gene.ID = missing, moduleNumber = 0))
+    missing_vec <- rep(0, length(missing))
+    names(missing_vec) <- missing
+
+    mod <- c(mod, missing)
   }
 
+  mod <- mod[gene_names]
+
   # Re-set module numbers to be consecutive after filtering. The -1 is to make
-  # it start at 0 instead of 1.
-  geneModules$moduleNumber <- as.numeric(factor(geneModules$moduleNumber)) - 1
+  # it start at 0 instead of 1. Using as.numeric erases vector names, so we
+  # put them back.
+  mod <- as.numeric(factor(mod)) - 1
+  names(mod) <- gene_names
 
-  # Change cluster number to color labels
-  geneModules$moduleLabel <- WGCNA::labels2colors(geneModules$moduleNumber)
-
-  return(geneModules)
+  return(mod)
 }
 
 

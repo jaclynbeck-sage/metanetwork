@@ -5,7 +5,7 @@
 \title{Find Modules TODO
 TODO WGCNA and any other algorithms used in construction that also do modules}
 \usage{
-findModules(adj, method, nperm = 10, min.module.size = 30, ...)
+findModules(adj, method, nperm = 10, min.module.size = 30, n_cores = 1, ...)
 }
 \arguments{
 \item{adj}{An n x n upper triangular adjacency matrix where "n" is the number
@@ -19,12 +19,15 @@ megena, spinglass, walktrap}
 
 \item{min.module.size}{Optional. Integer between 1 and n genes.}
 
+\item{n_cores}{Optional. For "megena" only, how many cores to use when
+computing in parallel. If n_cores = 1, megena will not compute in parallel.}
+
 \item{...}{Optional. Additional arguments to be passed to the individual
 clustering functions}
 }
 \value{
-GeneModules = n x 3 data frame with column names as Gene.ID,
-  moduleNumber, and moduleLabel.
+An n x 2 data frame with columns for "gene" and "module", where n is
+  the number of genes
 }
 \description{
 Find Modules TODO

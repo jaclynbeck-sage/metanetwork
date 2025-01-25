@@ -8,21 +8,22 @@
 #'   megena, spinglass, walktrap
 #' @param nperm Optional. Number of permutations on the gene ordering.
 #' @param min.module.size Optional. Integer between 1 and n genes.
+#' @param n_cores Optional. For "megena" only, how many cores to use when
+#'   computing in parallel. If n_cores = 1, megena will not compute in parallel.
 #' @param ... Optional. Additional arguments to be passed to the individual
 #'   clustering functions
 #'
-#' @return GeneModules = n x 3 data frame with column names as Gene.ID,
-#'   moduleNumber, and moduleLabel.
+#' @return An n x 2 data frame with columns for "gene" and "module", where n is
+#'   the number of genes
 #'
-#' @importFrom magrittr %>%
 #' @export
-findModules <- function(adj, method, nperm = 10, min.module.size = 30, ...) {
+findModules <- function(adj, method, nperm = 10, min.module.size = 30, n_cores = 1, ...) {
   if (!inherits(adj, "matrix")) {
-    stop("Adjacency matrix should be of class matrix")
+    adj <- data.matrix(adj)
   }
 
   if (nrow(adj) != ncol(adj)) {
-    stop("Adjacency matrix should be symmetric")
+    stop("Adjacency matrix should be square")
   }
 
   if (!all(adj[lower.tri(adj)] == 0)) {
@@ -41,25 +42,34 @@ findModules <- function(adj, method, nperm = 10, min.module.size = 30, ...) {
     ind <- sample(1:nrow(adj), nrow(adj), replace = FALSE)
     adj1 <- adj[ind, ind]
 
-    # Find modules TODO switch statement
-    mod <- findModules.igraphWrapper(adj1, method, min.module.size, ...)
+    # Convert to an igraph object
+    g <- igraph::graph_from_adjacency_matrix(adj1,
+                                             mode = "undirected",
+                                             weighted = TRUE,
+                                             diag = FALSE)
 
-    # Compute local and global modularity
-    adj1[lower.tri(adj1)] <- 0
-    Q <- compute.Modularity(adj1, mod)
-    Qds <- compute.ModularityDensity(adj1, mod)
+    # Find modules TODO switch statement
+    mod <- findModules.igraphWrapper(g, method, min.module.size, n_cores, ...)
+
+    # Compute modularity and modularity density
+
+    # Mod needs to start at 1, not 0 for this function
+    Q <- igraph::modularity(g, membership = mod + 1)
+
+    Qds <- compute.ModularityDensity(g, mod)
 
     return(list(mod = mod, Q = Q, Qds = Qds))
   }, adj, min.module.size)
 
-  # Find the best module based on Q and Qds
-  tmp <- plyr::ldply(all.modules, function(x) {
-    data.frame(Q = x$Q, Qds = x$Qds)
-  }) %>%
-    dplyr::mutate(r = base::rank(.data$Q) + base::rank(.data$Qds))
-  ind <- which.max(tmp$r)
+  # Find the best module based on highest Q and Qds
+  Q <- sapply(all.modules, "[[", "Q")
+  Qds <- sapply(all.modules, "[[", "Qds")
+
+  rank <- rank(Q) + rank(Qds)
+  ind <- which.max(rank)
 
   mod <- all.modules[[ind]]$mod
 
-  return(mod)
+  mod_df <- data.frame(gene = names(mod), module = mod)
+  return(mod_df)
 }

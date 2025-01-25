@@ -1,90 +1,69 @@
-#' Find Global Modularity (Qds)
+#' Find Modularity Density (Qds)
 #'
-#' This function calculates modularity density. TODO needs review.
-#' TODO this might be combinable with compute.Modularity to avoid calling
-#' some of the igraph functions twice.
+#' This function calculates modularity density according to Botta and Genio 2016.
 #'
-#' @inheritParams compute.LocalModularity
+#' @param g An \code{igraph} graph of the network
+#' @param mod A named vector where names are genes and values are module membership
 #'
 #' @return Qds = module density.
 #'
-#' @importFrom foreach %dopar%
-#' @importFrom foreach foreach
+#' @references Federico Botta, Charo I. del Genio. Finding network communities
+#' using modularity density. https://arxiv.org/abs/1612.07297
 #'
-#' @export compute.ModularityDensity
-compute.ModularityDensity <- function(adj, mod) {
-  # Error functions
-  if (!inherits(adj, "matrix")) {
-    stop("Adjacency matrix should be of class matrix")
-  }
+#' @export
+compute.ModularityDensity <- function(g, mod) {
+  # Module names need to be characters, not interpretable as numbers
+  igraph::V(g)$moduleNumber <- paste0("mod.", mod[igraph::V(g)$name])
 
-  if (nrow(adj) != ncol(adj)) {
-    stop("Adjacency matrix should be symmetric")
-  }
+  # Get number of edges within and between communities. The diagonal will
+  # contain the number of internal edges in each module, and the non-diagonals
+  # will contain the number of edges between module i and module j.
+  edge.comm <- sapply(unique(igraph::V(g)$moduleNumber), function(ci) {
+    vi <- which(igraph::V(g)$moduleNumber == ci)
+    edges1 <- igraph::incident_edges(g, v = vi)
+    edges1 <- do.call(c, edges1)
 
-  if (!all(adj[lower.tri(adj)] == 0)) {
-    stop("Adjacency matrix should be upper triangular")
-  }
+    lengths <- sapply(unique(igraph::V(g)$moduleNumber), function(cj) {
+      # Internal edges
+      if (ci == cj) {
+        sg <- igraph::induced_subgraph(g, vids = vi)
+        return(igraph::ecount(sg))
 
-  if (ncol(mod) != 3) {
-    stop("Module label matrix should be a nx3 data frame")
-  }
+      } else {
+        # Edges between ci and cj
+        vj <- which(igraph::V(g)$moduleNumber == cj)
+        edges2 <- igraph::incident_edges(g, v = vj)
+        edges2 <- do.call(c, edges2)
 
-  # Convert lsparseNetwork upper adj matrix to graph
-  g <- igraph::graph_from_adjacency_matrix(adj,
-                                           mode = "upper",
-                                           weighted = TRUE,
-                                           diag = FALSE)
-  rownames(mod) <- mod$Gene.ID
-  igraph::V(g)$moduleNumber <- mod[igraph::V(g)$name, "moduleNumber"]
-
-  # Get number of edges between communities
-
-  # JB TODO theoretically modules don't overlap, so this code unnecessarily loops
-  # through all module comparisons. I think it's just effectively counting the
-  # size of each module?
-  edge.comm <- foreach(ci = unique(igraph::V(g)$moduleNumber),
-                       .packages = c("foreach"),
-                       .combine = cbind) %dopar% {
-    foreach(cj = unique(igraph::V(g)$moduleNumber), .combine = c) %dopar% {
-      gi <- igraph::induced_subgraph(g,
-                                     vids = which(igraph::V(g)$moduleNumber == ci))
-      gj <- igraph::induced_subgraph(g,
-                                     vids = which(igraph::V(g)$moduleNumber == cj))
-      igraph::ecount(igraph::intersection(gi, gj))
-    }
-  }
-
-  edge.comm <- data.frame(edge.comm)
-  rownames(edge.comm) <- unique(igraph::V(g)$moduleNumber)
-  colnames(edge.comm) <- unique(igraph::V(g)$moduleNumber)
-
-  # Get size of each modules
-  mod.sz <- table(igraph::V(g)$moduleNumber)
-
-  # Calculate local modularity
-  E <- sum(edge.comm, na.rm = TRUE)
-
-  # JB TODO Ecc.dcc is always zero if the non-diagonal of edge.comm is all 0
-  Qds <- foreach(ci = rownames(edge.comm), .combine = c) %dopar% {
-    if (edge.comm[ci, ci] != 0) {
-      Ein <- edge.comm[ci, ci]
-      Eout <- sum(edge.comm[ci, ], na.rm = TRUE) - Ein
-
-      dc <- 2 * Ein / (mod.sz[ci] * (mod.sz[ci] - 1))
-
-      Ecc.dcc <- 0
-
-      for (cj in rownames(edge.comm)) {
-        if (ci != cj) {
-          Ecc.dcc <- Ecc.dcc + edge.comm[ci, cj]^2 / (mod.sz[ci] * mod.sz[cj])
-        }
+        return(length(igraph::intersection(edges1, edges2)))
       }
-      Ecc.dcc <- Ecc.dcc / (2 * E)
+    })
 
-      ((Ein / E) * dc) - ((2 * Ein + Eout) * dc / (2 * E))^2 - Ecc.dcc
+    return(lengths)
+  })
+
+  # Number of genes in each module ("Nc" in the paper)
+  N <- table(igraph::V(g)$moduleNumber)
+
+  # Total number of edges -- "m" in paper
+  m <- igraph::ecount(g)
+
+  Qds <- sapply(rownames(edge.comm), function(ci) {
+    mc <- edge.comm[ci, ci]  # "mc" in paper
+    ec <- sum(edge.comm[ci, ], na.rm = TRUE) - mc  # "ec" in paper
+
+    # pc in the paper
+    pc <- 2 * mc / (N[ci] * (N[ci] - 1))
+
+    between <- 0
+
+    # sum of [(edges between ci and cj)^2 / (2m * Ni * Nj)] in paper
+    for (cj in setdiff(rownames(edge.comm), ci)) {
+      between <- between + edge.comm[ci, cj]^2 / (2 * m * N[ci] * N[cj])
     }
-  }
+
+    ((mc / m) * pc) - ((2 * m + ec) * pc / (2 * m))^2 - between
+  })
 
   Qds <- sum(Qds, na.rm = TRUE)
 

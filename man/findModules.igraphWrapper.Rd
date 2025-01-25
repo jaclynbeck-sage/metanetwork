@@ -4,11 +4,10 @@
 \alias{findModules.igraphWrapper}
 \title{Find Modules using igraph}
 \usage{
-findModules.igraphWrapper(adj, method, min.module.size = 30, n_cores = 1, ...)
+findModules.igraphWrapper(g, method, min.module.size = 30, n_cores = 1, ...)
 }
 \arguments{
-\item{adj}{An adjacency matrix which should be n x n, where n is the number
-of genes. The matrix should be square and symmetric across the diagonal.}
+\item{g}{An \code{igraph} graph}
 
 \item{method}{Which method to use to find modules. Current options supported
 by this wrapper are: fast_greedy, infomap, label_prop, leading_eigen,

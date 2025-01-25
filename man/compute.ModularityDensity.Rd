@@ -2,22 +2,22 @@
 % Please edit documentation in R/compute.ModularityDensity.R
 \name{compute.ModularityDensity}
 \alias{compute.ModularityDensity}
-\title{Find Global Modularity (Qds)}
+\title{Find Modularity Density (Qds)}
 \usage{
-compute.ModularityDensity(adj, mod)
+compute.ModularityDensity(g, mod)
 }
 \arguments{
-\item{adj}{Required. An n x n upper triangular adjacency in the matrix class
-format.}
+\item{g}{An \code{igraph} graph of the network}
 
-\item{mod}{Required. An n x 3 dimensional data frame with column names as
-Gene.ID, moduleNumber, and moduleLabel.}
+\item{mod}{A named vector where names are genes and values are module membership}
 }
 \value{
 Qds = module density.
 }
 \description{
-This function calculates modularity density. TODO needs review.
-TODO this might be combinable with compute.Modularity to avoid calling
-some of the igraph functions twice.
+This function calculates modularity density according to Botta and Genio 2016.
+}
+\references{
+Federico Botta, Charo I. del Genio. Finding network communities
+using modularity density. https://arxiv.org/abs/1612.07297
 }

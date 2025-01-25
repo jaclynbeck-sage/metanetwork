@@ -45,11 +45,13 @@ bicNetworks <- readRDS(bic_file$path)
 writeLines(paste("Total number of edges", sum(bicNetworks$network@x)))
 
 # Get rank consensus network for weights
-rank.cons <- loadCSVFile(consensus_file$path)
+# TODO loadCSVFile isn't exported in the package
+rank.cons <- metanetwork::loadCSVFile(consensus_file$path)
 
 # Formulate adjacency matrix
 adj <- rank.cons
 adj[!as.matrix(bicNetworks$network)] <- 0
+adj <- adj * upper.tri(adj)
 
 rm(bicNetworks, rank.cons)
 gc()
@@ -71,35 +73,12 @@ gc()
 algorithms <- c("fast_greedy", "infomap", "label_prop", "linkcommunities", "louvain", "megena", "spinglass", "walktrap")
 results <- lapply(algorithms, function(alg) {
   message(paste0("Running method ", alg, "..."))
-  res <- findModules(adj, method = alg, nperm = 3, min.module.size = 30)
+  # TODO algorithm args from config, pass on n_cores too
+  res <- metanetwork::findModules(adj, method = alg, nperm = 3, min.module.size = 30)
 
   writeCSVFile(res, file.path(config$output_path, paste0(alg, ".csv")))
   return(res)
 })
-
-names(results) <- algorithms
-
-# megena
-# Data
-synID_input <- config$input_synid
-data <- synapser::synGet(config$expr_matrix_synid,
-  downloadLocation = config$temp_storage_loc,
-  ifcollision = "overwrite.local"
-)
-exprData <- loadCSVFile(data)
-
-# TODO JB megena::calculate.correlation finds 0 things that pass FDR.cutoff on rosmap data... that doesn't seem right
-megena <- findModules.megena(
-  exprData,
-  method = "pearson",
-  FDR.cutoff = 0.05,
-  module.pval = 0.05,
-  hub.pval = 0.05,
-  doPar = TRUE
-)
-megena["algorithms"] <- "megena"
-cat("Completed MEGENA algorithm \n")
-
 
 # Speakeasy
 # speakeasy_r = metanetwork::findModules.speakeasy(adj)
