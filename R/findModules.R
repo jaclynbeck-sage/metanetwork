@@ -4,7 +4,7 @@
 #' @param adj An n x n upper triangular adjacency matrix where "n" is the number
 #'   of genes.
 #' @param method Which method to use to find modules. Current options are:
-#'   fast_greedy, infomap, label_prop, leading_eigen, link_communities, louvain,
+#'   fast_greedy, infomap, label_prop, leading_eigen, linkcommunities, louvain,
 #'   megena, spinglass, walktrap
 #' @param nperm Optional. Number of permutations on the gene ordering.
 #' @param min.module.size Optional. Integer between 1 and n genes.
@@ -50,6 +50,10 @@ findModules <- function(adj, method, nperm = 10, min.module.size = 30, n_cores =
 
     # Find modules TODO switch statement
     mod <- findModules.igraphWrapper(g, method, min.module.size, n_cores, ...)
+
+    if (is.null(mod)) {
+      return(NULL)
+    }
 
     # Compute modularity and modularity density
 

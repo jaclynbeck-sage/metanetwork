@@ -11,7 +11,7 @@ findModules.igraphWrapper(g, method, min.module.size = 30, n_cores = 1, ...)
 
 \item{method}{Which method to use to find modules. Current options supported
 by this wrapper are: fast_greedy, infomap, label_prop, leading_eigen,
-link_communities, louvain, spinglass, walktrap}
+linkcommunities, louvain, spinglass, walktrap}
 
 \item{min.module.size}{Optional. How many genes need to be in a module for it
 to be considered valid.}
@@ -23,8 +23,7 @@ computing in parallel. If n_cores = 1, megena will not compute in parallel.}
 algorithm.}
 }
 \value{
-GeneModules = n x 3 data frame with column names as Gene.ID,
-moduleNumber, and moduleLabel.
+a named vector where names are genes and values are cluster assignments
 }
 \description{
 This function finds modules with one of igraph's cluster functions, as

@@ -49,15 +49,12 @@ Encoding: UTF-8
 biocViews:
 Imports:
   bit64,
-  Biobase,
   cluster,
   data.table,
   dplyr (>= 0.4.1),
-  fastcluster,
   foreach,
   fpc,
   glasso,
-  graphics,
   grid,
   igraph,
   linkcomm,

@@ -6,63 +6,43 @@
 \usage{
 run.consensus.cluster(
   d,
-  kGrid = NULL,
-  repCount = NULL,
-  diss = inherits(d, "dist"),
-  pItem = NULL,
-  pFeature = NULL,
-  innerLinkage = NULL,
-  distance = NULL,
-  clusterAlg = NULL,
-  weightsItem = NULL,
-  weightsFeature = NULL,
-  verbose = NULL,
-  corUse = NULL
+  kGrid = 2:5,
+  repCount = 10,
+  pGenes = 0.8,
+  hclust_method = "average",
+  distance = "pearson",
+  clusterAlg = "hclust",
+  verbose = FALSE,
+  corUse = "everything"
 )
 }
 \arguments{
-\item{d}{Required. A matrix where columns=items/samples and rows are features.
-For example, a gene expression matrix of genes in rows and microarrays in columns.
-OR ExpressionSet object. (Default = NULL)}
+\item{d}{A matrix where rows are samples and columns are genes}
 
-\item{kGrid}{Optional. (Default = NULL)}
+\item{kGrid}{Optional. A vector of k values to use for clustering.}
 
-\item{repCount}{Optional. Replicate count. (Default = NULL)}
+\item{repCount}{Optional. Replicate count for random sampling.}
 
-\item{diss}{Optional. A distance matrix of d. (Default = inherits( d, "dist" ))}
+\item{pGenes}{Optional. Proportion of genes to sample on each rep}
 
-\item{pItem}{Optional. A numerical value. proportion of items to sample.
-(Default = 0.8)}
+\item{hclust_method}{Optional. The "method" argument of \code{hclust}}
 
-\item{pFeature}{Optional. A numerical value. proportion of features to sample.
-(Default = 1)}
+\item{distance}{Optional. Sample distance metrics: "pearson", "spearman", or "euclidean".}
 
-\item{innerLinkage}{Optional. A heirarchical linkage method for subsampling.
-(Default = "average")}
+\item{clusterAlg}{Optional. One of three cluster algorithms: "hclust",
+"kmeans", or "pam".}
 
-\item{distance}{Optional. A character value. sample distance measures:
-"pearson","spearman", or "euclidean". (Default = "pearson")}
+\item{verbose}{Optional. When TRUE, prints messages to the screen to indicate progress.}
 
-\item{clusterAlg}{Optional. A character value. cluster algorithm. "hc"
-heirarchical (hclust) or "km" for kmeans. (Default = "kmeans")}
-
-\item{weightsItem}{Optional. A numerical vector. weights to be used for
-sampling items. (Default = NULL)}
-
-\item{weightsFeature}{Optional. AN umerical vector. weights to be used for
-sampling features. (Default = NULL)}
-
-\item{verbose}{Optional. A boolean when set to TRUE, prints messages to the
-screen to indicate progress. This is useful for large datasets.(Default = FALSE)}
-
-\item{corUse}{Optional. Use all cores avaiable. (Default = "Everything")}
+\item{corUse}{Optional. The "use" argument of the \code{cor} function}
 }
 \value{
-Clustered consensus matrix. areaUnderCDF = areaK,
-consensus.matrix = cns.mtrx
+A named list containing "areaUnderCDF" = a numerical vector of areas,
+and "consensus.matrix" = a list of consensus matrices. Both the vector and
+the inner list are named with the "k" value that was used to create them.
 }
 \description{
 A modified parallel version of code imported from
-https://github.com/Bioconductor-mirror/ConsensusClusterPlus 1.11.1. Taken out
+https://bioconductor.org/packages/ConsensusClusterPlus 1.70.0. Taken out
 of findModules.consensusCluster.R
 }

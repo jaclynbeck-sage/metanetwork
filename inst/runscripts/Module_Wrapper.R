@@ -74,7 +74,7 @@ algorithms <- c("fast_greedy", "infomap", "label_prop", "linkcommunities", "louv
 results <- lapply(algorithms, function(alg) {
   message(paste0("Running method ", alg, "..."))
   # TODO algorithm args from config, pass on n_cores too
-  res <- metanetwork::findModules(adj, method = alg, nperm = 3, min.module.size = 30)
+  res <- metanetwork::findModules(adj, method = alg, nperm = 3, min.module.size = 30, n_cores = 15)
 
   writeCSVFile(res, file.path(config$output_path, paste0(alg, ".csv")))
   return(res)
@@ -83,3 +83,39 @@ results <- lapply(algorithms, function(alg) {
 # Speakeasy
 # speakeasy_r = metanetwork::findModules.speakeasy(adj)
 # speakeasy_r['algorithms'] = 'speakeasy_r'
+
+partition.adj <- results
+names(partition.adj) <- algorithms
+
+partition.adj <- mapply(function(mod, method) {
+  mod = mod %>%
+    as.data.frame() %>%
+    dplyr::select(gene, module) %>%
+    dplyr::mutate(value = 1, module = paste0(method, '.', module)) %>%
+    tidyr::spread(module, value)
+}, partition.adj, names(partition.adj), SIMPLIFY = FALSE) %>%
+  plyr::join_all(type = "full")
+
+partition.adj[is.na(partition.adj)] <- 0
+rownames(partition.adj) <- partition.adj$gene
+partition.adj$gene <- NULL
+
+# Randomise gene order
+set.seed(101)
+partition.adj <- partition.adj[sample(1:nrow(partition.adj), nrow(partition.adj)), ]
+
+partition.adj <- t(partition.adj)
+
+mod <- metanetwork::findModules.consensusCluster(d = partition.adj,
+                                                 maxK = 100,
+                                                 reps = 50,
+                                                 pGenes = 0.8,
+                                                 clusterAlg = "hclust",
+                                                 hclust_method = "average",
+                                                 distance = "pearson",
+                                                 changeCDFArea = 0.001,
+                                                 nbreaks = 10,
+                                                 seed = 1,
+                                                 corUse = "everything",
+                                                 verbose = TRUE,
+                                                 useParallelFlag = TRUE)

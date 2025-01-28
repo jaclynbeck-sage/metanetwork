@@ -12,7 +12,7 @@ findModules(adj, method, nperm = 10, min.module.size = 30, n_cores = 1, ...)
 of genes.}
 
 \item{method}{Which method to use to find modules. Current options are:
-fast_greedy, infomap, label_prop, leading_eigen, link_communities, louvain,
+fast_greedy, infomap, label_prop, leading_eigen, linkcommunities, louvain,
 megena, spinglass, walktrap}
 
 \item{nperm}{Optional. Number of permutations on the gene ordering.}

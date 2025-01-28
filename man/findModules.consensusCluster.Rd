@@ -8,16 +8,13 @@ findModules.consensusCluster(
   d = NULL,
   maxK = 100,
   reps = 100,
-  pItem = 0.8,
-  pFeature = 1,
+  pGenes = 0.8,
   clusterAlg = "kmeans",
-  innerLinkage = "average",
+  hclust_method = "average",
   distance = "pearson",
   changeCDFArea = 0.001,
   nbreaks = 20,
-  seed = 123456789.12345,
-  weightsItem = NULL,
-  weightsFeature = NULL,
+  seed = 101,
   corUse = "everything",
   verbose = F
 )
@@ -32,20 +29,16 @@ OR ExpressionSet object. (Default = NULL)}
 
 \item{reps}{Optional. An integer value. number of subsamples.  (Default = 100)}
 
-\item{pItem}{Optional. A numerical value. proportion of items to sample.
+\item{pGenes}{Optional. A numerical value. proportion of items to sample.
 (Default = 0.8)}
-
-\item{pFeature}{Optional. A numerical value. proportion of features to sample.
-(Default = 1)}
 
 \item{clusterAlg}{Optional. A character value. cluster algorithm. "hc"
 heirarchical (hclust) or "km" for kmeans. (Default = "kmeans")}
 
-\item{innerLinkage}{Optional. A heirarchical linkage method for subsampling.
-(Default = "average")}
+\item{hclust_method}{Optional. The "method" argument of \code{hclust}}
 
 \item{distance}{Optional. A character value. sample distance measures:
-"pearson","spearman", or "euclidean". (Default = "pearson")}
+"pearson", "spearman", or "euclidean". (Default = "pearson")}
 
 \item{changeCDFArea}{Optional. Minimum spline distance for seq(2,`maxK`,
 length.out = `nbreaks`) (Default = 0.001)}
@@ -54,24 +47,21 @@ length.out = `nbreaks`) (Default = 0.001)}
 seq(2,`maxK`,length.out = `nbreaks`) this becomes the kGrid argument in
 run.consensus.cluster. (Default = 20)}
 
-\item{seed}{Optional, A numerical value. Sets random seed for reproducible results.
-(Default = 123456789.12345)}
+\item{seed}{Optional, A numerical value. Sets random seed for reproducible results.}
 
-\item{weightsItem}{Optional. A numerical vector. weights to be used for
-sampling items. (Default = NULL)}
-
-\item{weightsFeature}{Optional. AN umerical vector. weights to be used for
-sampling features. (Default = NULL)}
-
-\item{corUse}{Optional. Use all cores avaiable. (Default = "Everything")}
+\item{corUse}{Optional. Use all cores avaiable. (Default = "Everything") TODO this is wrong}
 
 \item{verbose}{Optional. A boolean when set to TRUE, prints messages to the
 screen to indicate progress. This is useful for large datasets.(Default = FALSE)}
 }
 \value{
 Final clustered modules.
+
+TODO does this really need to be run on partition.adj? Wouldn't it make sense
+to do the consensus matrix like in run.consensus.cluster using all the different
+module results instead?
 }
 \description{
 A modified parallel version of code imported from
-https://github.com/Bioconductor-mirror/ConsensusClusterPlus 1.11.1
+https://bioconductor.org/packages/ConsensusClusterPlus 1.70.0
 }

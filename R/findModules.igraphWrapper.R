@@ -8,7 +8,7 @@
 #' @param g An \code{igraph} graph
 #' @param method Which method to use to find modules. Current options supported
 #'   by this wrapper are: fast_greedy, infomap, label_prop, leading_eigen,
-#'   link_communities, louvain, spinglass, walktrap
+#'   linkcommunities, louvain, spinglass, walktrap
 #' @param min.module.size Optional. How many genes need to be in a module for it
 #'   to be considered valid.
 #' @param n_cores Optional. For "megena" only, how many cores to use when
@@ -16,8 +16,7 @@
 #' @param ... Optional. Additional arguments to pass through to the cluster
 #'   algorithm.
 #'
-#' @return GeneModules = n x 3 data frame with column names as Gene.ID,
-#' moduleNumber, and moduleLabel.
+#' @return a named vector where names are genes and values are cluster assignments
 #'
 #' @references Fast greedy method: http://arxiv.org/abs/cond-mat/0408187
 #' @references Infomap algorithm: http://arxiv.org/abs/physics/0512106
@@ -39,7 +38,7 @@ findModules.igraphWrapper <- function(g,
     infomap = igraph::cluster_infomap(g, ...),
     label_prop = igraph::cluster_label_prop(g, ...),
     leading_eigen = igraph::cluster_leading_eigen(g, ...),
-    link_communities = linkcommunities_wrapper(g, ...),
+    linkcommunities = linkcommunities_wrapper(g, ...),
     louvain = igraph::cluster_louvain(g, ...),
     megena = findModules.megena(g, n_cores = n_cores, ...),
     spinglass = spinglass_wrapper(g, min.module.size, ...),
@@ -49,7 +48,8 @@ findModules.igraphWrapper <- function(g,
   )
 
   if (is.null(mod)) {
-    # TODO
+    message(paste("Unrecognized algorithm name", method))
+    return(NULL)
   }
 
   # The spinglass, linkcommunities, and megena wrappers return a vector, but
@@ -58,9 +58,6 @@ findModules.igraphWrapper <- function(g,
   if (inherits(mod, "communities")) {
     mod <- igraph::membership(mod)
   }
-
-  geneModules <- data.frame(Gene.ID = names(mod),
-                            moduleNumber = as.numeric(mod))
 
   # Reassign modules smaller than min.module.size to module 0
   mod_sizes <- table(mod)
@@ -76,7 +73,7 @@ findModules.igraphWrapper <- function(g,
     missing_vec <- rep(0, length(missing))
     names(missing_vec) <- missing
 
-    mod <- c(mod, missing)
+    mod <- c(mod, missing_vec)
   }
 
   mod <- mod[gene_names]
