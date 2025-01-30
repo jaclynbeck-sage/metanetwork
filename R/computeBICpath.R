@@ -1,24 +1,34 @@
-#' Covariance based on Neighborhood Selection
+#' Compute BIC path of a network's edges
 #'
-#' This function defines the covariance neighborhood between gene-gene edges
-#' in an expression matrix. TODO
+#' This function iteratively adds edges to a network from a list of ranked
+#' edges, and computes the BIC of a linear model on each gene and its
+#' neighborhood after adding each edge.
 #'
 #' @param X An expression matrix where rows are samples and columns are genes.
-#' @param rankedEdges An edge list in the form of a matrix where column one is
+#' @param rankedEdges An edge list in the form of a matrix where column 1 is
 #'   gene one and column 2 is gene two
-#' @param startI Optional. Start at the first edge in `rankedEdges` (Default = 1)
+#' @param startI Optional. Which edge to start computing and keeping track of
+#'   BIC at in \code{rankedEdges} (Default = 1)
 #'
-#' @return A list object of containing the BIC estimate, bicNeighborhood (?) , neighborhoods (?), flag (?)
+#' @return A named list containing: "bic" = the vector of total BIC after each
+#'   edge is added, "bicNeighborhood" = BIC for each individual gene and its
+#'   neighborhood, "neighborhoods" = a list, one item for each gene, where each
+#'   item is a vector of other genes in the neighborhood of that gene, "flag" =
+#'   NULL, if no errors happen during calculation, or a 2-column data frame
+#'   where column 1 is the name of the gene and column 2 is the edge number
+#'   where errors occurred.
+#'
 #' @export
-covarianceSelectionMBPath = function(X, rankedEdges, startI = 1) {
+computeBICpath <- function(X, rankedEdges, startI = 1) {
   nedges <- nrow(rankedEdges)
   bic <- rep(0, nedges)
+  gene_names <- colnames(X)
 
   neighborhoods <- vector('list', ncol(X))
-  names(neighborhoods) <- colnames(X)
+  names(neighborhoods) <- gene_names
 
   bicNeighborhood <- apply(X, 2, fastlm_bic, correction = ncol(X))
-  names(bicNeighborhood) <- colnames(X)
+  names(bicNeighborhood) <- gene_names
   bicCurrent <- sum(bicNeighborhood, na.rm = TRUE)
 
   flag <- c()
@@ -27,8 +37,8 @@ covarianceSelectionMBPath = function(X, rankedEdges, startI = 1) {
     if (count %% 1000 == 0) {
       cat('Count:', count, 'BIC:', bicCurrent, '\n')
     }
-    gene1 <- colnames(X)[rankedEdges[count, 1]]
-    gene2 <- colnames(X)[rankedEdges[count, 2]]
+    gene1 <- gene_names[rankedEdges[count, 1]]
+    gene2 <- gene_names[rankedEdges[count, 2]]
 
     neighborhoods[[gene1]] <- c(neighborhoods[[gene1]], gene2)
     neighborhoods[[gene2]] <- c(neighborhoods[[gene2]], gene1)

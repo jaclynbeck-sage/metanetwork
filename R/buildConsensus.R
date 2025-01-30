@@ -24,7 +24,7 @@ buildConsensus <- function(network_files,
   writeCSVFile(ranked_network,
                filename = file.path(outputpath, "rankConsensusNetwork.csv"))
 
-  bicNetworks <- computeBICcurve(ranked_network,
+  bicNetworks <- pruneBICnetwork(ranked_network,
                                  exprData = exprData,
                                  maxEdges = max_edges)
 

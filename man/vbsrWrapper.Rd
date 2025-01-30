@@ -19,8 +19,10 @@ number of rows in x (the number of samples).}
 }
 \value{
 A named list where "Z" is a network matrix constructed from the
-  Z-values of the fit, and "2Z" is a network matrix where values with a
-  p-value less than the FDR threshold are re-calculated. TODO
+  Z-values of the fit, and "2Z" is a network matrix where values from "Z"
+  with an adjusted p-value less than the FDR threshold are re-calculated, and
+  all other values are set to 0. P-values are adjusted using the
+  Benjamini-Hochberg correction.
 }
 \description{
 This function wraps variable Bayes spike regression, using a single gene's

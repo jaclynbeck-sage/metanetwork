@@ -54,7 +54,6 @@ Imports:
   dplyr,
   foreach,
   fpc,
-  glasso,
   grid,
   igraph,
   magrittr,

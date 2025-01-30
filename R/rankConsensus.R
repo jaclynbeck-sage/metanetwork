@@ -35,6 +35,7 @@ rankConsensus <- function(network_files) {
     stopifnot(ncol(network) == nrow(network))
     stopifnot(ncol(network) == length(gene_names))
     stopifnot(all(colnames(network) %in% gene_names))
+    stopifnot(all(!is.na(network)))
 
     # Ensure it's in the same order as the first network
     network <- network[gene_names, gene_names]
@@ -50,7 +51,9 @@ rankConsensus <- function(network_files) {
     rm(network, collapsedRank)
   }
 
-  # Rank the aggregated ranks in descending order and normalize to max value
+  # Rank the aggregated ranks in descending order and normalize to max value --
+  # largest aggregate rank should have the smallest value, smallest aggregate
+  # rank should have the largest
   finalRank <- data.table::frankv(aggregateRank, order = -1)
   finalRank <- finalRank / max(finalRank)
 

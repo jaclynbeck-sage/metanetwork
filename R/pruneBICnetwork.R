@@ -1,19 +1,21 @@
-#' This Function Computes a Network BIC Curve
+#' Prune a network using a BIC Curve
 #'
-#' (?) TODO
+#' This function gets a list of edges from the input network, creates a new
+#' empty network, iteratively adds edges to the new network, and computes the BIC
+#' after adding each edge. The final network will be the set of edges that
+#' produce the smallest BIC.
 #'
 #' @param network A network object
 #' @param exprData Expression matrix where rows are samples and columns are genes
 #' @param maxEdges Optional. Maximum number of edges to use.
 #'
-#' @return  A list object containing values of a sparse network, the best fit
-#' minimum BIC, and TODO
-#' @export
+#' @return  A named list containing: "network" = a matrix containing the
+#'   original network subset to the edges that produce the smallest BIC,
+#'   "bicMin" = the smallest BIC value, "bicPath" = a vector containing the BIC
+#'   values at each iteration.
 #'
-computeBICcurve <- function(network, exprData, maxEdges = 2e5) {
-  maxEdges <- min(maxEdges, round((nrow(exprData) * ncol(exprData)) / 20))
-  cat('Maximum network edges:', maxEdges, '\n')
-
+#' @export
+pruneBICnetwork <- function(network, exprData, maxEdges = 2e5) {
   network <- abs(data.matrix(network))
   upper_net <- network[upper.tri(network)]
 
@@ -33,20 +35,19 @@ computeBICcurve <- function(network, exprData, maxEdges = 2e5) {
 
   cat('Edge threshold:', thresVal, '\n')
 
-  edgeList <- which(network >= thresVal, arr.ind = TRUE)
-  edgeList <- as.data.frame(cbind(edgeList, network[network >= thresVal]))
+  edgeList <- which(network > thresVal, arr.ind = TRUE)
+  edgeList <- as.data.frame(cbind(edgeList, network[network > thresVal]))
 
   colnames(edgeList) <- c('node1', 'node2', 'weight')
   rownames(edgeList) <- paste0('e', 1:nrow(edgeList))
 
   edgeList <- edgeList[order(edgeList$weight, decreasing = TRUE),]
 
-  bicPath <- covarianceSelectionMBPath(exprData,
-                                       rankedEdges = edgeList)
+  bicPath <- computeBICpath(exprData, rankedEdges = edgeList)
 
   network <- network >= edgeList$weight[which.min(bicPath$bic)]
 
-  return(list(network = Matrix::Matrix(network, sparse = T),
+  return(list(network = Matrix::Matrix(network, sparse = TRUE),
               bicMin = min(bicPath$bic),
               bicPath = bicPath$bic))
 }
