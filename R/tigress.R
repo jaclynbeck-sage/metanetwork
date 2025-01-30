@@ -6,12 +6,14 @@
 #' \code{stabilityselection} function does not allow for changing some arguments
 #' to \code{lars::lars} that significantly speed up processing.
 #'
-#' @param x A gene expression matrix where rows are samples and columns are genes
+#' @param x A gene expression matrix where rows are samples and columns are
+#'   genes
 #' @param y An Nx1 vector of gene expression values where N = number of genes
-#' @param nsteps_tigress Optional. The number of times the data should be split and sampled
+#' @param nsteps_tigress Optional. The number of times the data should be split
+#'   and sampled
 #' @param nsteps_lars Optional. The number of steps that lars should use
-#' @param alpha Optional. When sampling, weights are randomly uniformly generated
-#' in the interval [alpha, 1].
+#' @param alpha Optional. When sampling, weights are randomly uniformly
+#'   generated in the interval [alpha, 1].
 #' @param ... Optional. Other arguments to pass to \code{lars::lars}
 #'
 #' @return A named vector of co-expression values of gene Y to columns of X

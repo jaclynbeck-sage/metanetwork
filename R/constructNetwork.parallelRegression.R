@@ -6,7 +6,7 @@
 #' @param data Expression matrix to be used for network construction, which
 #'   should have samples as rows and genes as columns.
 #' @param regressionFunction The name of the regression function to use. Current
-#'   options are: lassoIC, lassoCV, ridgeIC, ridgeCV, vbsr
+#'   options are: lassoIC, lassoCV, ridgeIC, ridgeCV, tigress, and vbsr
 #' @param log_file_path Optional. The folder path to where log files should be
 #' stored. Log files capture any output during parallel execution. If omitted,
 #' log files will be stored in the working directory.
@@ -14,20 +14,20 @@
 #' @param regulatorIndex Optional. A vector of numerical indexes into
 #'   \code{colnames(data)} for a subset of genes that should be used in the
 #'   network. All genes in \code{data} will be tested against this subset,
-#'   rather than against every gene.
+#'   rather than against every gene. TODO should this stay?
 #' @param ... Optional. Additional arguments that are passed through to the
-#'   network algorithm.
+#'   individual network algorithm.
 #'
 #' @return a named list, where each item is a network matrix as returned by the
 #'   regression function. Regression functions may return multiple matrices or
 #'   only one. If there was an error, the list will be empty.
 #'
 #' @export
-parallelNetworkWrapper <- function(data, regressionFunction,
-                                   log_file_path = ".",
-                                   n_cores = 1,
-                                   regulatorIndex = NULL,
-                                   ...) {
+constructNetwork.parallelRegression <- function(data, regressionFunction,
+                                                log_file_path = ".",
+                                                n_cores = 1,
+                                                regulatorIndex = NULL,
+                                                ...) {
   data <- as.matrix(data)
 
   clust <- NULL
@@ -147,7 +147,8 @@ doRegressionFn <- function(gene_number, data, genes_use, regressionFunction, ...
     names(res_list) <- rownames(res)
 
   } else {
-    # If res has only one row or is a vector, this will be a one-item list with a one-row matrix
+    # If res has only one row or is a vector, this will be a one-item list with
+    # a one-row matrix
     res <- matrix(res, nrow = 1, dimnames = list(gene_query, genes_use))
     res_list <- list(res)
     names(res_list) <- regressionFunction

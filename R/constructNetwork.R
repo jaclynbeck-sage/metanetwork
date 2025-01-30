@@ -10,8 +10,8 @@
 #'  \item \code{c3net}: uses \code{c3net::c3net()}
 #'  \item \code{genie3}: uses \code{GENIE3::GENIE3()}
 #'  \item \code{megena}: uses \code{MEGENA::calculate.PFN()} to rank edges
-#'  \item \code{mrnet}: uses \code{parmigene::knnmi.all} to calculate a mutual
-#'        information matrix, and generates 3 separate networks from
+#'  \item \code{parmigene}: uses \code{parmigene::knnmi.all} to calculate a
+#'        mutual information matrix, and generates 3 separate networks from
 #'        \code{parmigene::aracne.m}, \code{parmigene::mrnet}, and
 #'        \code{parmigene::clr}.
 #'  \item \code{wgcna}: uses \code{WGCNA::pickSoftThreshold}` to pick a power
@@ -40,28 +40,28 @@
 #'   containing gene expression values. Rows should be samples and columns
 #'   should be genes.
 #' @param method_name The name of the method to use. Current accepted values are
-#'   "c3net", "genie3", "megena", "mrnet", "wgcna", "lassoCV", "lassoIC",
+#'   "c3net", "genie3", "megena", "parmigene", "wgcna", "lassoCV", "lassoIC",
 #'   "ridgeCV", "ridgeIC", "tigress", and "vbsr".
 #' @param n_cores Optional. The number of cores to use for algorithms that can
 #'   use threads. A value of 1 (default) will result in no threading.
-#' @param save_to_disk Optional. If `TRUE`, the network will be saved as a CSV
-#'   file with the location and name specified by the `output_filepath` and
-#'   `output_filename_base` arguments.
-#' @param output_filepath Optional, only used if `save_to_disk` is `TRUE` or if
-#'   running one of the parallel regression algorithms. The path to the folder
-#'   where results should be stored, if saving to disk. This is also the path
-#'   where a log file will be stored for parallel execution. If omitted, results
-#'   and logs will be stored in the working directory where the code is
-#'   executed.
-#' @param output_filename_base Optional, only used if `save_to_disk` is `TRUE`.
-#'   The base name of the output file(s) without any extension. In cases where
-#'   the network method returns a single matrix, the matrix will be stored at
-#'   `<output_filepath>/<output_filename_base>.csv`. When a network method
-#'   returns more than one matrix, the name of each matrix will be appended to
-#'   `output_filename_base` in the file name, e.g.
-#'   `<output_filename_base>_AIC.csv` and `<output_filename_base>_BIC.csv` for a
-#'   method that returns a list of two matrices named "AIC" and "BIC".
-#'   Default: "network"
+#' @param save_to_disk Optional. If \code{TRUE}, the network will be saved as a
+#'   CSV file with the location and name specified by the \code{output_filepath}
+#'   and \code{output_filename_base} arguments.
+#' @param output_filepath Optional, only used if \code{save_to_disk} is
+#'   \code{TRUE} or if running one of the parallel regression algorithms. The
+#'   path to the folder where results should be stored, if saving to disk. This
+#'   is also the path where a log file will be stored for parallel execution. If
+#'   omitted, results and logs will be stored in the working directory where the
+#'   code is executed.
+#' @param output_filename_base Optional, only used if \code{save_to_disk} is
+#'   \code{TRUE}. The base name of the output file(s) without any extension. In
+#'   cases where the network method returns a single matrix, the matrix will be
+#'   stored at \code{<output_filepath>/<output_filename_base>.csv}. When a
+#'   network method returns more than one matrix, the name of each matrix will
+#'   be appended to \code{output_filename_base} in the file name, e.g.
+#'   \code{<output_filename_base>_AIC.csv} and
+#'   \code{<output_filename_base>_BIC.csv} for a method that returns a list of
+#'   two matrices named "AIC" and "BIC".
 #' @param ... Optional, additional arguments to pass through to the individual
 #'   algorithm function call(s).
 #'
@@ -72,9 +72,9 @@
 #' @export
 #'
 #' @examples
-#' # Run "mrnet", adding the "k" argument used in knnmi.all()
+#' # Run "parmigene", adding the "k" argument used in knnmi.all()
 #' data <- matrix(rnorm(50000), ncol = 1000)
-#' network_list <- constructNetwork(data, method_name = "mrnet", k = 7)
+#' network_list <- constructNetwork(data, method_name = "parmigene", k = 7)
 constructNetwork <- function(data,
                              method_name,
                              n_cores = 1,
@@ -88,20 +88,21 @@ constructNetwork <- function(data,
   networks <- switch(method_name,
     c3net = c3net::c3net(t(data), ...),
     genie3 = GENIE3::GENIE3(t(data), nCores = n_cores, ...),
-    megena = constructNetwork.megena(data, n_cores = n_cores, ...),
-    mrnet = mrnetWrapper(data, ...),
-    wgcna = wgcnaWrapper(data, n_cores = n_cores, ...),
-    # These algorithms all run from parallelNetworkWrapper()
+    megena = constructNetwork.megena(data, n_cores = n_cores,
+                                     log_file_path = output_filepath, ...),
+    parmigene = constructNetwork.parmigene(data, ...),
+    wgcna = constructNetwork.wgcna(data, n_cores = n_cores, ...),
+    # These algorithms all run from constructNetwork.parallelRegression()
     lassoCV = ,
     lassoIC = ,
     ridgeCV = ,
     ridgeIC = ,
     tigress = ,
-    vbsr = parallelNetworkWrapper(data,
-                                  regressionFunction = method_name,
-                                  n_cores = n_cores,
-                                  log_file_path = output_filepath,
-                                  ...),
+    vbsr = constructNetwork.parallelRegression(data,
+                                               regressionFunction = method_name,
+                                               n_cores = n_cores,
+                                               log_file_path = output_filepath,
+                                               ...),
     # Default: unrecognized algorithm returns NULL
     NULL
   )

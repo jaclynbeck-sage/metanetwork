@@ -7,22 +7,22 @@
 ridgeIC(x, y, ...)
 }
 \arguments{
-\item{x}{Required. A design matrix where rows are samples and columns are
-genes. Can be in sparse or dense matrix format.}
+\item{x}{A design matrix where rows are samples and columns are genes. Can be
+in sparse or dense matrix format.}
 
-\item{y}{Required. The response variable (a single gene), an nx1 matrix where
-n = the number of rows in x (the number of samples).}
+\item{y}{The response variable (a single gene), an nx1 matrix where n = the
+number of rows in x (the number of samples).}
 
-\item{...}{Optional. Other arguments accepted by `glmnet()`}
+\item{...}{Optional. Other arguments accepted by \code{glmnet()}}
 }
 \value{
-a 2 x n_genes matrix, where row 1 is the coefficients for the solution
-with the best AIC, and row 2 is for the best BIC. The rows are named "AIC" and
-"BIC".
+a 2 x n_genes matrix, where row 1 is the coefficients for the
+  solution with the best AIC, and row 2 is for the best BIC. The rows are
+  named "AIC" and "BIC".
 }
 \description{
-This function is a wrapper for `glmnetIC` that runs a glmnet() function with
-ridge regression and returns the results with the best AIC or BIC.
+This function is a wrapper for \code{glmnetIC} that runs a glmnet() function
+with ridge regression and returns the results with the best AIC or BIC.
 }
 \seealso{
 [glmnetIC]

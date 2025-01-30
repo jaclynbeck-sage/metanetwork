@@ -5,15 +5,16 @@
 #' 1. The value of lambda that gives the minimum mean cross-validation error, and,
 #' 2. The largest value of lambda such that error is within 1 standard error of the minimum.
 #'
-#' This function is called by both `lassoCV()` and `ridgeCV()`
+#' This function is called by both \code{lassoCV()} and \code{ridgeCV()}.
 #'
 #' @inheritParams glmnetIC
 #' @param folds Optional. The number of cross validation folds to partition the
-#' data into. (Default = 10). Corresponds to the `nfolds` argument of cv.glmnet.
+#'   data into. (Default = 10). Corresponds to the \code{nfolds} argument of
+#'   \code{cv.glmnet}.
 #'
-#' @return a 2 x n_genes matrix, where row 1 is the coefficients for the solution
-#' with the minimum CVM (#1 above), and row 2 is for the best SE1 (#2 above). The
-#' rows are named "lambda.min" and "lambda.1se".
+#' @return a 2 x n_genes matrix, where row 1 is the coefficients for the
+#'   solution with the minimum CVM (#1 above), and row 2 is for the best SE1 (#2
+#'   above). The rows are named "lambda.min" and "lambda.1se".
 #'
 #' @export
 glmnetCV <- function(x, y, alpha = 1, folds = 10, ...) {
@@ -30,8 +31,8 @@ glmnetCV <- function(x, y, alpha = 1, folds = 10, ...) {
 
 #' Best Cross-validation Solutions for Lasso regression
 #'
-#' This function is a wrapper for `glmnetCV` that runs a glmnet() function with
-#' lasso regression and returns the results with the best cross-validation
+#' This function is a wrapper for \code{glmnetCV} that runs a glmnet() function
+#' with lasso regression and returns the results with the best cross-validation
 #' solutions.
 #'
 #' @inheritParams glmnetCV
@@ -48,8 +49,8 @@ lassoCV <- function(x, y, ...) {
 
 #' Best Cross-validation Solutions for Ridge Regression
 #'
-#' This function is a wrapper for `glmnetCV` that runs a glmnet() function with
-#' ridge regression and returns the results with the best cross-validation
+#' This function is a wrapper for \code{glmnetCV} that runs a glmnet() function
+#' with ridge regression and returns the results with the best cross-validation
 #' solutions.
 #'
 #' @inheritParams glmnetCV

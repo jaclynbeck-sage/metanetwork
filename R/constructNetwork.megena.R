@@ -23,15 +23,8 @@ constructNetwork.megena <- function(data,
                                     log_file_path = ".",
                                     doPerm = 10,
                                     ...) {
-  # Correlation data needed for calculate.PFN
-  ijw <- MEGENA::calculate.correlation(t(data),
-                                       doPerm = doPerm,
-                                       output.corTable = FALSE,
-                                       output.permFDR = FALSE,
-                                       ...)
-
-  # calculate.PFN uses foreach to do parallel processing and requires the
-  # cluster to be created ahead of time
+  # Both calculate.correlation and calculate.PFN use foreach to do parallel
+  # processing and require the cluster to be created ahead of time.
   clust <- NULL
   if (n_cores > 1) {
     log_file <- file.path(log_file_path, "megena_log.txt")
@@ -39,12 +32,26 @@ constructNetwork.megena <- function(data,
     doParallel::registerDoParallel(clust)
   }
 
-  edge_list <- MEGENA::calculate.PFN(ijw,
-                                     doPar = n_cores > 1,
-                                     num.cores = n_cores,
-                                     keep.track = FALSE,
-                                     ...)
+  # Correlation data needed for calculate.PFN
+  ijw <- R.utils::doCall(MEGENA::calculate.correlation,
+                         datExpr = t(data),
+                         doPerm = doPerm,
+                         doPar = n_cores > 1,
+                         num.cores = n_cores,
+                         output.corTable = FALSE,
+                         output.permFDR = FALSE,
+                         args = list(...),
+                         .ignoreUnusedArgs = TRUE)
 
+  edge_list <- R.utils::doCall(MEGENA::calculate.PFN,
+                               edgelist = ijw,
+                               doPar = n_cores > 1,
+                               num.cores = n_cores,
+                               keep.track = FALSE,
+                               args = list(...),
+                               .ignoreUnusedArgs = TRUE)
+
+  # Close cluster if applicable
   if (!is.null(clust)) {
     parallel::stopCluster(clust)
   }

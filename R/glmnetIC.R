@@ -2,30 +2,30 @@
 #'
 #' This function runs a glmnet() function with lasso or ridge regression and
 #' returns the results with the best AIC or BIC. This function is called by both
-#' `lassoIC()` and `ridgeIC()`.
+#' \code{lassoIC()} and \code{ridgeIC()}.
 #'
 #' For gaussian distributions,
-#' `AIC = 2k + n*ln(sigma^2)` and
-#' `BIC = ln(n)*k + n*ln(sigma^2)`,
-#' where `k` is the number of parameters, `n` is the number of observations, and
-#' `sigma^2 = sum[(y - residuals)^2] / n`.
-#' `ln(sigma^2)` represents the maximum log-likelihood estimate.
+#' \code{AIC = 2k + n*ln(sigma^2)} and
+#' \code{BIC = ln(n)*k + n*ln(sigma^2)},
+#' where \code{k} is the number of parameters, \code{n} is the number of
+#' observations, and \code{sigma^2 = sum[(y - residuals)^2] / n}.
+#' \code{ln(sigma^2)} represents the maximum log-likelihood estimate.
 #'
 #' See https://en.wikipedia.org/wiki/Normal_distribution#Log-likelihood and
 #' https://en.wikipedia.org/wiki/Akaike_information_criterion#Comparison_with_least_squares
 #'
-#' @param x Required. A design matrix where rows are samples and columns are
-#' genes. Can be in sparse or dense matrix format.
-#' @param y Required. The response variable (a single gene), an nx1 matrix where
-#' n = the number of rows in x (the number of samples).
+#' @param x A design matrix where rows are samples and columns are genes. Can be
+#'   in sparse or dense matrix format.
+#' @param y The response variable (a single gene), an nx1 matrix where n = the
+#'   number of rows in x (the number of samples).
 #' @param alpha Optional. If alpha = 1, glmnet will run lasso regression. If
-#' alpha = 0, it will run ridge regression. If alpha > 0 and < 1, the regression
-#' will be a mixture between the two.
-#' @param ... Optional. Other arguments accepted by `glmnet()`
+#'   alpha = 0, it will run ridge regression. If alpha > 0 and < 1, the
+#'   regression will be a mixture between the two.
+#' @param ... Optional. Other arguments accepted by \code{glmnet()}
 #'
-#' @return a 2 x n_genes matrix, where row 1 is the coefficients for the solution
-#' with the best AIC, and row 2 is for the best BIC. The rows are named "AIC" and
-#' "BIC".
+#' @return a 2 x n_genes matrix, where row 1 is the coefficients for the
+#'   solution with the best AIC, and row 2 is for the best BIC. The rows are
+#'   named "AIC" and "BIC".
 #'
 #' @export
 glmnetIC <- function(x, y, alpha = 1, ...) {
@@ -65,8 +65,8 @@ glmnetIC <- function(x, y, alpha = 1, ...) {
 
 #' Best AIC or BIC solution for Lasso regression
 #'
-#' This function is a wrapper for `glmnetIC` that runs a glmnet() function with
-#' lasso regression and returns the results with the best AIC or BIC.
+#' This function is a wrapper for \code{glmnetIC} that runs a glmnet() function
+#' with lasso regression and returns the results with the best AIC or BIC.
 #'
 #' @inheritParams glmnetIC
 #'
@@ -82,8 +82,8 @@ lassoIC <- function(x, y, ...) {
 
 #' Best AIC or BIC solution for Ridge Regression
 #'
-#' This function is a wrapper for `glmnetIC` that runs a glmnet() function with
-#' ridge regression and returns the results with the best AIC or BIC.
+#' This function is a wrapper for \code{glmnetIC} that runs a glmnet() function
+#' with ridge regression and returns the results with the best AIC or BIC.
 #'
 #' @inheritParams glmnetIC
 #' @inherit glmnetIC return

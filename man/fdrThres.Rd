@@ -7,14 +7,14 @@
 fdrThres(pval, fdr = 0.05)
 }
 \arguments{
-\item{pval}{Required. A vector of uncorrected P-Values.}
+\item{pval}{A vector of uncorrected p-values.}
 
-\item{fdr}{Optional. desired FDR cutoff. (Default = 0.05)
-as y}
+\item{fdr}{Optional. Desired FDR cutoff. (Default = 0.05)}
 }
 \value{
-Corrected PValues TODO this is wrong...
+A corrected threshold for p-value cutoff
 }
 \description{
-This function applies a user FDR threshold to input p-values
+This function calculates a corrected FDR threshold for p-values, which is
+corrected based on the number of p-values.
 }

@@ -3,27 +3,14 @@
 #     (gene x sample or sample x gene), because it needs to be gene x sample for
 #     winsorize() but sample x gene for everything else. This isn't documented
 #     in a clear way anywhere.
-#   * Provenance needs to be streamlined
-#   * Synapse upload should be optional
 #   * Parallel cluster needs to be stopped on error
 
-# Obtaining the data - From User --------------------------------------------
-
-option_list <- list(optparse::make_option(c("-u", "--synapse_authToken"),
-                                           type = "character",
-                                           action = "store",
-                                           help = "Synapse auth token"),
-                    optparse::make_option(c("-c", "--config_file"),
-                                           type = "character",
-                                           action = "store",
-                                           help = "Path to the complete config file"))
-req_args <- optparse::parse_args(optparse::OptionParser(option_list = option_list))
-req_args$config_file <- "inst/config/network-construction/construction_template.yml"
+config_file <- "inst/config/network-construction/construction_template.yml"
 
 # Obtaining the data - From Synapse --------------------------------------------
 
 # Setting up the config file
-config <- config::get(file = req_args$config_file)
+config <- config::get(file = config_file)
 
 if (!dir.exists(config$input_profile$temp_storage_loc)) {
   dir.create(config$input_profile$temp_storage_loc, recursive = TRUE)
@@ -33,7 +20,7 @@ if (!dir.exists(config$output_profile$output_path)) {
 }
 
 # Log in to Synapse
-synapser::synLogin(authToken = req_args$synapse_authToken)
+synapser::synLogin()
 
 # Data
 synID_input <- config$input_profile$expr_matrix_synid
@@ -48,9 +35,7 @@ data <- data.table::fread(file = data$path, sep = ",",
                           header = TRUE, data.table = FALSE)
 data <- tibble::column_to_rownames(data, var = colnames(data)[1])
 
-if (is.null(config$input_profile$na_fill)) {
-  print("Data not normalized for missing values. Ignore if using mrnet method.")
-} else {
+if (!is.null(config$input_profile$na_fill)) {
   if (config$input_profile$na_fill == "Winsorize") {
     data <- metanetwork::winsorizeData(data)
   }

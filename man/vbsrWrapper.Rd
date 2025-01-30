@@ -7,21 +7,23 @@
 vbsrWrapper(x, y, fdr = 0.05, ...)
 }
 \arguments{
-\item{x}{Required. A design matrix where rows are samples and columns are
-genes. Can be in sparse or dense matrix format.}
+\item{x}{A design matrix where rows are samples and columns are genes. Can be
+in sparse or dense matrix format.}
 
-\item{y}{Required. The response variable (a single gene), an nx1 matrix where
-n = the number of rows in x (the number of samples).}
+\item{y}{The response variable (a single gene), an nx1 matrix where n = the
+number of rows in x (the number of samples).}
 
-\item{fdr}{Optional. FDR threshold cut off for edge determination. (Default = 0.05)}
+\item{fdr}{Optional. FDR threshold cut off for edge determination.)}
 
-\item{...}{Other parameters accepted by `vbsr::vbsr()`}
+\item{...}{Other parameters accepted by \code{vbsr::vbsr()}}
 }
 \value{
-A network matrix constructed from the Z-values of the fit
+A named list where "Z" is a network matrix constructed from the
+  Z-values of the fit, and "2Z" is a network matrix where values with a
+  p-value less than the FDR threshold are re-calculated. TODO
 }
 \description{
-This function wraps variable bays spike regression of a genes expression across
-a matrix of genes expressed in the same samples. Returns both the original
-output and the output with a 2Z cutoff.
+This function wraps variable Bayes spike regression, using a single gene's
+expression across all samples as the response variable, and the expression of
+the other genes as the input.
 }

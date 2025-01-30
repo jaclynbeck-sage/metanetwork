@@ -7,25 +7,26 @@
 glmnetCV(x, y, alpha = 1, folds = 10, ...)
 }
 \arguments{
-\item{x}{Required. A design matrix where rows are samples and columns are
-genes. Can be in sparse or dense matrix format.}
+\item{x}{A design matrix where rows are samples and columns are genes. Can be
+in sparse or dense matrix format.}
 
-\item{y}{Required. The response variable (a single gene), an nx1 matrix where
-n = the number of rows in x (the number of samples).}
+\item{y}{The response variable (a single gene), an nx1 matrix where n = the
+number of rows in x (the number of samples).}
 
 \item{alpha}{Optional. If alpha = 1, glmnet will run lasso regression. If
-alpha = 0, it will run ridge regression. If alpha > 0 and < 1, the regression
-will be a mixture between the two.}
+alpha = 0, it will run ridge regression. If alpha > 0 and < 1, the
+regression will be a mixture between the two.}
 
 \item{folds}{Optional. The number of cross validation folds to partition the
-data into. (Default = 10). Corresponds to the `nfolds` argument of cv.glmnet.}
+data into. (Default = 10). Corresponds to the \code{nfolds} argument of
+\code{cv.glmnet}.}
 
-\item{...}{Optional. Other arguments accepted by `glmnet()`}
+\item{...}{Optional. Other arguments accepted by \code{glmnet()}}
 }
 \value{
-a 2 x n_genes matrix, where row 1 is the coefficients for the solution
-with the minimum CVM (#1 above), and row 2 is for the best SE1 (#2 above). The
-rows are named "lambda.min" and "lambda.1se".
+a 2 x n_genes matrix, where row 1 is the coefficients for the
+  solution with the minimum CVM (#1 above), and row 2 is for the best SE1 (#2
+  above). The rows are named "lambda.min" and "lambda.1se".
 }
 \description{
 This function runs a glmnet() with lasso or ridge regression and returns the
@@ -34,5 +35,5 @@ results from the fit for:
 2. The largest value of lambda such that error is within 1 standard error of the minimum.
 }
 \details{
-This function is called by both `lassoCV()` and `ridgeCV()`
+This function is called by both \code{lassoCV()} and \code{ridgeCV()}.
 }

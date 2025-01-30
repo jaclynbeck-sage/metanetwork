@@ -7,35 +7,35 @@
 glmnetIC(x, y, alpha = 1, ...)
 }
 \arguments{
-\item{x}{Required. A design matrix where rows are samples and columns are
-genes. Can be in sparse or dense matrix format.}
+\item{x}{A design matrix where rows are samples and columns are genes. Can be
+in sparse or dense matrix format.}
 
-\item{y}{Required. The response variable (a single gene), an nx1 matrix where
-n = the number of rows in x (the number of samples).}
+\item{y}{The response variable (a single gene), an nx1 matrix where n = the
+number of rows in x (the number of samples).}
 
 \item{alpha}{Optional. If alpha = 1, glmnet will run lasso regression. If
-alpha = 0, it will run ridge regression. If alpha > 0 and < 1, the regression
-will be a mixture between the two.}
+alpha = 0, it will run ridge regression. If alpha > 0 and < 1, the
+regression will be a mixture between the two.}
 
-\item{...}{Optional. Other arguments accepted by `glmnet()`}
+\item{...}{Optional. Other arguments accepted by \code{glmnet()}}
 }
 \value{
-a 2 x n_genes matrix, where row 1 is the coefficients for the solution
-with the best AIC, and row 2 is for the best BIC. The rows are named "AIC" and
-"BIC".
+a 2 x n_genes matrix, where row 1 is the coefficients for the
+  solution with the best AIC, and row 2 is for the best BIC. The rows are
+  named "AIC" and "BIC".
 }
 \description{
 This function runs a glmnet() function with lasso or ridge regression and
 returns the results with the best AIC or BIC. This function is called by both
-`lassoIC()` and `ridgeIC()`.
+\code{lassoIC()} and \code{ridgeIC()}.
 }
 \details{
 For gaussian distributions,
-`AIC = 2k + n*ln(sigma^2)` and
-`BIC = ln(n)*k + n*ln(sigma^2)`,
-where `k` is the number of parameters, `n` is the number of observations, and
-`sigma^2 = sum[(y - residuals)^2] / n`.
-`ln(sigma^2)` represents the maximum log-likelihood estimate.
+\code{AIC = 2k + n*ln(sigma^2)} and
+\code{BIC = ln(n)*k + n*ln(sigma^2)},
+where \code{k} is the number of parameters, \code{n} is the number of
+observations, and \code{sigma^2 = sum[(y - residuals)^2] / n}.
+\code{ln(sigma^2)} represents the maximum log-likelihood estimate.
 
 See https://en.wikipedia.org/wiki/Normal_distribution#Log-likelihood and
 https://en.wikipedia.org/wiki/Akaike_information_criterion#Comparison_with_least_squares

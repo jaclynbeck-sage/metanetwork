@@ -7,16 +7,18 @@
 tigress(x, y, nsteps_tigress = 100, nsteps_lars = 5, alpha = 0.2, ...)
 }
 \arguments{
-\item{x}{A gene expression matrix where rows are samples and columns are genes}
+\item{x}{A gene expression matrix where rows are samples and columns are
+genes}
 
 \item{y}{An Nx1 vector of gene expression values where N = number of genes}
 
-\item{nsteps_tigress}{Optional. The number of times the data should be split and sampled}
+\item{nsteps_tigress}{Optional. The number of times the data should be split
+and sampled}
 
 \item{nsteps_lars}{Optional. The number of steps that lars should use}
 
-\item{alpha}{Optional. When sampling, weights are randomly uniformly generated
-in the interval [alpha, 1].}
+\item{alpha}{Optional. When sampling, weights are randomly uniformly
+generated in the interval [alpha, 1].}
 
 \item{...}{Optional. Other arguments to pass to \code{lars::lars}}
 }

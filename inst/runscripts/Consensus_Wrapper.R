@@ -1,20 +1,8 @@
-# Obtaining the data - From User --------------------------------------------
-
-option_list <- list(optparse::make_option(c("-u", "--synapse_authToken"),
-                                          type = "character",
-                                          action = "store",
-                                          help = "Synapse auth token"),
-                    optparse::make_option(c("-c", "--config_file"),
-                                          type = "character",
-                                          action = "store",
-                                          help = "Path to the complete config file"))
-req_args <- optparse::parse_args(optparse::OptionParser(option_list = option_list))
-
-
 # Obtaining the data - From Synapse --------------------------------------------
 
 # Setting up the cofig file
-config <- config::get(file = req_args$config_file)
+config_file <- "inst/config/network-consensus/consensus_template.yml"
+config <- config::get(file = config_file)
 
 if (!dir.exists(config$input_profile$temp_storage_loc)) {
   dir.create(config$input_profile$temp_storage_loc, recursive = TRUE)

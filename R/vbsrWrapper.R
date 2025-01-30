@@ -1,14 +1,16 @@
 #' Runs variational Bayes spike regression across a gene expression matrix
 #'
-#' This function wraps variable bays spike regression of a genes expression across
-#' a matrix of genes expressed in the same samples. Returns both the original
-#' output and the output with a 2Z cutoff.
+#' This function wraps variable Bayes spike regression, using a single gene's
+#' expression across all samples as the response variable, and the expression of
+#' the other genes as the input.
 #'
 #' @inheritParams glmnetIC
-#' @param fdr Optional. FDR threshold cut off for edge determination. (Default = 0.05)
-#' @param ... Other parameters accepted by `vbsr::vbsr()`
+#' @param fdr Optional. FDR threshold cut off for edge determination.)
+#' @param ... Other parameters accepted by \code{vbsr::vbsr()}
 #'
-#' @return A network matrix constructed from the Z-values of the fit
+#' @return A named list where "Z" is a network matrix constructed from the
+#'   Z-values of the fit, and "2Z" is a network matrix where values with a
+#'   p-value less than the FDR threshold are re-calculated. TODO
 #' @export
 vbsrWrapper <- function(x, y, fdr = 0.05, ...) {
   # JB TODO why are we using Z values and not beta values?
@@ -37,12 +39,13 @@ vbsrWrapper <- function(x, y, fdr = 0.05, ...) {
 
 #' FDR Threshold
 #'
-#' This function applies a user FDR threshold to input p-values
+#' This function calculates a corrected FDR threshold for p-values, which is
+#' corrected based on the number of p-values.
 #'
-#' @param pval Required. A vector of uncorrected P-Values.
-#' @param fdr Optional. desired FDR cutoff. (Default = 0.05)
-#' as y
-#' @return Corrected PValues TODO this is wrong...
+#' @param pval A vector of uncorrected p-values.
+#' @param fdr Optional. Desired FDR cutoff. (Default = 0.05)
+#'
+#' @return A corrected threshold for p-value cutoff
 fdrThres <- function(pval, fdr = 0.05) {
   n <- length(pval)
   comp <- sort(pval) < ((fdr / n) * (1:n))
