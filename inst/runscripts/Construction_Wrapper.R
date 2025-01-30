@@ -5,7 +5,7 @@
 #     in a clear way anywhere.
 #   * Parallel cluster needs to be stopped on error
 
-config_file <- "inst/config/network-construction/construction_template.yml"
+config_file <- "inst/config/construction_template.yml"
 
 # Obtaining the data - From Synapse --------------------------------------------
 

@@ -1,7 +1,7 @@
 # Obtaining the data - From Synapse --------------------------------------------
 
 # Setting up the cofig file
-config_file <- "inst/config/network-consensus/consensus_template.yml"
+config_file <- "inst/config/consensus_template.yml"
 config <- config::get(file = config_file)
 
 if (!dir.exists(config$input_profile$temp_storage_loc)) {
@@ -12,7 +12,7 @@ if (!dir.exists(config$output_profile$output_path)) {
 }
 
 # Log in to Synapse
-synapser::synLogin(authToken = req_args$synapse_authToken)
+synapser::synLogin()
 
 input_file <- synapser::synGet(config$input_profile$expr_matrix_synid,
                                downloadLocation = config$input_profile$temp_storage_loc,

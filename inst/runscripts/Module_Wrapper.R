@@ -1,6 +1,6 @@
 # Obtaining the data - From User --------------------------------------------
 
-config_file <- "inst/config/network-module/module_template.yml"
+config_file <- "inst/config/module_template.yml"
 
 # Obtaining the data - From Synapse --------------------------------------------
 
@@ -15,7 +15,7 @@ if (!dir.exists(config$output_path)) {
 }
 
 # Log in to Synapse
-synapser::synLogin(authToken = req_args$synapse_authToken)
+synapser::synLogin()
 
 consensus_file <- synapser::synGet(config$consensus_net_synid,
                                    downloadLocation = config$temp_storage_loc,
