@@ -57,7 +57,7 @@ constructNetwork.megena <- function(data,
   }
 
   # Turn the edge list into an adjacency matrix
-  all_genes <- unique(c(edge_list$row, edge_list$col))
+  all_genes <- colnames(data)
   network <- matrix(0, nrow = length(all_genes), ncol = length(all_genes),
                     dimnames = list(all_genes, all_genes))
 

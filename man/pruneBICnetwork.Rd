@@ -7,17 +7,19 @@
 pruneBICnetwork(network, exprData, maxEdges = 2e+05)
 }
 \arguments{
-\item{network}{A network object}
+\item{network}{A matrix containing network data. The matrix should be square
+and either upper triangular or symmetric. Can be a sparse or dense matrix.}
 
-\item{exprData}{Expression matrix where rows are samples and columns are genes}
+\item{exprData}{Expression matrix where rows are samples and columns are
+genes}
 
 \item{maxEdges}{Optional. Maximum number of edges to use.}
 }
 \value{
-A named list containing: "network" = a matrix containing the
-  original network subset to the edges that produce the smallest BIC,
-  "bicMin" = the smallest BIC value, "bicPath" = a vector containing the BIC
-  values at each iteration.
+A named list containing: "network" = a sparse matrix where values
+  are TRUE if that edge is in the list of edges that produce the smallest
+  BIC, otherwise FALSE. "bicMin" = the smallest BIC value, "bicPath" = a
+  vector containing the BIC values at each iteration.
 }
 \description{
 This function gets a list of edges from the input network, creates a new

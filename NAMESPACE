@@ -2,6 +2,7 @@
 
 export(arbitrarySparsity)
 export(buildConsensus)
+export(community_edges)
 export(compute.ModularityDensity)
 export(compute.ModuleQualityMetric)
 export(computeBICpath)

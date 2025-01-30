@@ -7,14 +7,25 @@
 fastlm(y, X)
 }
 \arguments{
-\item{y}{Required. A vector of response values}
+\item{y}{A vector of response values}
 
-\item{X}{Required. A matrix of the same number of observations/rows
-as y}
+\item{X}{A matrix of the same number of observations/rows as y}
 }
 \value{
-A named list containing betahat and ginv
+A named list containing: "betahat" = coefficients, and "ginv" = the
+  inverse of t(X) %*% X
 }
 \description{
-This function returns results from a fast linear model TODO
+This function returns results from a fast linear model TODO I think this
+assumes that ncol(X) < nrow(X) but that's never checked for in the code that
+calls this function
+}
+\details{
+This function solves \code{Ax = b} for non-square matrix A as:
+
+\code{x = Ahat * b},
+
+where \code{Ahat = (t(A) * A)^-1 * t(A)}.
+
+Here, A = X and b = y.
 }

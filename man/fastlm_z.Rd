@@ -7,10 +7,9 @@
 fastlm_z(y, X)
 }
 \arguments{
-\item{y}{Required. A vector of response values}
+\item{y}{A vector of response values}
 
-\item{X}{Required. A matrix of the same number of observations/rows
-as y}
+\item{X}{A matrix of the same number of observations/rows as y}
 }
 \value{
 A vector of Z-values

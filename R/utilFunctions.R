@@ -1,11 +1,21 @@
 #' Fast Linear Modeling
 #'
-#' This function returns results from a fast linear model TODO
+#' This function returns results from a fast linear model TODO I think this
+#' assumes that ncol(X) < nrow(X) but that's never checked for in the code that
+#' calls this function
 #'
-#' @param y Required. A vector of response values
-#' @param X Required. A matrix of the same number of observations/rows
-#' as y
-#' @return A named list containing betahat and ginv
+#' This function solves \code{Ax = b} for non-square matrix A as:
+#'
+#' \code{x = Ahat * b},
+#'
+#' where \code{Ahat = (t(A) * A)^-1 * t(A)}.
+#'
+#' Here, A = X and b = y.
+#'
+#' @param y A vector of response values
+#' @param X A matrix of the same number of observations/rows as y
+#' @return A named list containing: "betahat" = coefficients, and "ginv" = the
+#'   inverse of t(X) %*% X
 fastlm <- function(y, X) {
   ginv <- solve(t(X) %*% X)
   Xhat <- ginv %*% t(X)

@@ -2,13 +2,18 @@
 % Please edit documentation in R/compute.ModuleQualityMetric.R
 \name{compute.ModuleQualityMetric}
 \alias{compute.ModuleQualityMetric}
-\title{Find  Modularity Quality}
+\title{Find Modularity Quality}
 \usage{
-compute.ModuleQualityMetric(adj, mod)
+compute.ModuleQualityMetric(g, mod)
+}
+\arguments{
+\item{g}{An \code{igraph} graph of the network}
+
+\item{mod}{A named vector where names are genes and values are module membership}
 }
 \value{
 metrics = data frame of module quality metrics.
 }
 \description{
-This function finds qulaity metrics of all modules
+This function finds quality metrics of all modules
 }

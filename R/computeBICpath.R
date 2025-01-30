@@ -48,7 +48,7 @@ computeBICpath <- function(X, rankedEdges, startI = 1) {
     if (count == startI) {
       for (i in 1:ncol(X)) {
         bicNeighborhood[i] <- fastlm_bic(X[, i], X[, neighborhoods[[i]]],
-                                        correction = ncol(X))
+                                         correction = ncol(X))
       }
       bicCurrent <- sum(bicNeighborhood, na.rm = TRUE)
 
