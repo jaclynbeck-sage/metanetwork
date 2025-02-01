@@ -2,7 +2,7 @@
 % Please edit documentation in R/compute.ModuleQualityMetric.R
 \name{compute.ModuleQualityMetric}
 \alias{compute.ModuleQualityMetric}
-\title{Find Modularity Quality}
+\title{Find Module Quality}
 \usage{
 compute.ModuleQualityMetric(g, mod)
 }
@@ -12,8 +12,14 @@ compute.ModuleQualityMetric(g, mod)
 \item{mod}{A named vector where names are genes and values are module membership}
 }
 \value{
-metrics = data frame of module quality metrics.
+metrics = data frame of module quality metrics, including the number
+  of internal and external edges in each module, and the internal density,
+  contraction, expansion, conductance, fitness, and average degree of each
+  module.
 }
 \description{
 This function finds quality metrics of all modules
+}
+\details{
+TODO more description
 }

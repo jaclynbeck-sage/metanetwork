@@ -12,12 +12,14 @@ compute.ModularityDensity(g, mod)
 \item{mod}{A named vector where names are genes and values are module membership}
 }
 \value{
-Qds = module density.
+Qds = modularity density.
 }
 \description{
-This function calculates modularity density according to Botta and Genio 2016.
+This function calculates modularity density according to Chen, Nguyen, and
+Szymanski 2013.
 }
 \references{
-Federico Botta, Charo I. del Genio. Finding network communities
-using modularity density. https://arxiv.org/abs/1612.07297
+Mingming Chen, Tommy Nguyen, Boleslaw K. Szymanski, 2013. A New
+  Metric for Quality of Network Community Structure.
+  https://doi.org/10.48550/arXiv.1507.04308
 }

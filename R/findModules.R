@@ -26,7 +26,7 @@ findModules <- function(adj, method, nperm = 10, min.module.size = 30, n_cores =
     stop("Adjacency matrix should be square")
   }
 
-  if (!all(adj[lower.tri(adj)] == 0)) {
+  if (!Matrix::isTriangular(adj)) {
     stop("Adjacency matrix should be upper triangular")
   }
 
