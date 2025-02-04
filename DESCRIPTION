@@ -5,26 +5,23 @@ Version: 0.2.0
 Authors@R:
   c(person(given = "Pradeep",
     family = "Pugalenthi",
-    role = c("aut", "cre"),
-    email = "pradeep.pugalenthi@sagebase.org",
+    role = c("aut"),
     comment = c( ORCID = "0000-0001-5863-0468")),
   person(given = "Jake",
     family = "Gockley",
     role = c("ctb"),
-    email = "jake.gockley@sagebase.org",
     comment = c( ORCID = "0000-0001-7993-5308")),
   person(given = "Benjamin",
     family = "Logsdon",
-    email = "ben.logsdon@sagebase.org",
     role = c("aut"),
     comment = c(ORCID = "0000-0002-0572-2569")),
   person(given = "Jaclyn",
     family = "Beck",
     email = "jaclyn.beck@sagebase.org",
-    role = c("ctb"),
+    role = c("aut", "cre"),
     comment = c(ORCID = "0000-0001-9895-1792"))
   )
-Description: Package to infer multiple types of coexpression network representations of high dimensional gene expression data.  Builds network ensembles, extract network statistics, and run enrichments on network features.
+Description: Package to infer multiple types of coexpression network representations of high dimensional gene expression data. Builds network ensembles, extracts network statistics, and runs enrichments on network features.
 Depends: R (>= 3.5.0)
 License: MIT + file LICENSE
 Suggests:

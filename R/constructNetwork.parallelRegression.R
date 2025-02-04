@@ -29,13 +29,6 @@ constructNetwork.parallelRegression <- function(data, regressionFunction,
                                                 regulatorIndex = NULL,
                                                 ...) {
   data <- as.matrix(data)
-
-  clust <- NULL
-  if (n_cores > 1) {
-    log_file <- file.path(log_file_path, paste0(regressionFunction, "_log.txt"))
-    clust <- parallel::makeCluster(n_cores, outfile = log_file)
-  }
-
   genes_use <- colnames(data)
 
   # Subset to just regulator genes if defined
@@ -43,13 +36,22 @@ constructNetwork.parallelRegression <- function(data, regressionFunction,
     genes_use <- colnames(data)[regulatorIndex]
   }
 
-  results <- parallel::parLapply(cl = clust,
-                                 X = 1:ncol(data),
-                                 fun = doRegressionFn,
-                                 data, genes_use, regressionFunction, ...)
+  # Run in parallel
+  if (n_cores > 1) {
+    log_file <- file.path(log_file_path, paste0(regressionFunction, "_log.txt"))
+    clust <- parallel::makeCluster(n_cores, outfile = log_file)
+    doParallel::registerDoParallel(clust)
 
-  if (!is.null(clust)) {
+    results <- parallel::parLapply(cl = clust,
+                                   X = 1:ncol(data),
+                                   fun = doRegressionFn,
+                                   data, genes_use, regressionFunction, ...)
+
     parallel::stopCluster(clust)
+  } else {
+    # Run serial
+    results <- lapply(1:ncol(data), doRegressionFn,
+                      data, genes_use, regressionFunction, ...)
   }
 
   # Results is a list of lists: Each item in the top-level list contains one or
