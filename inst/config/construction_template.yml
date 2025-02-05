@@ -7,7 +7,6 @@ default:
   output_profile:
     output_path: /home/rstudio/meta_out/construction/
     project_id: syn51769643
-    debug_save: FALSE
   n_parallel_cores: 30
   # These arguments will be passed to the corresponding algorithm. Additional
   # algorithms can be added to this list. Along with these default values, any
@@ -23,3 +22,5 @@ default:
     vbsr:
       fdr: 0.05
       n_orderings: 12
+    tigress:
+      nsteps_tigress: 10

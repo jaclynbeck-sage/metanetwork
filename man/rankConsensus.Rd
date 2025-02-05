@@ -4,17 +4,20 @@
 \alias{rankConsensus}
 \title{Rank Consensus Networks}
 \usage{
-rankConsensus(network_files)
+rankConsensus(exprData, network_files)
 }
 \arguments{
-\item{network_files}{A vector or list of file paths pointing to each individual
-network CSV that should be in the consensus. The contents of each file should
-be a square matrix with the columns and rows labeled with the gene names. All
-matrices must have the same sets of genes and be the same dimensions.}
+\item{exprData}{A matrix of the gene expression data used to generate the
+networks. Rows must be samples and columns must be genes.}
+
+\item{network_files}{A vector or list of file paths pointing to each
+individual network CSV that should be in the consensus. The contents of
+each file should be a square matrix with the columns and rows labeled with
+the gene names.}
 }
 \value{
-A new NxN matrix that represents the consensus rank of each edge in
-the network.
+A new NxN matrix, where N = the number of genes in \code{exprData},
+  that represents the consensus rank of each edge in the network.
 }
 \description{
 This function ranks edges in list of network objects and combines the ranks

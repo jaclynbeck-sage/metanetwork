@@ -45,7 +45,6 @@ URL: https://github.com/Sage-Bionetworks/metanetwork,
 Encoding: UTF-8
 biocViews:
 Imports:
-  bit64,
   cluster,
   data.table,
   doParallel,
@@ -64,8 +63,7 @@ Imports:
 Additional_repositories:
   http://ran.synapse.org
 Remotes:
-  blogsdon/vbsr/vbsr,
-  jpvert/tigress
+  blogsdon/vbsr/vbsr
 VignetteBuilder:
   knitr
 RoxygenNote: 7.3.2

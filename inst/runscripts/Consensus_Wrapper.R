@@ -29,6 +29,6 @@ data <- loadCSVFile(fileName)
 
 message("Building Consensus Networks")
 
-buildConsensus(network_files = network_files,
-               exprData = data,
-               outputpath = outputpath)
+metanetwork::buildConsensus(network_files = network_files,
+                            exprData = data,
+                            outputpath = outputpath)

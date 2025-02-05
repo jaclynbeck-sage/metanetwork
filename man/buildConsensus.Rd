@@ -24,5 +24,9 @@ Nothing. Saves the rank consensus network to
   object to \code{<outputpath>/bicNetworks.rds}
 }
 \description{
-This function builds a consensus co-expression network. TODO
+This function builds a consensus co-expression network.
+}
+\details{
+TODO add consensus by weight instead of rank?
+TODO better save format for bicNetworks
 }

@@ -1,6 +1,9 @@
 #' This function builds the Consensus Network from the component network
 #'
-#' This function builds a consensus co-expression network. TODO
+#' This function builds a consensus co-expression network.
+#'
+#' TODO add consensus by weight instead of rank?
+#' TODO better save format for bicNetworks
 #'
 #' @param network_files A vector of file paths pointing to each network matrix.
 #' @param exprData A matrix of the gene expression data used to generate the
@@ -19,7 +22,7 @@ buildConsensus <- function(network_files,
                            exprData,
                            outputpath,
                            max_edges = 2e5) {
-  ranked_network <- rankConsensus(network_files)
+  ranked_network <- rankConsensus(exprData, network_files)
 
   writeCSVFile(ranked_network,
                filename = file.path(outputpath, "rankConsensusNetwork.csv"))

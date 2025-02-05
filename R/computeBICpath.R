@@ -35,7 +35,7 @@ computeBICpath <- function(X, rankedEdges, startI = 1) {
 
   for (count in 1:nedges) {
     if (count %% 1000 == 0) {
-      cat('Count:', count, 'BIC:', bicCurrent, '\n')
+      cat('Edge:', count, 'BIC:', bicCurrent, '\n')
     }
     gene1 <- gene_names[rankedEdges[count, 1]]
     gene2 <- gene_names[rankedEdges[count, 2]]
