@@ -55,9 +55,11 @@ rankConsensus <- function(exprData, network_files) {
     # Rank network edges in ascending order: The highest weights in the network
     # get the highest rank. network[upper.tri(network)] collapses the upper
     # triangle into a vector so lower triangle & diagonal zeros are ignored.
-    # Using "min" for ties.method and subtracting 1 ensures that 0s in the
-    # network get a rank of 0. frankv() is significantly faster than rank().
-    collapsedRank <- data.table::frankv(network, ties.method = "min") - 1
+    # Using "dense" for ties.method and subtracting 1 ensures that 0s in the
+    # network get a rank of 0, and non-zero values in sparser networks don't get
+    # assigned ranks that cluster at the top 99%. frankv() is significantly
+    # faster than rank().
+    collapsedRank <- data.table::frankv(network, ties.method = "dense") - 1
 
     # Avoid integer overflows by normalizing to 1
     collapsedRank <- collapsedRank / max(collapsedRank)

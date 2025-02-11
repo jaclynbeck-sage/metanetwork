@@ -1,49 +1,46 @@
-#' Finds Moduless With Kmeans Clustering
+#' Finds Modules With Kmeans Clustering
 #'
 #' Function to get consensus modules from individual partition matrices
 #'
-#' @param partition.adj Required. A partition.adj = n x m adjacency matrix, where
-#' n is the number of genes and m = number of clustering methods * number of
-#' clusters in each method.
-#' @param min.module.size Optional. An integer between 1 and n genes (Default = 20)
+#' @param partition.adj An MxN matrix, where M is the number of clustering
+#'   methods * the number of clusters in each method, N is the number of genes,
+#'   and the values represent cluster membership: 1 if a gene is in that
+#'   cluster, 0 if not.
+#' @param min.module.size Optional. An integer between 1 and n genes
 #' @param usepam Optional. A logical for input into pam based kmeans clustering
-#' to find the number of clusters with the function `fpc::pamk`. If TRUE, pam is
-#' used, otherwise clara (recommended for large datasets with 2,000 or more
-#' observations; dissimilarity matrices can not be used with clara). (Default = 20)
+#'   to find the number of clusters with the function `fpc::pamk`. If TRUE, pam
+#'   is used, otherwise clara (recommended for large datasets with 2,000 or more
+#'   observations; dissimilarity matrices can not be used with clara).
 #'
-#' @return A dataframe of Gene Modules
+#' @return A dataframe of Gene Modules TODO
 #'
-#' @importFrom magrittr %>%
-#' @importFrom rlang .data
 #' @export
-findModules.consensusKmeans <- function(partition.adj, min.module.size = 20, usepam = FALSE){
-  # Input
-  #      partition.adj = n x m adjacency matrix, where n is the number of genes and m = number of clustering methods * number of clusters in each method
-  #      min.module.size = integer between 1 and n genes
-
-  # Output
-  #      geneModules = n x 3 dimensional data frame with column names as Gene.ID, moduleNumber, and moduleLabel
-
+findModules.consensusKmeans <- function(partition.adj,
+                                        #maxK = 100, # TODO
+                                        min.module.size = 30,
+                                        usepam = TRUE) {
   # Error functions
-  if(!inherits(partition.adj, "matrix"))
-    stop('partition.adjacency matrix should be of class matrix')
+  if (!inherits(partition.adj, "matrix")) {
+    partition.adj <- data.matrix(partition.adj)
+  }
 
   # Use pam based kmeans clustering to find the number of clusters
-  mod = fpc::pamk(partition.adj, krange = 2:30, usepam = usepam)
+  mod <- fpc::pamk(t(partition.adj), krange = 2:30, usepam = usepam,
+                   # both pam and clara
+                   keep.data = FALSE,
+                   # pam only
+                   keep.diss = FALSE,
+                   variant = "faster",
+                   # clara only
+                   samples = 50, pamLike = TRUE)
 
-  # Get individual clusters from the igraph community object
-  geneModules = data.frame(Gene.ID = names(mod$pamobject$cluster),
-                           moduleNumber = mod$pamobject$cluster)
+  mod_final <- mod$pamobject$clustering
 
-  # Rename modules with size less than min module size to 0
-  filteredModules = geneModules %>%
-    dplyr::group_by(.data$moduleNumber) %>%
-    dplyr::summarise(counts = length(unique(.data$Gene.ID))) %>%
-    dplyr::filter(.data$counts >= min.module.size)
-  geneModules$moduleNumber[!(geneModules$moduleNumber %in% filteredModules$moduleNumber)] = 0
+  # Reassign modules smaller than min.module.size to module 0
+  mod_sizes <- table(mod_final)
+  excluded <- names(mod_sizes)[mod_sizes < min.module.size]
 
-  # Change cluster number to color labels
-  geneModules$moduleLabel = WGCNA::labels2colors(geneModules$moduleNumber)
+  mod_final[mod_final %in% excluded] <- 0
 
-  return(geneModules)
+  return(mod_final)
 }

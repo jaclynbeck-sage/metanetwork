@@ -12,10 +12,14 @@ community_edges(g, mod)
 \item{mod}{A vector where names are genes and values are module membership}
 }
 \value{
-An NxN matrix, where N is the number of modules/communities. The
-  diagonal will contain the number of internal edges in each module, and the
+A named list with names "edge.comm" and "renamed_mod". "edge.comm" =
+  an NxN matrix, where N is the number of modules/communities. The diagonal
+  will contain the number of internal edges in each module, and the
   non-diagonals will contain the number of edges between module i and module
-  j.
+  j. "renamed_mod" = \code{mod}, if \code{mod} is already a character vector,
+  otherwise all values of \code{mod} have an "m" pasted in front to force it
+  to be a character vector. This avoids ambiguity between module numbers and
+  indexing into arrays.
 }
 \description{
 Get the number of edges within and between communities.

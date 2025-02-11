@@ -29,7 +29,7 @@ bic_file <- synapser::synGet(config$bic_file_synid,
 # Get bicNetworks.rda
 bicNetworks <- readRDS(bic_file$path)
 
-writeLines(paste("Total number of edges", sum(bicNetworks$network@x)))
+writeLines(paste("Total number of edges:", sum(bicNetworks$network@x)))
 
 # Get rank consensus network for weights
 # TODO loadCSVFile isn't exported in the package
@@ -57,11 +57,16 @@ gc()
 # CFinder = metanetwork::findModules.CFinder(adj, '/home/sage/CFinder-2.0.6--1448/', nperm = 3, min.module.size = 30)
 
 # TODO nperm and min.module.size should be configurable
-algorithms <- c("fast_greedy", "infomap", "label_prop", "linkcommunities", "louvain", "megena", "spinglass", "walktrap")
+algorithms <- c("fast_greedy", "infomap", "label_prop", "linkcommunities",
+                "louvain", "megena", "spinglass", "walktrap")
+# TODO megena crashed at "Calculating distance metric and similarity...":
+# Error in sample.int(length(x), size, replace, prob) : invalid first argument
+# I think it was the second permutation
 results <- lapply(algorithms, function(alg) {
   message(paste0("Running method ", alg, "..."))
-  # TODO algorithm args from config, pass on n_cores too
-  res <- metanetwork::findModules(adj, method = alg, nperm = 3, min.module.size = 30, n_cores = 15)
+  # TODO algorithm args from config
+  res <- findModules(adj, method = alg, nperm = 3,
+                                  min.module.size = 30, n_cores = config$n_cores)
 
   writeCSVFile(res, file.path(config$output_path, paste0(alg, ".csv")))
   return(res)
@@ -75,34 +80,32 @@ partition.adj <- results
 names(partition.adj) <- algorithms
 
 partition.adj <- mapply(function(mod, method) {
-  mod = mod %>%
-    as.data.frame() %>%
-    dplyr::select(gene, module) %>%
-    dplyr::mutate(value = 1, module = paste0(method, '.', module)) %>%
-    tidyr::spread(module, value)
-}, partition.adj, names(partition.adj), SIMPLIFY = FALSE) %>%
-  plyr::join_all(type = "full")
+  mod <- as.data.frame(mod)
+  mod$module <- paste0(method, ".", mod$module)
+  mod$gene <- rownames(mod)
+  return(mod)
+}, partition.adj, names(partition.adj), SIMPLIFY = FALSE)
 
-partition.adj[is.na(partition.adj)] <- 0
-rownames(partition.adj) <- partition.adj$gene
-partition.adj$gene <- NULL
+partition.adj <- do.call(rbind, partition.adj)
+partition.adj$value <- 1
+partition.adj <- tidyr::pivot_wider(partition.adj, names_from = "gene",
+                                    values_from = "value", values_fill = 0)
 
-# Randomise gene order
-set.seed(101)
-partition.adj <- partition.adj[sample(1:nrow(partition.adj), nrow(partition.adj)), ]
-
-partition.adj <- t(partition.adj)
+partition.adj <- as.data.frame(partition.adj)
+rownames(partition.adj) <- partition.adj$module
+partition.adj$module <- NULL
 
 mod <- metanetwork::findModules.consensusCluster(d = partition.adj,
                                                  maxK = 100,
-                                                 reps = 50,
+                                                 n_subsamples = 100,
                                                  pGenes = 0.8,
                                                  clusterAlg = "hclust",
                                                  hclust_method = "average",
-                                                 distance = "pearson",
+                                                 distance_metric = "pearson",
                                                  changeCDFArea = 0.001,
-                                                 nbreaks = 10,
-                                                 seed = 1,
+                                                 n_ks = 20,
                                                  corUse = "everything",
+                                                 n_cores = config$n_cores,
+                                                 log_file_path = "~/meta_out/modules",
                                                  verbose = TRUE,
-                                                 useParallelFlag = TRUE)
+                                                 seed = 101)

@@ -40,7 +40,6 @@ constructNetwork.parallelRegression <- function(data, regressionFunction,
   if (n_cores > 1) {
     log_file <- file.path(log_file_path, paste0(regressionFunction, "_log.txt"))
     clust <- parallel::makeCluster(n_cores, outfile = log_file)
-    doParallel::registerDoParallel(clust)
 
     results <- parallel::parLapply(cl = clust,
                                    X = 1:ncol(data),

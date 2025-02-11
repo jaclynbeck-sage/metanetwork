@@ -5,41 +5,51 @@
 \title{Runs Consensus Clustering Algorithm}
 \usage{
 run.consensus.cluster(
-  d,
+  rep_ind = 0,
+  main.dist.obj,
   kGrid = 2:5,
-  repCount = 10,
   pGenes = 0.8,
-  hclust_method = "average",
-  distance = "pearson",
   clusterAlg = "hclust",
+  hclust_method = "average",
+  distance_metric = "pearson",
   verbose = FALSE,
-  corUse = "everything"
+  seed = 101
 )
 }
 \arguments{
-\item{d}{A matrix where rows are samples and columns are genes}
+\item{rep_ind}{Optional. The index of this random sub-sample, used as an ID
+and in setting the random seed.}
+
+\item{main.dist.obj}{A \code{dist} object containing distances between each
+feature/gene in the original data. The object must have gene names as
+labels.}
 
 \item{kGrid}{Optional. A vector of k values to use for clustering.}
 
-\item{repCount}{Optional. Replicate count for random sampling.}
-
-\item{pGenes}{Optional. Proportion of genes to sample on each rep}
-
-\item{hclust_method}{Optional. The "method" argument of \code{hclust}}
-
-\item{distance}{Optional. Sample distance metrics: "pearson", "spearman", or "euclidean".}
+\item{pGenes}{Optional. Proportion of genes to sample at each random
+sub-sample.}
 
 \item{clusterAlg}{Optional. One of three cluster algorithms: "hclust",
 "kmeans", or "pam".}
 
-\item{verbose}{Optional. When TRUE, prints messages to the screen to indicate progress.}
+\item{hclust_method}{Optional. The "method" argument of \code{hclust}, if
+\code{clusterAlg} is "hclust"}
 
-\item{corUse}{Optional. The "use" argument of the \code{cor} function}
+\item{distance_metric}{Optional. The metric to use to calculate distances:
+"pearson", "spearman", or "euclidean".}
+
+\item{verbose}{Optional. When set to TRUE, prints messages to the screen to
+indicate progress. When FALSE, no messages are printed.}
+
+\item{seed}{Optional. The random seed to use. This value will be added to
+\code{rep_ind} to create a unique seed value for each random sample, for
+reproducibility.}
 }
 \value{
-A named list containing "areaUnderCDF" = a numerical vector of areas,
-and "consensus.matrix" = a list of consensus matrices. Both the vector and
-the inner list are named with the "k" value that was used to create them.
+A named list where names are "k_" plus each \code{k} in \code{kGrid},
+  and each item is a vector of cluster assignments generated from that
+  \code{k} value. The vector's names are genes and the values are cluster
+  numbers.
 }
 \description{
 A modified parallel version of code imported from

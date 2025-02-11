@@ -13,12 +13,14 @@
 #'
 #' @export
 compute.ModuleQualityMetric <- function(g, mod) {
-  edge.comm <- community_edges(g, mod)
+  results <- community_edges(g, mod)
+  edge.comm <- results$edge.comm
+
   internal <- as.numeric(diag(edge.comm))
   external <- as.numeric(rowSums(edge.comm, na.rm = TRUE)) - internal
 
   # Get size of each module
-  N <- as.numeric(table(mod))
+  N <- as.numeric(table(results$renamed_mod))
 
   metrics <- data.frame(moduleNumber = rownames(edge.comm),
                         # Internal edges in each community

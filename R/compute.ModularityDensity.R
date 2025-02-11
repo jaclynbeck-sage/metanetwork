@@ -15,10 +15,13 @@
 #' @export
 compute.ModularityDensity <- function(g, mod) {
   # Get number of edges within and between communities
-  edge.comm <- community_edges(g, mod)
+  results <- community_edges(g, mod)
+  edge.comm <- results$edge.comm
 
   # Number of genes in each module ("|c_i|" in the paper)
-  c_i <- table(mod)
+  c_i <- table(results$renamed_mod)
+
+  stopifnot(all(colnames(edge.comm) == names(c_i)))
 
   # Total number of edges -- "|E|" in paper
   n_edges <- igraph::ecount(g)
@@ -54,30 +57,48 @@ compute.ModularityDensity <- function(g, mod) {
 #' @param g An \code{igraph} graph
 #' @param mod A vector where names are genes and values are module membership
 #'
-#' @returns An NxN matrix, where N is the number of modules/communities. The
-#'   diagonal will contain the number of internal edges in each module, and the
+#' @returns A named list with names "edge.comm" and "renamed_mod". "edge.comm" =
+#'   an NxN matrix, where N is the number of modules/communities. The diagonal
+#'   will contain the number of internal edges in each module, and the
 #'   non-diagonals will contain the number of edges between module i and module
-#'   j.
+#'   j. "renamed_mod" = \code{mod}, if \code{mod} is already a character vector,
+#'   otherwise all values of \code{mod} have an "m" pasted in front to force it
+#'   to be a character vector. This avoids ambiguity between module numbers and
+#'   indexing into arrays.
 #' @export
 community_edges <- function(g, mod) {
-  # Module names need to be characters to show up as row/column names in edge.comm
-  igraph::V(g)$moduleNumber <- as.character(mod[igraph::V(g)$name])
+  # Module names need to be characters to avoid ambiguity between module numbers
+  # and indexing
+  if (is.numeric(mod)) {
+    genes <- names(mod)
+    mod <- paste0("m", mod)
+    names(mod) <- genes
+  }
 
-  all_modules <- sort(unique(igraph::V(g)$moduleNumber))
+  igraph::V(g)$moduleNumber <- mod[igraph::V(g)$name]
+
+  all_modules <- sort(unique(mod))
+
+  edge.comm <- matrix(0, nrow = length(all_modules), ncol = length(all_modules),
+                      dimnames = list(all_modules, all_modules))
 
   # For each community ci, get the within-community edges and the edges between
   # ci and each other community.
-  edge.comm <- sapply(all_modules, function(ci) {
+  for (ind1 in 1:length(all_modules)) {
+    ci <- all_modules[ind1]
+
     # All edges involving nodes in this module
     vi <- which(igraph::V(g)$moduleNumber == ci)
     edges1 <- igraph::incident_edges(g, v = vi)
     edges1 <- unique(do.call(c, edges1))
 
-    lengths <- sapply(all_modules, function(cj) {
+    for (ind2 in ind1:length(all_modules)) {
+      cj <- all_modules[ind2]
+
       # Internal edges
       if (ci == cj) {
         sg <- igraph::induced_subgraph(g, vids = vi)
-        return(igraph::ecount(sg))
+        edge.comm[ci, cj] <- igraph::ecount(sg)
 
       } else {
         # Edges between ci and cj
@@ -85,13 +106,12 @@ community_edges <- function(g, mod) {
         edges2 <- igraph::incident_edges(g, v = vj)
         edges2 <- unique(do.call(c, edges2))
 
-        return(length(igraph::intersection(edges1, edges2)))
+        edge_len <- length(igraph::intersection(edges1, edges2))
+        edge.comm[ci, cj] <- edge_len
+        edge.comm[cj, ci] <- edge_len
       }
-    })
+    }
+  }
 
-    return(lengths)
-  })
-
-  edge.comm <- edge.comm[sort(rownames(edge.comm)), sort(colnames(edge.comm))]
-  return(edge.comm)
+  return(list(edge.comm = edge.comm, renamed_mod = mod))
 }
