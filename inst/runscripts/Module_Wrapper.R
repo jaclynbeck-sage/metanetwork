@@ -15,25 +15,28 @@ if (!dir.exists(config$output_path)) {
 }
 
 # Log in to Synapse
-synapser::synLogin()
+#synapser::synLogin()
 
-consensus_file <- synapser::synGet(config$consensus_net_synid,
-                                   downloadLocation = config$temp_storage_loc,
-                                   ifcollision = "overwrite.local")
+#consensus_file <- synapser::synGet(config$consensus_net_synid,
+#                                   downloadLocation = config$temp_storage_loc,
+#                                   ifcollision = "overwrite.local")
 
-bic_file <- synapser::synGet(config$bic_file_synid,
-                             downloadLocation = config$temp_storage_loc,
-                             ifcollision = "overwrite.local")
+#bic_file <- synapser::synGet(config$bic_file_synid,
+#                             downloadLocation = config$temp_storage_loc,
+#                             ifcollision = "overwrite.local")
 
 #### Get input data from synapse and formulate adjacency matrix ####
 # Get bicNetworks.rda
-bicNetworks <- readRDS(bic_file$path)
+#bicNetworks <- readRDS(bic_file$path)
+bicNetworks <- readRDS("~/meta_out/consensus/bicNetworks.rds")
 
 writeLines(paste("Total number of edges:", sum(bicNetworks$network@x)))
 
 # Get rank consensus network for weights
 # TODO loadCSVFile isn't exported in the package
-rank.cons <- metanetwork::loadCSVFile(consensus_file$path)
+source("R/utilFunctions.R")
+#rank.cons <- metanetwork::loadCSVFile(consensus_file$path)
+rank.cons <- loadCSVFile("~/meta_out/consensus/rankConsensusNetwork.csv")
 
 # Formulate adjacency matrix
 adj <- rank.cons
@@ -59,13 +62,10 @@ gc()
 # TODO nperm and min.module.size should be configurable
 algorithms <- c("fast_greedy", "infomap", "label_prop", "linkcommunities",
                 "louvain", "megena", "spinglass", "walktrap")
-# TODO megena crashed at "Calculating distance metric and similarity...":
-# Error in sample.int(length(x), size, replace, prob) : invalid first argument
-# I think it was the second permutation
 results <- lapply(algorithms, function(alg) {
   message(paste0("Running method ", alg, "..."))
   # TODO algorithm args from config
-  res <- findModules(adj, method = alg, nperm = 3,
+  res <- metanetwork::findModules(adj, method = alg, nperm = 3,
                                   min.module.size = 30, n_cores = config$n_cores)
 
   writeCSVFile(res, file.path(config$output_path, paste0(alg, ".csv")))

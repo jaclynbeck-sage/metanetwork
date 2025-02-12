@@ -33,11 +33,17 @@ findModules <- function(adj, method, nperm = 10, min.module.size = 30, n_cores =
   # Make the upper-triangular adjacency matrix symmetric
   adj <- adj + t(adj)
 
+  # Remove genes that aren't connected to any other genes
+  include <- rowSums(adj != 0) > 0
+  adj <- adj[include, include]
+
   set.seed(nperm) # TODO better seed
 
   # Compute modules by permuting the labels nperm times
   # TODO parallel?
   all.modules <- lapply(1:nperm, function(i, adj, min.module.size) {
+    message(paste0("\tPermutation ", i, "..."))
+
     # Permute gene ordering
     ind <- sample(1:nrow(adj), nrow(adj), replace = FALSE)
     adj1 <- adj[ind, ind]
