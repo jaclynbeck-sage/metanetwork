@@ -13,7 +13,7 @@ fastlm(y, X)
 }
 \value{
 A named list containing: "betahat" = coefficients, and "ginv" = the
-  inverse of t(X) %*% X
+inverse of t(X) \%*\% X
 }
 \description{
 This function returns results from a fast linear model TODO I think this
@@ -21,7 +21,7 @@ assumes that ncol(X) < nrow(X) but that's never checked for in the code that
 calls this function
 }
 \details{
-This function solves \code{Ax = b} for non-square matrix A as:
+This function solves \code{Ax = b} for non-square matrix \code{A} as:
 
 \code{x = Ahat * b},
 

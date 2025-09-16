@@ -7,17 +7,19 @@
 writeCSVFile(object, filename, ...)
 }
 \arguments{
-\item{object}{The object to write to disk, which should be of a type supported
-by \code{fread}. This function assumes that the columns and rows are named.}
+\item{object}{The object to write to disk, which should be of a type
+supported by \link[data.table:fread]{data.table::fread}. This function assumes that the columns and rows are
+named.}
 
-\item{filename}{The path and name of the file where the object should be saved}
+\item{filename}{The path and name of the file where the object should be
+saved}
 
-\item{...}{Optional. Additional arguments to \code{fread}.}
+\item{...}{Optional. Additional arguments to \link[data.table:fread]{data.table::fread}.}
 }
 \value{
 Nothing
 }
 \description{
-Convenience wrapper for \code{data.table::fwrite}, which is faster than
-\code{write.csv}.
+Convenience wrapper for \link[data.table:fwrite]{data.table::fwrite}, which is faster than
+\link{write.csv}.
 }

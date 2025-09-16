@@ -13,9 +13,9 @@ compute.ModuleQualityMetric(g, mod)
 }
 \value{
 metrics = data frame of module quality metrics, including the number
-  of internal and external edges in each module, and the internal density,
-  contraction, expansion, conductance, fitness, and average degree of each
-  module.
+of internal and external edges in each module, and the internal density,
+contraction, expansion, conductance, fitness, and average degree of each
+module.
 }
 \description{
 This function finds quality metrics of all modules

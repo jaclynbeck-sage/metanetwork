@@ -12,21 +12,21 @@ Gene or feature IDs. The matrix will be transposed to work with
 \code{parmigene}.}
 
 \item{...}{Optional. Additional arguments accepted by either
-\code{parmigene::knnmi.all} or \code{parmigene::aracne.m}. The \code{clr}
-and \code{mrnet} do not accept additional arguments.}
+\link[parmigene:knnmi.all]{parmigene::knnmi.all} or \link[parmigene:aracne.m]{parmigene::aracne.m}. The \code{clr} and \code{mrnet}
+functions do not accept additional arguments.}
 }
 \value{
 a named list of three matrices, where "aracne" is the output of
-  \code{parmigene::aracne.m}, "clr" is the output of \code{parmigene::clr},
-  and "mrnet" is the output of \code{parmigene::mrnet}.
+\link[parmigene:aracne.m]{parmigene::aracne.m}, "clr" is the output of \link[parmigene:clr]{parmigene::clr}, and "mrnet"
+is the output of \link[parmigene:mrnet]{parmigene::mrnet}.
 }
 \description{
-This function uses \code{parmigene} to calculate network matrices using the
-MRNET, ARACNE, and CLR algorithms.
+This function uses \code{parmigene} to calculate network matrices using the MRNET,
+ARACNE, and CLR algorithms.
 }
 \details{
-A mutual information matrix is calculated with \code{parmigene::knnmi.all},
-and then three network matrices are calculated from this mutual information
+A mutual information matrix is calculated with \link[parmigene:knnmi.all]{parmigene::knnmi.all}, and
+then three network matrices are calculated from this mutual information
 matrix using MRNET, ARACNE, and CLR. The results from all three algorithms
 are returned as a named list.
 }

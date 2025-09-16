@@ -16,8 +16,8 @@
 #'   each file should be a square matrix with the columns and rows labeled with
 #'   the gene names.
 #'
-#' @return A new NxN matrix, where N = the number of genes in \code{exprData},
-#'   that represents the consensus rank of each edge in the network.
+#' @return A new NxN matrix, where N = the number of genes in `exprData`, that
+#'   represents the consensus rank of each edge in the network.
 #'
 #' @export
 rankConsensus <- function(exprData, network_files) {

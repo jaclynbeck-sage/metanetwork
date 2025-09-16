@@ -20,6 +20,6 @@ Szymanski 2013.
 }
 \references{
 Mingming Chen, Tommy Nguyen, Boleslaw K. Szymanski, 2013. A New
-  Metric for Quality of Network Community Structure.
-  https://doi.org/10.48550/arXiv.1507.04308
+Metric for Quality of Network Community Structure.
+https://doi.org/10.48550/arXiv.1507.04308
 }

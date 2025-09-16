@@ -12,9 +12,9 @@
 #' log files will be stored in the working directory.
 #' @param n_cores Optional. The number of parallel cores to use.
 #' @param regulatorIndex Optional. A vector of numerical indexes into
-#'   \code{colnames(data)} for a subset of genes that should be used in the
-#'   network. All genes in \code{data} will be tested against this subset,
-#'   rather than against every gene. TODO should this stay?
+#'   `colnames(data)` for a subset of genes that should be used in the network.
+#'   All genes in `data` will be tested against this subset, rather than against
+#'   every gene. TODO should this stay?
 #' @param ... Optional. Additional arguments that are passed through to the
 #'   individual network algorithm.
 #'
@@ -79,12 +79,12 @@ constructNetwork.parallelRegression <- function(data, regressionFunction,
 #'
 #' This function is called once per gene to calculate the network in parallel.
 #'
-#' @param gene_number An integer that indicates which gene in \code{data} is
-#'   being tested
+#' @param gene_number An integer that indicates which gene in `data` is being
+#'   tested
 #' @param data An expression matrix where rows are samples and columns are genes
 #' @param genes_use A vector of gene names to include in the network. If this
-#'   vector doesn't include all genes in \code{data}, all genes in \code{data}
-#'   will be tested against this subset, rather than against every gene.
+#'   vector doesn't include all genes in `data`, all genes in `data` will be
+#'   tested against this subset, rather than against every gene.
 #' @param regressionFunction The name of the regression function to use. Current
 #'   options are: lassoIC, lassoCV, ridgeIC, ridgeCV, vbsr
 #' @param ... Optional. Additional arguments to be passed through to the

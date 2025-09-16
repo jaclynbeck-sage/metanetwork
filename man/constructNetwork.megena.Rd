@@ -27,11 +27,11 @@ log files will be stored in the working directory.}
 correlation pairs. (Default = 10)}
 
 \item{...}{Optional. Additional arguments accepted by
-\code{MEGENA::calculate_correlation} or \code{MEGENA::calculate.PFN}.}
+\link[MEGENA:calculate.correlation]{MEGENA::calculate.correlation} or \link[MEGENA:calculate.PFN]{MEGENA::calculate.PFN}.}
 }
 \value{
 An NxN matrix where N is the number of genes used in the network,
-  which may be less than the number of genes in \code{data}.
+which may be less than the number of genes in \code{data}.
 }
 \description{
 This function constructs a network adjacency matrix using MEGENA.

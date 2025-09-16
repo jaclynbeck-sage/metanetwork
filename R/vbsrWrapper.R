@@ -6,7 +6,7 @@
 #'
 #' @inheritParams glmnetIC
 #' @param fdr Optional. FDR threshold cut off for edge determination.)
-#' @param ... Other parameters accepted by \code{vbsr::vbsr()}
+#' @param ... Other parameters accepted by [vbsr::vbsr]
 #'
 #' @return A named list where "Z" is a network matrix constructed from the
 #'   Z-values of the fit, and "2Z" is a network matrix where values from "Z"

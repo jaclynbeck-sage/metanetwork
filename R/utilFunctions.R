@@ -4,11 +4,11 @@
 #' assumes that ncol(X) < nrow(X) but that's never checked for in the code that
 #' calls this function
 #'
-#' This function solves \code{Ax = b} for non-square matrix A as:
+#' This function solves `Ax = b` for non-square matrix `A` as:
 #'
-#' \code{x = Ahat * b},
+#' `x = Ahat * b`,
 #'
-#' where \code{Ahat = (t(A) * A)^-1 * t(A)}.
+#' where `Ahat = (t(A) * A)^-1 * t(A)`.
 #'
 #' Here, A = X and b = y.
 #'
@@ -27,7 +27,7 @@ fastlm <- function(y, X) {
 
 #' Z value for fastlm
 #'
-#' This function runs \code{fastlm} and returns the Z-values associated with the
+#' This function runs [fastlm] and returns the Z-values associated with the
 #' solution.
 #'
 #' @inheritParams fastlm
@@ -50,7 +50,7 @@ fastlm_z <- function(y, X) {
 
 #' Fast Linear Modeling BIC
 #'
-#' This function runs \code{fastlm} and calculates the BIC score based on the
+#' This function runs [fastlm] and calculates the BIC score based on the
 #' solution. TODO
 #'
 #' @param x Optional. A numeric vector or matrix of model coefficients. If not set x
@@ -81,16 +81,16 @@ fastlm_bic <- function(y, x = NULL, correction = 1) {
 
 #' Load CSV File using data.table
 #'
-#' This function loads data from a CSV file using \code{data.table::fread},
-#' which is much faster than \code{read.table} or \code{read.csv}. The data can
-#' optionally be coerced to a matrix or left as a data.frame.
+#' This function loads data from a CSV file using [data.table::fread], which is
+#' much faster than [read.table] or [read.csv]. The data can optionally be
+#' coerced to a matrix or left as a data.frame.
 #'
 #' @param filename The path to the file to load
-#' @param return_matrix Optional. If \code{TRUE}, the loaded data object will be
-#' coerced to a matrix. If \code{FALSE}, the data object will be a \code{data.frame}.
-#' @param ... Optional, other arguments to pass to \code{fread()}.
+#' @param return_matrix Optional. If `TRUE`, the loaded data object will be
+#'   coerced to a matrix. If `FALSE`, the data object will be a `data.frame`.
+#' @param ... Optional, other arguments to pass to [fread].
 #'
-#' @returns either a matrix or a data.frame, depending on the value of \code{return_matrix}
+#' @returns either a matrix or a data.frame, depending on the value of `return_matrix`
 loadCSVFile <- function(filename, return_matrix = TRUE, ...) {
   object <- data.table::fread(file = filename, sep = ",", ...)
   object <- tibble::column_to_rownames(object, var = colnames(object)[1])
@@ -105,13 +105,15 @@ loadCSVFile <- function(filename, return_matrix = TRUE, ...) {
 
 #' Write CSV File
 #'
-#' Convenience wrapper for \code{data.table::fwrite}, which is faster than
-#' \code{write.csv}.
+#' Convenience wrapper for [data.table::fwrite], which is faster than
+#' [write.csv].
 #'
-#' @param object The object to write to disk, which should be of a type supported
-#' by \code{fread}. This function assumes that the columns and rows are named.
-#' @param filename The path and name of the file where the object should be saved
-#' @param ... Optional. Additional arguments to \code{fread}.
+#' @param object The object to write to disk, which should be of a type
+#'   supported by [fread]. This function assumes that the columns and rows are
+#'   named.
+#' @param filename The path and name of the file where the object should be
+#'   saved
+#' @param ... Optional. Additional arguments to [fread].
 #'
 #' @returns Nothing
 writeCSVFile <- function(object, filename, ...) {
@@ -126,8 +128,8 @@ writeCSVFile <- function(object, filename, ...) {
 
 #' Write upper triangular matrix
 #'
-#' Convenience wrapper for \code{writeCSVFile} which converts a matrix to an
-#' upper triangular matrix before writing to a CSV file.
+#' Convenience wrapper for [writeCSVFile] which converts a matrix to an upper
+#' triangular matrix before writing to a CSV file.
 #'
 #' @inheritParams writeCSVFile
 #' @param object A square matrix or other object coercible to a matrix.

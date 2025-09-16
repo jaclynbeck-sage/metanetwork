@@ -2,9 +2,9 @@
 #'
 #' This function implements Trustful Inference of Gene REgulation with Stability
 #' Selection (TIGRESS) algoritm. It is very similar to the function
-#' \code{stabilityselection} in the R package \code{tigress}, except that the
-#' \code{stabilityselection} function does not allow for changing some arguments
-#' to \code{lars::lars} that significantly speed up processing.
+#' `stabilityselection` in the R package `tigress`, except that the
+#' `stabilityselection` function does not allow for changing some arguments to
+#' [lars::lars] that significantly speed up processing.
 #'
 #' @param x A gene expression matrix where rows are samples and columns are
 #'   genes
@@ -13,8 +13,8 @@
 #'   and sampled
 #' @param nsteps_lars Optional. The number of steps that lars should use
 #' @param alpha Optional. When sampling, weights are randomly uniformly
-#'   generated in the interval [alpha, 1].
-#' @param ... Optional. Other arguments to pass to \code{lars::lars}
+#'   generated in the interval `[alpha, 1]`.
+#' @param ... Optional. Other arguments to pass to [lars::lars]
 #'
 #' @return A named vector of co-expression values of gene Y to columns of X
 #' @export

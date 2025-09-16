@@ -14,12 +14,12 @@ fisherEnrichment(genesInModule, genesInGeneSet, genesInBackground)
 \item{genesInBackground}{Required. A character vector of background genes}
 }
 \value{
-A dataframe consisting of column value of fisher test P-Value. number 
+A dataframe consisting of column value of fisher test P-Value. number
 of genes in the test set, enrichment set, the overlap, odds ratio and the genes
 from the test set which are present in the enrichment set.
 }
 \description{
 This function to perform Fishers enrichment analysis. Tests the enrichment of
- `genesInGeneSet` in `genesInModule` considering a bacckground gene set of 
- `genesInBackground`.
+\code{genesInGeneSet} in \code{genesInModule} considering a bacckground gene set of
+\code{genesInBackground}.
 }

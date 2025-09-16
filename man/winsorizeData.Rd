@@ -17,7 +17,7 @@ rows are samples and columns are genes
 Winsorizes a given gene expression matrix.
 }
 \details{
-The top and bottom 1% of values for each gene will be replaced with the .99
+The top and bottom 1\% of values for each gene will be replaced with the .99
 and .01 quantile values for that gene, respectively. All NA values for the
 gene are replaced with the mean expression for that gene. The data is then
 scaled and centered on 0.

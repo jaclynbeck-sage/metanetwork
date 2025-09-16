@@ -18,9 +18,9 @@ and sampled}
 \item{nsteps_lars}{Optional. The number of steps that lars should use}
 
 \item{alpha}{Optional. When sampling, weights are randomly uniformly
-generated in the interval [alpha, 1].}
+generated in the interval \verb{[alpha, 1]}.}
 
-\item{...}{Optional. Other arguments to pass to \code{lars::lars}}
+\item{...}{Optional. Other arguments to pass to \link[lars:lars]{lars::lars}}
 }
 \value{
 A named vector of co-expression values of gene Y to columns of X
@@ -29,6 +29,6 @@ A named vector of co-expression values of gene Y to columns of X
 This function implements Trustful Inference of Gene REgulation with Stability
 Selection (TIGRESS) algoritm. It is very similar to the function
 \code{stabilityselection} in the R package \code{tigress}, except that the
-\code{stabilityselection} function does not allow for changing some arguments
-to \code{lars::lars} that significantly speed up processing.
+\code{stabilityselection} function does not allow for changing some arguments to
+\link[lars:lars]{lars::lars} that significantly speed up processing.
 }

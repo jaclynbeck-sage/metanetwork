@@ -12,10 +12,10 @@
 #' @param doPerm Optional. Number of permutations for calculating FDRs for all
 #'   correlation pairs. (Default = 10)
 #' @param ... Optional. Additional arguments accepted by
-#'   \code{MEGENA::calculate_correlation} or \code{MEGENA::calculate.PFN}.
+#'   [MEGENA::calculate.correlation] or [MEGENA::calculate.PFN].
 #'
 #' @return An NxN matrix where N is the number of genes used in the network,
-#'   which may be less than the number of genes in \code{data}.
+#'   which may be less than the number of genes in `data`.
 #'
 #' @export
 constructNetwork.megena <- function(data,

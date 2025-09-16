@@ -1,19 +1,17 @@
 #' Wrapper for WGCNA
 #'
-#' Runs \code{WGCNA::adjacency} and \code{WGCNA::TOMsimilarity} over a gene
-#' expression matrix.
+#' Runs [WGCNA::adjacency] and [WGCNA::TOMsimilarity] over a gene expression
+#' matrix.
 #'
 #' @param data A gene expression matrix where rows are samples and columns are
 #'   genes.
 #' @param n_cores Optional. How many cores/threads to allow when running WGCNA.
 #'   The default value of 1 means "do not thread".
 #' @param ... Optional. Additional arguments accepted by either
-#'   \code{WGCNA::pickSoftThreshold}, \code{WGCNA::adjacency}, or
-#'   \code{WGCNA::TOMsimilarity}.
+#'   [WGCNA::pickSoftThreshold], [WGCNA::adjacency], or [WGCNA::TOMsimilarity].
 #'
 #' @return a named list of two network matrices, where "adjacency" is the output
-#'   of \code{WGCNA::adjacency} and "TOM" is the output of
-#'   \code{WGCNA::TOMsimilarity}.
+#'   of [WGCNA::adjacency] and "TOM" is the output of [WGCNA::TOMsimilarity].
 #'
 #' @export
 constructNetwork.wgcna <- function(data, n_cores = 1, ...) {

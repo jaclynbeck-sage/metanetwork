@@ -7,28 +7,29 @@
 #'   number of clusters in each method, N is the number of genes, and the values
 #'   represent cluster membership: 1 if a gene is in that cluster, 0 if not.
 #' @param maxK Optional. Maximum number of clusters to evaluate
-#' @param n_subsamples Optional. Number of random sub-samples of the genes to use.
+#' @param n_subsamples Optional. Number of random sub-samples of the genes to
+#'   use.
 #' @param pGenes Optional. Proportion of genes to sample at each random
 #'   sub-sample.
 #' @param clusterAlg Optional. One of three cluster algorithms: "hclust",
 #'   "kmeans", or "pam".
-#' @param hclust_method Optional. The "method" argument of \code{hclust}, if
-#'   \code{clusterAlg} is "hclust"
+#' @param hclust_method Optional. The "method" argument of [hclust], if
+#'   `clusterAlg` is "hclust"
 #' @param distance_metric Optional. The metric to use to calculate distances:
 #'   "pearson", "spearman", or "euclidean".
 #' @param changeCDFArea Optional. Minimum spline distance for seq(2,`maxK`,
 #'   length.out = `n_ks`)
-#' @param n_ks Optional. Rather than test every \code{k} in the range (2,
-#'   \code{maxK}), only \code{n_ks} values in the range will be tested, chosen
-#'   with \code{seq(2, maxK, length.out = n_ks)}.
-#' @param corUse Optional. The "use" argument of the \code{cor} function. Only
-#'   used when \code{clusterAlg} is "hclust" or "pam" and
-#'   \code{distance_metric} is "pearson" or "spearman".
+#' @param n_ks Optional. Rather than test every `k` in the range (2, `maxK`),
+#'   only `n_ks` values in the range will be tested, chosen with `seq(2, maxK,
+#'   length.out = n_ks)`.
+#' @param corUse Optional. The "use" argument of the [stats::cor] function. Only
+#'   used when `clusterAlg` is "hclust" or "pam" and `distance_metric` is
+#'   "pearson" or "spearman".
 #' @param n_cores Optional. Number of parallel cores to use when computing
-#'   clusters. If \code{n_cores} = 1, the function will not run in parallel.
+#'   clusters. If `n_cores` = 1, the function will not run in parallel.
 #' @param log_file_path Optional. If running in parallel, output will be written
-#'   to a log file in the directory specified by \code{log_file_path}. By
-#'   default, logs are written to the current working directory.
+#'   to a log file in the directory specified by `log_file_path`. By default,
+#'   logs are written to the current working directory.
 #' @param verbose Optional. When set to TRUE, prints messages to the screen to
 #'   indicate progress. When FALSE, no messages are printed.
 #' @param seed Optional. The number to use to set the random seed, for

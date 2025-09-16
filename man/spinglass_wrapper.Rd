@@ -13,19 +13,18 @@ spinglass_wrapper(g, min.module.size = 30, ...)
 which is used here to avoid running spinglass on connected graphs with
 fewer than \code{min.module.size} genes in them.}
 
-\item{...}{Optional. Other arguments accepted by
-\code{igraph::cluster_spinglass}.}
+\item{...}{Optional. Other arguments accepted by \link[igraph:cluster_spinglass]{igraph::cluster_spinglass}.}
 }
 \value{
 a named vector where the names are gene names and the values are
-  module membership.
+module membership.
 }
 \description{
-This function wraps \code{igraph::cluster_spinglass} so it can be run on
-all connected sub-graphs of the main graph.
+This function wraps \link[igraph:cluster_spinglass]{igraph::cluster_spinglass} so it can be run on all
+connected sub-graphs of the main graph.
 }
 \details{
-\code{igraph::cluster_spinglass} only works on connected graphs, and the main
+\link[igraph:cluster_spinglass]{igraph::cluster_spinglass} only works on connected graphs, and the main
 graph may have components that are not connected to other components. This
 function divides the main graph into sub-graphs that are connected, runs
 \code{cluster_spinglass} on each sub-graph, and concatenates the membership

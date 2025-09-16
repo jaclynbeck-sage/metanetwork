@@ -14,8 +14,8 @@
 #'   computing the BIC curve.
 #'
 #' @return Nothing. Saves the rank consensus network to
-#'   \code{<outputpath>/rankConsensusNetwork.csv} and saves the BICNetwork
-#'   object to \code{<outputpath>/bicNetworks.rds}
+#'   `<outputpath>/rankConsensusNetwork.csv` and saves the BICNetwork object to
+#'   `<outputpath>/bicNetworks.rds`
 #'
 #' @export
 buildConsensus <- function(network_files,

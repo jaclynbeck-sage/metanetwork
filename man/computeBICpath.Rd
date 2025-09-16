@@ -17,12 +17,12 @@ BIC at in \code{rankedEdges} (Default = 1)}
 }
 \value{
 A named list containing: "bic" = the vector of total BIC after each
-  edge is added, "bicNeighborhood" = BIC for each individual gene and its
-  neighborhood, "neighborhoods" = a list, one item for each gene, where each
-  item is a vector of other genes in the neighborhood of that gene, "flag" =
-  NULL, if no errors happen during calculation, or a 2-column data frame
-  where column 1 is the name of the gene and column 2 is the edge number
-  where errors occurred.
+edge is added, "bicNeighborhood" = BIC for each individual gene and its
+neighborhood, "neighborhoods" = a list, one item for each gene, where each
+item is a vector of other genes in the neighborhood of that gene, "flag" =
+NULL, if no errors happen during calculation, or a 2-column data frame
+where column 1 is the name of the gene and column 2 is the edge number
+where errors occurred.
 }
 \description{
 This function iteratively adds edges to a network from a list of ranked

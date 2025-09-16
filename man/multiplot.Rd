@@ -7,7 +7,7 @@
 multiplot(..., plotlist = NULL, file = NULL, cols = 1, layout = NULL)
 }
 \arguments{
-\item{...}{Required. Multiple ggplot objects, or a plotlist as a list of 
+\item{...}{Required. Multiple ggplot objects, or a plotlist as a list of
 ggplot objects}
 
 \item{plotlist}{Optional. A list of ggplot objects. (Default = NULL)}
@@ -17,9 +17,9 @@ ggplot objects}
 
 \item{cols}{Optional. (Default = 1)}
 
-\item{layout}{Optional. The plot layout as a matrix. eg. if 
-`layout = matrix(c(1,2,3,3), nrow=2, byrow=TRUE)`, then plot 1 will go in the 
-upper left, 2 will go in the upper right, and 3 will go all the way across 
+\item{layout}{Optional. The plot layout as a matrix. eg. if
+\code{layout = matrix(c(1,2,3,3), nrow=2, byrow=TRUE)}, then plot 1 will go in the
+upper left, 2 will go in the upper right, and 3 will go all the way across
 the bottom.}
 }
 \value{

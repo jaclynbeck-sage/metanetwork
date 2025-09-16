@@ -19,6 +19,6 @@ becomes a vector of integers the from 1 to length(y). (?)}
 BIC estimate
 }
 \description{
-This function runs \code{fastlm} and calculates the BIC score based on the
+This function runs \link{fastlm} and calculates the BIC score based on the
 solution. TODO
 }

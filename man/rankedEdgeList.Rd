@@ -9,14 +9,14 @@ rankedEdgeList(network, symmetric = FALSE, maxLength = 1e+07)
 \arguments{
 \item{network}{A network object as a matrix object}
 
-\item{symmetric}{Optional. A logical `TRUE` or `FALSE` to treat `network` as
+\item{symmetric}{Optional. A logical \code{TRUE} or \code{FALSE} to treat \code{network} as
 a symmetrical matrix. (Default = FALSE)}
 
 \item{maxLength}{Optional. The maximum length of an output ranked edgelist.
 (Default = 1e7)}
 }
 \value{
-A greatest to least ranked list of eddge strenge in the form of a 
+A greatest to least ranked list of eddge strenge in the form of a
 data.frame() object.
 }
 \description{

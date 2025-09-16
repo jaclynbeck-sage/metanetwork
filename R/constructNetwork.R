@@ -7,33 +7,31 @@
 #' using the provided path and base file name. Current methods available are:
 #'
 #' \itemize{
-#'  \item \code{c3net}: uses \code{c3net::c3net()}
-#'  \item \code{genie3}: uses \code{GENIE3::GENIE3()}
-#'  \item \code{megena}: uses \code{MEGENA::calculate.PFN()} to rank edges
-#'  \item \code{parmigene}: uses \code{parmigene::knnmi.all} to calculate a
-#'        mutual information matrix, and generates 3 separate networks from
-#'        \code{parmigene::aracne.m}, \code{parmigene::mrnet}, and
-#'        \code{parmigene::clr}.
-#'  \item \code{wgcna}: uses \code{WGCNA::pickSoftThreshold}` to pick a power
-#'        for the adjacency matrix, calculates the matrix with
-#'        \code{WGCNA::adjacency}, and computes the topological overlap matrix
-#'        with \code{WGCNA::TOMsimilarity}. Both the adjacency matrix and the
-#'        TOM matrix are returned.
-#'  \item \code{lassoCV} and \code{ridgeCV}: uses \code{glmnet::cv.glmnet} with
-#'        lasso or ridge regression, respectively, to construct the network using
-#'        cross-validation. The two networks generated using the best \code{lambda}
-#'        (determined by two different criteria) are returned.
-#'  \item \code{lassoIC} and \code{ridgeIC}: uses \code{glmnet::glmnet} with
-#'        lasso or ridge regression, respectively, to construct the network. The
-#'        two networks generated using the best \code{lambda} (determined by the
-#'        best AIC or BIC) are returned.
-#'  \item \code{tigress}: uses \code{metanetwork::tigress} to construct the
-#'        network using the TIGRESS algorithm. NOTE: there is an R package for
-#'        this algorithm called \code{tigress}, however the package does not
-#'        parallelize in a memory-efficient way and takes much longer to run
-#'        than this package's implementation.
-#'  \item \code{vbsr}: uses \code{vbsr::vbsr} to compute the network using
-#'        variational Bayes spike regression.
+#'  \item `c3net`: uses [c3net::c3net]
+#'  \item `genie3`: uses [GENIE3::GENIE3]
+#'  \item `megena`: uses [MEGENA::calculate.PFN] to rank edges
+#'  \item `parmigene`: uses [parmigene::knnmi.all] to calculate a mutual
+#'        information matrix, and generates 3 separate networks from
+#'        [parmigene::aracne.m], [parmigene::mrnet], and [parmigene::clr].
+#'  \item `wgcna`: uses [WGCNA::pickSoftThreshold] to pick a power for the
+#'        adjacency matrix, calculates the matrix with [WGCNA::adjacency], and
+#'        computes the topological overlap matrix with [WGCNA::TOMsimilarity].
+#'        Both the adjacency matrix and the TOM matrix are returned.
+#'  \item `lassoCV` and `ridgeCV`: uses [glmnet::cv.glmnet] with lasso or
+#'  ridge regression, respectively, to construct the network using
+#'  cross-validation. The two networks generated using the best `lambda`
+#'  (determined by two different criteria) are returned.
+#'  \item `lassoIC` and `ridgeIC`: uses [glmnet::glmnet] with lasso or ridge
+#'        regression, respectively, to construct the network. The two networks
+#'        generated using the best `lambda` (determined by the best AIC or BIC)
+#'        are returned.
+#'  \item `tigress`: uses [metanetwork::tigress] to construct the network using
+#'        the TIGRESS algorithm. NOTE: there is an R package for this algorithm
+#'        called `tigress`, however the package does not parallelize in a
+#'        memory-efficient way and takes much longer to run than this package's
+#'        implementation.
+#'  \item `vbsr`: uses [vbsr::vbsr] to compute the network using variational
+#'        Bayes spike regression.
 #' }
 #'
 #' @param data A matrix, or an object that can be coerced to a matrix,
@@ -44,24 +42,23 @@
 #'   "ridgeCV", "ridgeIC", "tigress", and "vbsr".
 #' @param n_cores Optional. The number of cores to use for algorithms that can
 #'   use threads. A value of 1 (default) will result in no threading.
-#' @param save_to_disk Optional. If \code{TRUE}, the network will be saved as a
-#'   CSV file with the location and name specified by the \code{output_filepath}
-#'   and \code{output_filename_base} arguments.
-#' @param output_filepath Optional, only used if \code{save_to_disk} is
-#'   \code{TRUE} or if running one of the parallel regression algorithms. The
-#'   path to the folder where results should be stored, if saving to disk. This
-#'   is also the path where a log file will be stored for parallel execution. If
-#'   omitted, results and logs will be stored in the working directory where the
-#'   code is executed.
-#' @param output_filename_base Optional, only used if \code{save_to_disk} is
-#'   \code{TRUE}. The base name of the output file(s) without any extension. In
-#'   cases where the network method returns a single matrix, the matrix will be
-#'   stored at \code{<output_filepath>/<output_filename_base>.csv}. When a
-#'   network method returns more than one matrix, the name of each matrix will
-#'   be appended to \code{output_filename_base} in the file name, e.g.
-#'   \code{<output_filename_base>_AIC.csv} and
-#'   \code{<output_filename_base>_BIC.csv} for a method that returns a list of
-#'   two matrices named "AIC" and "BIC".
+#' @param save_to_disk Optional. If `TRUE`, the network will be saved as a CSV
+#'   file with the location and name specified by the `output_filepath` and
+#'   `output_filename_base` arguments.
+#' @param output_filepath Optional, only used if `save_to_disk` is `TRUE` or if
+#'   running one of the parallel regression algorithms. The path to the folder
+#'   where results should be stored, if saving to disk. This is also the path
+#'   where a log file will be stored for parallel execution. If omitted, results
+#'   and logs will be stored in the working directory where the code is
+#'   executed.
+#' @param output_filename_base Optional, only used if `save_to_disk` is `TRUE`.
+#'   The base name of the output file(s) without any extension. In cases where
+#'   the network method returns a single matrix, the matrix will be stored at
+#'   `<output_filepath>/<output_filename_base>.csv`. When a network method
+#'   returns more than one matrix, the name of each matrix will be appended to
+#'   `output_filename_base` in the file name, e.g.
+#'   `<output_filename_base>_AIC.csv` and `<output_filename_base>_BIC.csv` for a
+#'   method that returns a list of two matrices named "AIC" and "BIC".
 #' @param ... Optional, additional arguments to pass through to the individual
 #'   algorithm function call(s).
 #'

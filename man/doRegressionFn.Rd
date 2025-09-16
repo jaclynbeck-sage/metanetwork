@@ -7,14 +7,14 @@
 doRegressionFn(gene_number, data, genes_use, regressionFunction, ...)
 }
 \arguments{
-\item{gene_number}{An integer that indicates which gene in \code{data} is
-being tested}
+\item{gene_number}{An integer that indicates which gene in \code{data} is being
+tested}
 
 \item{data}{An expression matrix where rows are samples and columns are genes}
 
 \item{genes_use}{A vector of gene names to include in the network. If this
-vector doesn't include all genes in \code{data}, all genes in \code{data}
-will be tested against this subset, rather than against every gene.}
+vector doesn't include all genes in \code{data}, all genes in \code{data} will be
+tested against this subset, rather than against every gene.}
 
 \item{regressionFunction}{The name of the regression function to use. Current
 options are: lassoIC, lassoCV, ridgeIC, ridgeCV, vbsr}
@@ -24,9 +24,9 @@ regression function.}
 }
 \value{
 a named list, where each list item is a single vector of
-  coefficients returned by the regression function. Several regression
-  functions return coefficients for several different solutions, so these are
-  put in separate list items.
+coefficients returned by the regression function. Several regression
+functions return coefficients for several different solutions, so these are
+put in separate list items.
 }
 \description{
 This function is called once per gene to calculate the network in parallel.

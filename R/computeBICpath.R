@@ -8,7 +8,7 @@
 #' @param rankedEdges An edge list in the form of a matrix where column 1 is
 #'   gene one and column 2 is gene two
 #' @param startI Optional. Which edge to start computing and keeping track of
-#'   BIC at in \code{rankedEdges} (Default = 1)
+#'   BIC at in `rankedEdges` (Default = 1)
 #'
 #' @return A named list containing: "bic" = the vector of total BIC after each
 #'   edge is added, "bicNeighborhood" = BIC for each individual gene and its

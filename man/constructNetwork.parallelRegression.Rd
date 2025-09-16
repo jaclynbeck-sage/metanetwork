@@ -27,17 +27,17 @@ log files will be stored in the working directory.}
 \item{n_cores}{Optional. The number of parallel cores to use.}
 
 \item{regulatorIndex}{Optional. A vector of numerical indexes into
-\code{colnames(data)} for a subset of genes that should be used in the
-network. All genes in \code{data} will be tested against this subset,
-rather than against every gene. TODO should this stay?}
+\code{colnames(data)} for a subset of genes that should be used in the network.
+All genes in \code{data} will be tested against this subset, rather than against
+every gene. TODO should this stay?}
 
 \item{...}{Optional. Additional arguments that are passed through to the
 individual network algorithm.}
 }
 \value{
 a named list, where each item is a network matrix as returned by the
-  regression function. Regression functions may return multiple matrices or
-  only one. If there was an error, the list will be empty.
+regression function. Regression functions may return multiple matrices or
+only one. If there was an error, the list will be empty.
 }
 \description{
 Wrapper to run network detection in a parallel fashion, using a specified

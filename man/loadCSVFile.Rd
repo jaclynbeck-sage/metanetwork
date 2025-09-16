@@ -12,13 +12,13 @@ loadCSVFile(filename, return_matrix = TRUE, ...)
 \item{return_matrix}{Optional. If \code{TRUE}, the loaded data object will be
 coerced to a matrix. If \code{FALSE}, the data object will be a \code{data.frame}.}
 
-\item{...}{Optional, other arguments to pass to \code{fread()}.}
+\item{...}{Optional, other arguments to pass to \link[data.table:fread]{data.table::fread}.}
 }
 \value{
 either a matrix or a data.frame, depending on the value of \code{return_matrix}
 }
 \description{
-This function loads data from a CSV file using \code{data.table::fread},
-which is much faster than \code{read.table} or \code{read.csv}. The data can
-optionally be coerced to a matrix or left as a data.frame.
+This function loads data from a CSV file using \link[data.table:fread]{data.table::fread}, which is
+much faster than \link{read.table} or \link{read.csv}. The data can optionally be
+coerced to a matrix or left as a data.frame.
 }

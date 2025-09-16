@@ -14,15 +14,13 @@ genes.}
 The default value of 1 means "do not thread".}
 
 \item{...}{Optional. Additional arguments accepted by either
-\code{WGCNA::pickSoftThreshold}, \code{WGCNA::adjacency}, or
-\code{WGCNA::TOMsimilarity}.}
+\link[WGCNA:pickSoftThreshold]{WGCNA::pickSoftThreshold}, \link[WGCNA:adjacency]{WGCNA::adjacency}, or \link[WGCNA:TOMsimilarity]{WGCNA::TOMsimilarity}.}
 }
 \value{
 a named list of two network matrices, where "adjacency" is the output
-  of \code{WGCNA::adjacency} and "TOM" is the output of
-  \code{WGCNA::TOMsimilarity}.
+of \link[WGCNA:adjacency]{WGCNA::adjacency} and "TOM" is the output of \link[WGCNA:TOMsimilarity]{WGCNA::TOMsimilarity}.
 }
 \description{
-Runs \code{WGCNA::adjacency} and \code{WGCNA::TOMsimilarity} over a gene
-expression matrix.
+Runs \link[WGCNA:adjacency]{WGCNA::adjacency} and \link[WGCNA:TOMsimilarity]{WGCNA::TOMsimilarity} over a gene expression
+matrix.
 }

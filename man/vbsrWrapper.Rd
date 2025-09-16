@@ -15,14 +15,14 @@ number of rows in x (the number of samples).}
 
 \item{fdr}{Optional. FDR threshold cut off for edge determination.)}
 
-\item{...}{Other parameters accepted by \code{vbsr::vbsr()}}
+\item{...}{Other parameters accepted by \link[vbsr:vbsr]{vbsr::vbsr}}
 }
 \value{
 A named list where "Z" is a network matrix constructed from the
-  Z-values of the fit, and "2Z" is a network matrix where values from "Z"
-  with an adjusted p-value less than the FDR threshold are re-calculated, and
-  all other values are set to 0. P-values are adjusted using the
-  Benjamini-Hochberg correction.
+Z-values of the fit, and "2Z" is a network matrix where values from "Z"
+with an adjusted p-value less than the FDR threshold are re-calculated, and
+all other values are set to 0. P-values are adjusted using the
+Benjamini-Hochberg correction.
 }
 \description{
 This function wraps variable Bayes spike regression, using a single gene's

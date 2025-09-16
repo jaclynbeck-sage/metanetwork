@@ -17,9 +17,9 @@ genes}
 }
 \value{
 A named list containing: "network" = a sparse matrix where values
-  are TRUE if that edge is in the list of edges that produce the smallest
-  BIC, otherwise FALSE. "bicMin" = the smallest BIC value, "bicPath" = a
-  vector containing the BIC values at each iteration.
+are TRUE if that edge is in the list of edges that produce the smallest
+BIC, otherwise FALSE. "bicMin" = the smallest BIC value, "bicPath" = a
+vector containing the BIC values at each iteration.
 }
 \description{
 This function gets a list of edges from the input network, creates a new

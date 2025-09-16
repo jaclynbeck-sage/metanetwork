@@ -27,7 +27,7 @@ clustering functions}
 }
 \value{
 An n x 2 data frame with columns for "gene" and "module", where n is
-  the number of genes
+the number of genes
 }
 \description{
 Find Modules TODO

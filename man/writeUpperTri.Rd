@@ -9,14 +9,15 @@ writeUpperTri(object, filename, ...)
 \arguments{
 \item{object}{A square matrix or other object coercible to a matrix.}
 
-\item{filename}{The path and name of the file where the object should be saved}
+\item{filename}{The path and name of the file where the object should be
+saved}
 
-\item{...}{Optional. Additional arguments to \code{fread}.}
+\item{...}{Optional. Additional arguments to \link[data.table:fread]{data.table::fread}.}
 }
 \value{
 Nothing
 }
 \description{
-Convenience wrapper for \code{writeCSVFile} which converts a matrix to an
-upper triangular matrix before writing to a CSV file.
+Convenience wrapper for \link{writeCSVFile} which converts a matrix to an upper
+triangular matrix before writing to a CSV file.
 }

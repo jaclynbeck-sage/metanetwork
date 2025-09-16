@@ -17,21 +17,21 @@ number of rows in x (the number of samples).}
 alpha = 0, it will run ridge regression. If alpha > 0 and < 1, the
 regression will be a mixture between the two.}
 
-\item{...}{Optional. Other arguments accepted by \code{glmnet()}}
+\item{...}{Optional. Other arguments accepted by \link[glmnet:glmnet]{glmnet::glmnet}}
 }
 \value{
 a 2 x n_genes matrix, where row 1 is the coefficients for the
-  solution with the best AIC, and row 2 is for the best BIC. The rows are
-  named "AIC" and "BIC".
+solution with the best AIC, and row 2 is for the best BIC. The rows are
+named "AIC" and "BIC".
 }
 \description{
 This function runs a glmnet() function with lasso or ridge regression and
 returns the results with the best AIC or BIC. This function is called by both
-\code{lassoIC()} and \code{ridgeIC()}.
+\link{lassoIC} and \link{ridgeIC}.
 }
 \details{
 For gaussian distributions,
-\code{AIC = 2k + n*ln(sigma^2)} and
+\verb{AIC = 2k + n*ln(sigma^2)} and
 \code{BIC = ln(n)*k + n*ln(sigma^2)},
 where \code{k} is the number of parameters, \code{n} is the number of
 observations, and \code{sigma^2 = sum[(y - residuals)^2] / n}.

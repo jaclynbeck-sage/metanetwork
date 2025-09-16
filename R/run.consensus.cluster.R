@@ -8,18 +8,17 @@
 #'
 #' @param rep_ind Optional. The index of this random sub-sample, used as an ID
 #'   and in setting the random seed.
-#' @param main.dist.obj A \code{dist} object containing distances between each
+#' @param main.dist.obj A `dist` object containing distances between each
 #'   feature/gene in the original data. The object must have gene names as
 #'   labels.
 #' @param kGrid Optional. A vector of k values to use for clustering.
 #' @param seed Optional. The random seed to use. This value will be added to
-#'   \code{rep_ind} to create a unique seed value for each random sample, for
+#'   `rep_ind` to create a unique seed value for each random sample, for
 #'   reproducibility.
 #'
-#' @return A named list where names are "k_" plus each \code{k} in \code{kGrid},
-#'   and each item is a vector of cluster assignments generated from that
-#'   \code{k} value. The vector's names are genes and the values are cluster
-#'   numbers.
+#' @return A named list where names are "k_" plus each `k` in `kGrid`, and each
+#'   item is a vector of cluster assignments generated from that `k` value. The
+#'   vector's names are genes and the values are cluster numbers.
 #'
 #' @export
 run.consensus.cluster <- function(rep_ind = 0,

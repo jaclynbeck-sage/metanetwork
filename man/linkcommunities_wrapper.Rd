@@ -14,17 +14,17 @@ which is used here to avoid assigning genes to clusters with fewer than
 \code{min.module.size} nodes in them.}
 
 \item{...}{Optional. Other arguments accepted by
-\code{linkcomm::linkcommunities}.}
+\link[linkcomm:getLinkCommunities]{linkcomm::getLinkCommunities}.}
 }
 \value{
 a named vector where the names are gene names and the values are
-  module membership.
+module membership.
 }
 \description{
-This function wraps \code{linkcomm::linkcommunities}.
+This function wraps \link[linkcomm:getLinkCommunities]{linkcomm::getLinkCommunities}.
 }
 \details{
-\code{linkcomm::linkcommunities} requires an edge list instead of a graph,
-and returns a custom object, so this function creates the edge list and then
+\link[linkcomm:getLinkCommunities]{linkcomm::getLinkCommunities} requires an edge list instead of a graph, and
+returns a custom object, so this function creates the edge list and then
 extracts the cluster membership from the returned object.
 }

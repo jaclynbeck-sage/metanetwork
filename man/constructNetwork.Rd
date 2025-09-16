@@ -26,34 +26,33 @@ should be genes.}
 \item{n_cores}{Optional. The number of cores to use for algorithms that can
 use threads. A value of 1 (default) will result in no threading.}
 
-\item{save_to_disk}{Optional. If \code{TRUE}, the network will be saved as a
-CSV file with the location and name specified by the \code{output_filepath}
-and \code{output_filename_base} arguments.}
+\item{save_to_disk}{Optional. If \code{TRUE}, the network will be saved as a CSV
+file with the location and name specified by the \code{output_filepath} and
+\code{output_filename_base} arguments.}
 
-\item{output_filepath}{Optional, only used if \code{save_to_disk} is
-\code{TRUE} or if running one of the parallel regression algorithms. The
-path to the folder where results should be stored, if saving to disk. This
-is also the path where a log file will be stored for parallel execution. If
-omitted, results and logs will be stored in the working directory where the
-code is executed.}
+\item{output_filepath}{Optional, only used if \code{save_to_disk} is \code{TRUE} or if
+running one of the parallel regression algorithms. The path to the folder
+where results should be stored, if saving to disk. This is also the path
+where a log file will be stored for parallel execution. If omitted, results
+and logs will be stored in the working directory where the code is
+executed.}
 
-\item{output_filename_base}{Optional, only used if \code{save_to_disk} is
-\code{TRUE}. The base name of the output file(s) without any extension. In
-cases where the network method returns a single matrix, the matrix will be
-stored at \code{<output_filepath>/<output_filename_base>.csv}. When a
-network method returns more than one matrix, the name of each matrix will
-be appended to \code{output_filename_base} in the file name, e.g.
-\code{<output_filename_base>_AIC.csv} and
-\code{<output_filename_base>_BIC.csv} for a method that returns a list of
-two matrices named "AIC" and "BIC".}
+\item{output_filename_base}{Optional, only used if \code{save_to_disk} is \code{TRUE}.
+The base name of the output file(s) without any extension. In cases where
+the network method returns a single matrix, the matrix will be stored at
+\verb{<output_filepath>/<output_filename_base>.csv}. When a network method
+returns more than one matrix, the name of each matrix will be appended to
+\code{output_filename_base} in the file name, e.g.
+\verb{<output_filename_base>_AIC.csv} and \verb{<output_filename_base>_BIC.csv} for a
+method that returns a list of two matrices named "AIC" and "BIC".}
 
 \item{...}{Optional, additional arguments to pass through to the individual
 algorithm function call(s).}
 }
 \value{
 a single matrix, or a named list where each item is a matrix, for
-  algorithms that return more than one network. If there was an error, the
-  list will be empty.
+algorithms that return more than one network. If there was an error, the
+list will be empty.
 }
 \description{
 Construct a network matrix or matrices using the specified method.
@@ -64,33 +63,31 @@ a single-item list with one matrix. The network(s) will be saved to disk
 using the provided path and base file name. Current methods available are:
 
 \itemize{
- \item \code{c3net}: uses \code{c3net::c3net()}
- \item \code{genie3}: uses \code{GENIE3::GENIE3()}
- \item \code{megena}: uses \code{MEGENA::calculate.PFN()} to rank edges
- \item \code{parmigene}: uses \code{parmigene::knnmi.all} to calculate a
-       mutual information matrix, and generates 3 separate networks from
-       \code{parmigene::aracne.m}, \code{parmigene::mrnet}, and
-       \code{parmigene::clr}.
- \item \code{wgcna}: uses \code{WGCNA::pickSoftThreshold}` to pick a power
-       for the adjacency matrix, calculates the matrix with
-       \code{WGCNA::adjacency}, and computes the topological overlap matrix
-       with \code{WGCNA::TOMsimilarity}. Both the adjacency matrix and the
-       TOM matrix are returned.
- \item \code{lassoCV} and \code{ridgeCV}: uses \code{glmnet::cv.glmnet} with
-       lasso or ridge regression, respectively, to construct the network using
-       cross-validation. The two networks generated using the best \code{lambda}
-       (determined by two different criteria) are returned.
- \item \code{lassoIC} and \code{ridgeIC}: uses \code{glmnet::glmnet} with
-       lasso or ridge regression, respectively, to construct the network. The
-       two networks generated using the best \code{lambda} (determined by the
-       best AIC or BIC) are returned.
- \item \code{tigress}: uses \code{metanetwork::tigress} to construct the
-       network using the TIGRESS algorithm. NOTE: there is an R package for
-       this algorithm called \code{tigress}, however the package does not
-       parallelize in a memory-efficient way and takes much longer to run
-       than this package's implementation.
- \item \code{vbsr}: uses \code{vbsr::vbsr} to compute the network using
-       variational Bayes spike regression.
+\item \code{c3net}: uses \link[c3net:c3net]{c3net::c3net}
+\item \code{genie3}: uses \link[GENIE3:GENIE3]{GENIE3::GENIE3}
+\item \code{megena}: uses \link[MEGENA:calculate.PFN]{MEGENA::calculate.PFN} to rank edges
+\item \code{parmigene}: uses \link[parmigene:knnmi.all]{parmigene::knnmi.all} to calculate a mutual
+information matrix, and generates 3 separate networks from
+\link[parmigene:aracne.m]{parmigene::aracne.m}, \link[parmigene:mrnet]{parmigene::mrnet}, and \link[parmigene:clr]{parmigene::clr}.
+\item \code{wgcna}: uses \link[WGCNA:pickSoftThreshold]{WGCNA::pickSoftThreshold} to pick a power for the
+adjacency matrix, calculates the matrix with \link[WGCNA:adjacency]{WGCNA::adjacency}, and
+computes the topological overlap matrix with \link[WGCNA:TOMsimilarity]{WGCNA::TOMsimilarity}.
+Both the adjacency matrix and the TOM matrix are returned.
+\item \code{lassoCV} and \code{ridgeCV}: uses \link[glmnet:cv.glmnet]{glmnet::cv.glmnet} with lasso or
+ridge regression, respectively, to construct the network using
+cross-validation. The two networks generated using the best \code{lambda}
+(determined by two different criteria) are returned.
+\item \code{lassoIC} and \code{ridgeIC}: uses \link[glmnet:glmnet]{glmnet::glmnet} with lasso or ridge
+regression, respectively, to construct the network. The two networks
+generated using the best \code{lambda} (determined by the best AIC or BIC)
+are returned.
+\item \code{tigress}: uses \link{tigress} to construct the network using
+the TIGRESS algorithm. NOTE: there is an R package for this algorithm
+called \code{tigress}, however the package does not parallelize in a
+memory-efficient way and takes much longer to run than this package's
+implementation.
+\item \code{vbsr}: uses \link[vbsr:vbsr]{vbsr::vbsr} to compute the network using variational
+Bayes spike regression.
 }
 }
 \examples{

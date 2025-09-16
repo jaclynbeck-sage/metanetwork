@@ -32,7 +32,7 @@ sub-sample.}
 \item{clusterAlg}{Optional. One of three cluster algorithms: "hclust",
 "kmeans", or "pam".}
 
-\item{hclust_method}{Optional. The "method" argument of \code{hclust}, if
+\item{hclust_method}{Optional. The "method" argument of \link{hclust}, if
 \code{clusterAlg} is "hclust"}
 
 \item{distance_metric}{Optional. The metric to use to calculate distances:
@@ -46,10 +46,9 @@ indicate progress. When FALSE, no messages are printed.}
 reproducibility.}
 }
 \value{
-A named list where names are "k_" plus each \code{k} in \code{kGrid},
-  and each item is a vector of cluster assignments generated from that
-  \code{k} value. The vector's names are genes and the values are cluster
-  numbers.
+A named list where names are "k_" plus each \code{k} in \code{kGrid}, and each
+item is a vector of cluster assignments generated from that \code{k} value. The
+vector's names are genes and the values are cluster numbers.
 }
 \description{
 A modified parallel version of code imported from

@@ -13,18 +13,18 @@ in sparse or dense matrix format.}
 \item{y}{The response variable (a single gene), an nx1 matrix where n = the
 number of rows in x (the number of samples).}
 
-\item{...}{Optional. Other arguments accepted by \code{glmnet()}}
+\item{...}{Optional. Other arguments accepted by \link[glmnet:glmnet]{glmnet::glmnet}}
 }
 \value{
 a 2 x n_genes matrix, where row 1 is the coefficients for the
-  solution with the minimum CVM (#1 above), and row 2 is for the best SE1 (#2
-  above). The rows are named "lambda.min" and "lambda.1se".
+solution with the minimum CVM (#1 above), and row 2 is for the best SE1 (#2
+above). The rows are named "lambda.min" and "lambda.1se".
 }
 \description{
-This function is a wrapper for \code{glmnetCV} that runs a glmnet() function
-with lasso regression and returns the results with the best cross-validation
+This function is a wrapper for \link{glmnetCV} that runs a glmnet() function with
+lasso regression and returns the results with the best cross-validation
 solutions.
 }
 \seealso{
-[glmnetCV]
+\link{glmnetCV}
 }

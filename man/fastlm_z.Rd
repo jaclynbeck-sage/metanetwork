@@ -15,6 +15,6 @@ fastlm_z(y, X)
 A vector of Z-values
 }
 \description{
-This function runs \code{fastlm} and returns the Z-values associated with the
+This function runs \link{fastlm} and returns the Z-values associated with the
 solution.
 }

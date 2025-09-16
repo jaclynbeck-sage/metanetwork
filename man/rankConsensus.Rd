@@ -16,8 +16,8 @@ each file should be a square matrix with the columns and rows labeled with
 the gene names.}
 }
 \value{
-A new NxN matrix, where N = the number of genes in \code{exprData},
-  that represents the consensus rank of each edge in the network.
+A new NxN matrix, where N = the number of genes in \code{exprData}, that
+represents the consensus rank of each edge in the network.
 }
 \description{
 This function ranks edges in list of network objects and combines the ranks

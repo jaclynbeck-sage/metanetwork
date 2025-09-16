@@ -3,7 +3,7 @@
 #' This function calculates modularity density according to Chen, Nguyen, and
 #' Szymanski 2013.
 #'
-#' @param g An \code{igraph} graph of the network
+#' @param g An `igraph` graph of the network
 #' @param mod A named vector where names are genes and values are module membership
 #'
 #' @return Qds = modularity density.
@@ -54,17 +54,17 @@ compute.ModularityDensity <- function(g, mod) {
 #'
 #' Get the number of edges within and between communities.
 #'
-#' @param g An \code{igraph} graph
+#' @param g An `igraph` graph
 #' @param mod A vector where names are genes and values are module membership
 #'
 #' @returns A named list with names "edge.comm" and "renamed_mod". "edge.comm" =
 #'   an NxN matrix, where N is the number of modules/communities. The diagonal
 #'   will contain the number of internal edges in each module, and the
 #'   non-diagonals will contain the number of edges between module i and module
-#'   j. "renamed_mod" = \code{mod}, if \code{mod} is already a character vector,
-#'   otherwise all values of \code{mod} have an "m" pasted in front to force it
-#'   to be a character vector. This avoids ambiguity between module numbers and
-#'   indexing into arrays.
+#'   j. "renamed_mod" = `mod`, if `mod` is already a character vector, otherwise
+#'   all values of `mod` have an "m" pasted in front to force it to be a
+#'   character vector. This avoids ambiguity between module numbers and indexing
+#'   into arrays.
 #' @export
 community_edges <- function(g, mod) {
   # Module names need to be characters to avoid ambiguity between module numbers

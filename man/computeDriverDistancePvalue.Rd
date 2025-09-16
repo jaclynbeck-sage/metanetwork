@@ -8,7 +8,7 @@ computeDriverDistancePvalue(geneSet, graph, nsamp = 100)
 }
 \arguments{
 \item{geneSet}{Required. A user specified gene set corresponding to vertex names
-in `graph`. All the names are not required to be entirely represented in the 
+in \code{graph}. All the names are not required to be entirely represented in the
 graph object.}
 
 \item{graph}{Required. An igraph graph object consisting of vertices of genes
@@ -18,13 +18,13 @@ and edges representing co-expression between genes.}
 p-value construction (Default = 100)}
 }
 \value{
-a list consisting of a mean distance of genes within the largest component 
-to each other, the pairwise list of distances, and a vector the length of `nsamp`
+a list consisting of a mean distance of genes within the largest component
+to each other, the pairwise list of distances, and a vector the length of \code{nsamp}
 consisting of the null distribution to calculate the p-value.
 }
 \description{
-Calculates the Driver Distance of `geneSet` in `graph` as described in
-`metanetworks::computeDriverDistance` and permutes `nsamp` permutations of random
-gene sets from `graph` which are the size of `geneSet` to create a null distribution
-to derive p-values for the Driver Distances of `geneSet`.
+Calculates the Driver Distance of \code{geneSet} in \code{graph} as described in
+\code{metanetworks::computeDriverDistance} and permutes \code{nsamp} permutations of random
+gene sets from \code{graph} which are the size of \code{geneSet} to create a null distribution
+to derive p-values for the Driver Distances of \code{geneSet}.
 }

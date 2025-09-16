@@ -20,8 +20,8 @@ computing the BIC curve.}
 }
 \value{
 Nothing. Saves the rank consensus network to
-  \code{<outputpath>/rankConsensusNetwork.csv} and saves the BICNetwork
-  object to \code{<outputpath>/bicNetworks.rds}
+\verb{<outputpath>/rankConsensusNetwork.csv} and saves the BICNetwork object to
+\verb{<outputpath>/bicNetworks.rds}
 }
 \description{
 This function builds a consensus co-expression network.

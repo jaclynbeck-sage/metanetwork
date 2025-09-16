@@ -15,7 +15,7 @@ cluster, 0 if not.}
 \item{min.module.size}{Optional. An integer between 1 and n genes}
 
 \item{usepam}{Optional. A logical for input into pam based kmeans clustering
-to find the number of clusters with the function `fpc::pamk`. If TRUE, pam
+to find the number of clusters with the function \code{fpc::pamk}. If TRUE, pam
 is used, otherwise clara (recommended for large datasets with 2,000 or more
 observations; dissimilarity matrices can not be used with clara).}
 }

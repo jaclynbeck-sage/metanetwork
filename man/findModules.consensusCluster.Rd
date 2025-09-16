@@ -28,7 +28,8 @@ represent cluster membership: 1 if a gene is in that cluster, 0 if not.}
 
 \item{maxK}{Optional. Maximum number of clusters to evaluate}
 
-\item{n_subsamples}{Optional. Number of random sub-samples of the genes to use.}
+\item{n_subsamples}{Optional. Number of random sub-samples of the genes to
+use.}
 
 \item{pGenes}{Optional. Proportion of genes to sample at each random
 sub-sample.}
@@ -36,29 +37,28 @@ sub-sample.}
 \item{clusterAlg}{Optional. One of three cluster algorithms: "hclust",
 "kmeans", or "pam".}
 
-\item{hclust_method}{Optional. The "method" argument of \code{hclust}, if
+\item{hclust_method}{Optional. The "method" argument of \link{hclust}, if
 \code{clusterAlg} is "hclust"}
 
 \item{distance_metric}{Optional. The metric to use to calculate distances:
 "pearson", "spearman", or "euclidean".}
 
-\item{changeCDFArea}{Optional. Minimum spline distance for seq(2,`maxK`,
-length.out = `n_ks`)}
+\item{changeCDFArea}{Optional. Minimum spline distance for seq(2,\code{maxK},
+length.out = \code{n_ks})}
 
-\item{n_ks}{Optional. Rather than test every \code{k} in the range (2,
-\code{maxK}), only \code{n_ks} values in the range will be tested, chosen
-with \code{seq(2, maxK, length.out = n_ks)}.}
+\item{n_ks}{Optional. Rather than test every \code{k} in the range (2, \code{maxK}),
+only \code{n_ks} values in the range will be tested, chosen with \code{seq(2, maxK, length.out = n_ks)}.}
 
-\item{corUse}{Optional. The "use" argument of the \code{cor} function. Only
-used when \code{clusterAlg} is "hclust" or "pam" and
-\code{distance_metric} is "pearson" or "spearman".}
+\item{corUse}{Optional. The "use" argument of the \link[stats:cor]{stats::cor} function. Only
+used when \code{clusterAlg} is "hclust" or "pam" and \code{distance_metric} is
+"pearson" or "spearman".}
 
 \item{n_cores}{Optional. Number of parallel cores to use when computing
 clusters. If \code{n_cores} = 1, the function will not run in parallel.}
 
 \item{log_file_path}{Optional. If running in parallel, output will be written
-to a log file in the directory specified by \code{log_file_path}. By
-default, logs are written to the current working directory.}
+to a log file in the directory specified by \code{log_file_path}. By default,
+logs are written to the current working directory.}
 
 \item{verbose}{Optional. When set to TRUE, prints messages to the screen to
 indicate progress. When FALSE, no messages are printed.}

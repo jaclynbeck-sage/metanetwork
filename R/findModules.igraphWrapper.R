@@ -5,7 +5,7 @@
 #'
 #' TODO set random seed
 #'
-#' @param g An \code{igraph} graph
+#' @param g An `igraph` graph
 #' @param method Which method to use to find modules. Current options supported
 #'   by this wrapper are: fast_greedy, infomap, label_prop, leading_eigen,
 #'   linkcommunities, louvain, spinglass, walktrap
@@ -90,21 +90,20 @@ findModules.igraphWrapper <- function(g,
 
 #' Spinglass wrapper
 #'
-#' This function wraps \code{igraph::cluster_spinglass} so it can be run on
-#' all connected sub-graphs of the main graph.
+#' This function wraps [igraph::cluster_spinglass] so it can be run on all
+#' connected sub-graphs of the main graph.
 #'
-#' \code{igraph::cluster_spinglass} only works on connected graphs, and the main
+#' [igraph::cluster_spinglass] only works on connected graphs, and the main
 #' graph may have components that are not connected to other components. This
 #' function divides the main graph into sub-graphs that are connected, runs
-#' \code{cluster_spinglass} on each sub-graph, and concatenates the membership
+#' `cluster_spinglass` on each sub-graph, and concatenates the membership
 #' results into one vector.
 #'
-#' @param g An \code{igraph} graph
+#' @param g An `igraph` graph
 #' @param min.module.size Optional. The minimum number of genes per module,
 #'   which is used here to avoid running spinglass on connected graphs with
-#'   fewer than \code{min.module.size} genes in them.
-#' @param ... Optional. Other arguments accepted by
-#'   \code{igraph::cluster_spinglass}.
+#'   fewer than `min.module.size` genes in them.
+#' @param ... Optional. Other arguments accepted by [igraph::cluster_spinglass].
 #'
 #' @returns a named vector where the names are gene names and the values are
 #'   module membership.
@@ -133,18 +132,18 @@ spinglass_wrapper <- function(g, min.module.size = 30, ...) {
 
 #' Linkcommunities wrapper
 #'
-#' This function wraps \code{linkcomm::linkcommunities}.
+#' This function wraps [linkcomm::getLinkCommunities].
 #'
-#' \code{linkcomm::linkcommunities} requires an edge list instead of a graph,
-#' and returns a custom object, so this function creates the edge list and then
+#' [linkcomm::getLinkCommunities] requires an edge list instead of a graph, and
+#' returns a custom object, so this function creates the edge list and then
 #' extracts the cluster membership from the returned object.
 #'
-#' @param g An \code{igraph} graph
+#' @param g An `igraph` graph
 #' @param min.module.size Optional. The minimum number of genes per module,
 #'   which is used here to avoid assigning genes to clusters with fewer than
-#'   \code{min.module.size} nodes in them.
+#'   `min.module.size` nodes in them.
 #' @param ... Optional. Other arguments accepted by
-#'   \code{linkcomm::linkcommunities}.
+#'   [linkcomm::getLinkCommunities].
 #'
 #' @returns a named vector where the names are gene names and the values are
 #'   module membership.

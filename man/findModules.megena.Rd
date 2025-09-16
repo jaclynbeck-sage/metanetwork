@@ -15,12 +15,12 @@ If n_cores = 1, MEGENA will not compute in parallel.}
 \item{alpha.cut}{Optional. Resolution cut-off for cutting the cluster
 dendrogram.}
 
-\item{...}{Optional. Additional arguments for \code{MEGENA::do.MEGENA} or
-\code{MEGENA::get.union.cut}.}
+\item{...}{Optional. Additional arguments for \link[MEGENA:do.MEGENA]{MEGENA::do.MEGENA} or
+\link[MEGENA:get.union.cut]{MEGENA::get.union.cut}.}
 }
 \value{
 A named vector where the names are genes and the values are cluster
-  assignments
+assignments
 }
 \description{
 This function finds modules from a network adjacency matrix using MEGENA.

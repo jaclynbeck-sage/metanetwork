@@ -1,4 +1,5 @@
 # Contributing to sageseqr
+# JB TODO update this documentation
 
 In the spirit of open and team science, contributions to this resource are encouraged and welcome!
 

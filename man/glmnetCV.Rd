@@ -19,21 +19,23 @@ regression will be a mixture between the two.}
 
 \item{folds}{Optional. The number of cross validation folds to partition the
 data into. (Default = 10). Corresponds to the \code{nfolds} argument of
-\code{cv.glmnet}.}
+\link[glmnet:cv.glmnet]{glmnet::cv.glmnet}.}
 
-\item{...}{Optional. Other arguments accepted by \code{glmnet()}}
+\item{...}{Optional. Other arguments accepted by \link[glmnet:glmnet]{glmnet::glmnet}}
 }
 \value{
 a 2 x n_genes matrix, where row 1 is the coefficients for the
-  solution with the minimum CVM (#1 above), and row 2 is for the best SE1 (#2
-  above). The rows are named "lambda.min" and "lambda.1se".
+solution with the minimum CVM (#1 above), and row 2 is for the best SE1 (#2
+above). The rows are named "lambda.min" and "lambda.1se".
 }
 \description{
 This function runs a glmnet() with lasso or ridge regression and returns the
 results from the fit for:
-1. The value of lambda that gives the minimum mean cross-validation error, and,
-2. The largest value of lambda such that error is within 1 standard error of the minimum.
+\enumerate{
+\item The value of lambda that gives the minimum mean cross-validation error, and,
+\item The largest value of lambda such that error is within 1 standard error of the minimum.
+}
 }
 \details{
-This function is called by both \code{lassoCV()} and \code{ridgeCV()}.
+This function is called by both \link{lassoCV} and \link{ridgeCV}.
 }
