@@ -2,20 +2,24 @@
 % Please edit documentation in R/compute.ModuleQualityMetric.R
 \name{compute.ModuleQualityMetric}
 \alias{compute.ModuleQualityMetric}
-\title{Find  Modularity Quality}
+\title{Find Module Quality}
 \usage{
-compute.ModuleQualityMetric(adj, mod)
+compute.ModuleQualityMetric(g, mod)
 }
 \arguments{
-\item{adj}{Required. An n x n upper triangular adjacency in the matrix class 
-format.}
+\item{g}{An \code{igraph} graph of the network}
 
-\item{mod}{Required. An n x 3 dimensional data frame with column names as 
-Gene.ID, moduleNumber, and moduleLabel.}
+\item{mod}{A named vector where names are genes and values are module membership}
 }
 \value{
-metrics = data frame of module quality metrics.
+metrics = data frame of module quality metrics, including the number
+of internal and external edges in each module, and the internal density,
+contraction, expansion, conductance, fitness, and average degree of each
+module.
 }
 \description{
-This function finds qulaity metrics of all modules
+This function finds quality metrics of all modules
+}
+\details{
+TODO more description
 }

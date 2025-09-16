@@ -1,0 +1,34 @@
+# NOTE: This has not been tested thoroughly
+FROM rocker/rstudio
+
+RUN apt-get update -y && apt-get upgrade -y
+RUN apt-get install -y ssh nano less curl python3 python3-pip python3-venv python3-virtualenv
+RUN apt-get install -y libpng-dev libglpk-dev libxt-dev liblzma-dev libbz2-dev
+RUN apt-get install -y libncurses-dev libffi-dev libsqlite3-dev libreadline-dev tk-dev libopenmpi-dev
+RUN apt-get clean
+
+USER rstudio
+
+RUN R -e "install.packages(c('BiocManager', 'devtools')"
+
+# Temporary (?) to get synapser to install properly
+RUN R -e "remotes::install_version('rjson', version='0.2.21')"
+RUN R -e "install.packages('reticulate')"
+RUN R -e "reticulate::install_python(version='3.11')"
+RUN R -e "install.packages('synapser', repos=c('http://ran.synapse.org', 'https://cloud.r-project.org'))"
+
+# Temporary (?) to get some Bioconductor packages to install
+RUN R -e "BiocManager::install(c('S4Vectors', 'XVector'))"
+
+RUN R -e "devtools::install_github('jaclynbeck-sage/metanetwork')"
+
+USER root
+
+# RandomForest
+RUN R -e "install.packages('https://cran.r-project.org/src/contrib/Archive/randomForest/randomForest_4.6-12.tar.gz', repos=NULL, type='source')"
+
+# Glmnet
+RUN R -e "install.packages('glmnet')"
+
+# Githubr
+RUN R -e "devtools::install_github('brian-bot/githubr')"

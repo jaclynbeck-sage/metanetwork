@@ -4,54 +4,24 @@
 \alias{findModules.megena}
 \title{Find Modules with Megena Clustering}
 \usage{
-findModules.megena(
-  data,
-  method = "pearson",
-  FDR.cutoff = 0.05,
-  module.pval = 0.05,
-  hub.pval = 0.05,
-  doPar = TRUE,
-  n.cores = NULL,
-  cor.perm = 10,
-  hub.perm = 100,
-  min_module = 30
-)
+findModules.megena(g, n_cores = 1, alpha.cut = 1, ...)
 }
 \arguments{
-\item{data}{Required. An n x n upper triangular adjacency in the matrix class 
-format.}
+\item{g}{An \code{igraph} graph}
 
-\item{method}{Optional. Method for correlation. either pearson or spearman. 
-(Default = "pearson")}
+\item{n_cores}{Optional. The number of cores to use for parallel computing.
+If n_cores = 1, MEGENA will not compute in parallel.}
 
-\item{FDR.cutoff}{Optional. FDR threshold to define significant correlations 
-upon shuffling samples. (Default = 0.05)}
+\item{alpha.cut}{Optional. Resolution cut-off for cutting the cluster
+dendrogram.}
 
-\item{module.pval}{Optional. Module significance p-value. Recommended is 0.05. 
-(Default = 0.05)}
-
-\item{hub.pval}{Optional. Connectivity significance p-value based random 
-tetrahedral networks. (Default = 0.05)}
-
-\item{doPar}{Optional. If parallelization of clusters is allowed (Default =TRUE)}
-
-\item{n.cores}{Optional. The number of cores/threads to call for PCP. If NULL, 
-n.cores = detectCores() - 1. (Default = NULL)}
-
-\item{cor.perm}{Optional. Number of permutations for calculating FDRs for all 
-correlation pairs. (Default = 10)}
-
-\item{hub.perm}{Optional. number of permutations for calculating connectivity 
-significance p-value. (Default = 100)}
-
-\item{min_module}{Optional. minimum number of nodes/genes allowed for filtering
-(Default = 30)}
+\item{...}{Optional. Additional arguments for \link[MEGENA:do.MEGENA]{MEGENA::do.MEGENA} or
+\link[MEGENA:get.union.cut]{MEGENA::get.union.cut}.}
 }
 \value{
-GeneModules = n x 3 dimensional data frame with column names as Gene.ID,
-moduleNumber, and moduleLabel.
+A named vector where the names are genes and the values are cluster
+assignments
 }
 \description{
-This function finds modules from network adjacency
-matrix using MEGENA.
+This function finds modules from a network adjacency matrix using MEGENA.
 }

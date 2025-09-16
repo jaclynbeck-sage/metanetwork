@@ -7,17 +7,17 @@
 simulateNetworkData(n, p, prop, adjustment = 10)
 }
 \arguments{
-\item{n}{Required. The number of rows to simulate in the data. These correspond 
+\item{n}{Required. The number of rows to simulate in the data. These correspond
 to the number of simulated samples}
 
-\item{p}{Required. The number of columns to simulate in the data. These correspond 
+\item{p}{Required. The number of columns to simulate in the data. These correspond
 to the number of gene features}
 
 \item{prop}{Required. a value between 0 and 1, corresponding the probability
-value in the `rbinom()` adjustment of expression values.}
+value in the \code{rbinom()} adjustment of expression values.}
 
 \item{adjustment}{Optional. A matrix, vector, or 1D array, or missing. This
-corresponds to the x vaule in the `diag()` adjustment of the inverse covariance
+corresponds to the x vaule in the \code{diag()} adjustment of the inverse covariance
 matrix. (Default = 10)}
 }
 \value{

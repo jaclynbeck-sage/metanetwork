@@ -16,5 +16,5 @@ a logical matrix of TRUE/FALSE where True indicates sparsity
 }
 \description{
 This introduces sparsity into a data frame or matrix with increasing frequency
-as the `nedges` parameter is specified
+as the \code{nedges} parameter is specified
 }

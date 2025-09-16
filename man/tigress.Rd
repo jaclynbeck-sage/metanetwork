@@ -4,17 +4,31 @@
 \alias{tigress}
 \title{Runs tigress on an expression matrix}
 \usage{
-tigress(y, x)
+tigress(x, y, nsteps_tigress = 100, nsteps_lars = 5, alpha = 0.2, ...)
 }
 \arguments{
-\item{y}{Required. A vector of gene expression values.}
+\item{x}{A gene expression matrix where rows are samples and columns are
+genes}
 
-\item{x}{Required. A gene expression matrix.}
+\item{y}{An Nx1 vector of gene expression values where N = number of genes}
+
+\item{nsteps_tigress}{Optional. The number of times the data should be split
+and sampled}
+
+\item{nsteps_lars}{Optional. The number of steps that lars should use}
+
+\item{alpha}{Optional. When sampling, weights are randomly uniformly
+generated in the interval \verb{[alpha, 1]}.}
+
+\item{...}{Optional. Other arguments to pass to \link[lars:lars]{lars::lars}}
 }
 \value{
-Vector of coexpression values of gene Y to columns of X
+A named vector of co-expression values of gene Y to columns of X
 }
 \description{
-This function implements Trustful Inference of Gene REgulation with Stability 
-Selection (TIGRESS) algoritm..
+This function implements Trustful Inference of Gene REgulation with Stability
+Selection (TIGRESS) algoritm. It is very similar to the function
+\code{stabilityselection} in the R package \code{tigress}, except that the
+\code{stabilityselection} function does not allow for changing some arguments to
+\link[lars:lars]{lars::lars} that significantly speed up processing.
 }

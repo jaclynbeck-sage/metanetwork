@@ -1,1 +1,0 @@
-utils::globalVariables(c('ci','cj','Q','Qds'))

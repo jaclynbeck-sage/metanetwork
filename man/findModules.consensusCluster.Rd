@@ -5,73 +5,75 @@
 \title{Finds Consensus Clusters}
 \usage{
 findModules.consensusCluster(
-  d = NULL,
+  d,
   maxK = 100,
-  reps = 100,
-  pItem = 0.8,
-  pFeature = 1,
-  clusterAlg = "kmeans",
-  innerLinkage = "average",
-  distance = "pearson",
+  n_subsamples = 100,
+  pGenes = 0.8,
+  clusterAlg = "hclust",
+  hclust_method = "average",
+  distance_metric = "pearson",
   changeCDFArea = 0.001,
-  nbreaks = 20,
-  seed = 123456789.12345,
-  weightsItem = NULL,
-  weightsFeature = NULL,
+  n_ks = 20,
   corUse = "everything",
-  verbose = F
+  n_cores = 1,
+  log_file_path = ".",
+  verbose = FALSE,
+  seed = 101
 )
 }
 \arguments{
-\item{d}{Optional. A matrix where columns=items/samples and rows are features. 
-For example, a gene expression matrix of genes in rows and microarrays in columns.
-OR ExpressionSet object. (Default = NULL)}
+\item{d}{An MxN matrix, where M is the number of clustering methods * the
+number of clusters in each method, N is the number of genes, and the values
+represent cluster membership: 1 if a gene is in that cluster, 0 if not.}
 
-\item{maxK}{Optional. An  integer value. maximum cluster number to evaluate.
-(Default = 100)}
+\item{maxK}{Optional. Maximum number of clusters to evaluate}
 
-\item{reps}{Optional. An integer value. number of subsamples.  (Default = 100)}
+\item{n_subsamples}{Optional. Number of random sub-samples of the genes to
+use.}
 
-\item{pItem}{Optional. A numerical value. proportion of items to sample.
-(Default = 0.8)}
+\item{pGenes}{Optional. Proportion of genes to sample at each random
+sub-sample.}
 
-\item{pFeature}{Optional. A numerical value. proportion of features to sample.
-(Default = 1)}
+\item{clusterAlg}{Optional. One of three cluster algorithms: "hclust",
+"kmeans", or "pam".}
 
-\item{clusterAlg}{Optional. A character value. cluster algorithm. "hc" 
-heirarchical (hclust) or "km" for kmeans. (Default = "kmeans")}
+\item{hclust_method}{Optional. The "method" argument of \link{hclust}, if
+\code{clusterAlg} is "hclust"}
 
-\item{innerLinkage}{Optional. A heirarchical linkage method for subsampling.
-(Default = "average")}
+\item{distance_metric}{Optional. The metric to use to calculate distances:
+"pearson", "spearman", or "euclidean".}
 
-\item{distance}{Optional. A character value. sample distance measures: 
-"pearson","spearman", or "euclidean". (Default = "pearson")}
+\item{changeCDFArea}{Optional. Minimum spline distance for seq(2,\code{maxK},
+length.out = \code{n_ks})}
 
-\item{changeCDFArea}{Optional. Minimum spline distance for seq(2,`maxK`,
-length.out = `nbreaks`) (Default = 0.001)}
+\item{n_ks}{Optional. Rather than test every \code{k} in the range (2, \code{maxK}),
+only \code{n_ks} values in the range will be tested, chosen with \code{seq(2, maxK, length.out = n_ks)}.}
 
-\item{nbreaks}{Optional. Number of breaks to use in 
-seq(2,`maxK`,length.out = `nbreaks`) this becomes the kGrid argument in 
-run.consensus.cluster. (Default = 20)}
+\item{corUse}{Optional. The "use" argument of the \link[stats:cor]{stats::cor} function. Only
+used when \code{clusterAlg} is "hclust" or "pam" and \code{distance_metric} is
+"pearson" or "spearman".}
 
-\item{seed}{Optional, A numerical value. Sets random seed for reproducible results.
-(Default = 123456789.12345)}
+\item{n_cores}{Optional. Number of parallel cores to use when computing
+clusters. If \code{n_cores} = 1, the function will not run in parallel.}
 
-\item{weightsItem}{Optional. A numerical vector. weights to be used for 
-sampling items. (Default = NULL)}
+\item{log_file_path}{Optional. If running in parallel, output will be written
+to a log file in the directory specified by \code{log_file_path}. By default,
+logs are written to the current working directory.}
 
-\item{weightsFeature}{Optional. AN umerical vector. weights to be used for 
-sampling features. (Default = NULL)}
+\item{verbose}{Optional. When set to TRUE, prints messages to the screen to
+indicate progress. When FALSE, no messages are printed.}
 
-\item{corUse}{Optional. Use all cores avaiable. (Default = "Everything")}
-
-\item{verbose}{Optional. A boolean when set to TRUE, prints messages to the 
-screen to indicate progress. This is useful for large datasets.(Default = FALSE)}
+\item{seed}{Optional. The number to use to set the random seed, for
+reproducible results.}
 }
 \value{
-Final clustered modules.
+Final clustered modules. TODO
+
+TODO does this really need to be run on partition.adj? Wouldn't it make sense
+to do the consensus matrix like in run.consensus.cluster using all the different
+module results instead?
 }
 \description{
-A modiefed parallel version of code imported from 
-https://github.com/Bioconductor-mirror/ConsensusClusterPlus 1.11.1
+A modified parallel version of code imported from
+https://bioconductor.org/packages/ConsensusClusterPlus 1.70.0
 }

@@ -1,0 +1,6 @@
+default:
+  input_profile:
+    expr_matrix_synid: syn8303260
+    temp_storage_loc: /home/rstudio/meta_out/temp/
+  output_profile:
+    output_path: /home/rstudio/meta_out/consensus

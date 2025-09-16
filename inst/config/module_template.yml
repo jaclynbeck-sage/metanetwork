@@ -1,0 +1,7 @@
+default:
+  expr_matrix_synid: syn8303260
+  consensus_net_synid: syn51902073
+  bic_file_synid: syn51902070
+  temp_storage_loc: /home/rstudio/meta_out/temp/
+  output_path: /home/rstudio/meta_out/modules
+  n_cores: 30

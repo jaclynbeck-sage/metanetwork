@@ -2,28 +2,25 @@
 % Please edit documentation in R/findModules.consensusKmeans.R
 \name{findModules.consensusKmeans}
 \alias{findModules.consensusKmeans}
-\title{Finds Moduless With Kmeans Clustering}
+\title{Finds Modules With Kmeans Clustering}
 \usage{
-findModules.consensusKmeans(
-  partition.adj,
-  min.module.size = 20,
-  usepam = FALSE
-)
+findModules.consensusKmeans(partition.adj, min.module.size = 30, usepam = TRUE)
 }
 \arguments{
-\item{partition.adj}{Required. A partition.adj = n x m adjacency matrix, where 
-n is the number of genes and m = number of clustering methods * number of 
-clusters in each method.}
+\item{partition.adj}{An MxN matrix, where M is the number of clustering
+methods * the number of clusters in each method, N is the number of genes,
+and the values represent cluster membership: 1 if a gene is in that
+cluster, 0 if not.}
 
-\item{min.module.size}{Optional. An integer between 1 and n genes (Default = 20)}
+\item{min.module.size}{Optional. An integer between 1 and n genes}
 
-\item{usepam}{Optional. A logical for input into pam based kmeans clustering 
-to find the number of clusters with the function `fpc::pamk`. If TRUE, pam is
-used, otherwise clara (recommended for large datasets with 2,000 or more 
-observations; dissimilarity matrices can not be used with clara). (Default = 20)}
+\item{usepam}{Optional. A logical for input into pam based kmeans clustering
+to find the number of clusters with the function \code{fpc::pamk}. If TRUE, pam
+is used, otherwise clara (recommended for large datasets with 2,000 or more
+observations; dissimilarity matrices can not be used with clara).}
 }
 \value{
-A dataframe of Gene Modules
+A dataframe of Gene Modules TODO
 }
 \description{
 Function to get consensus modules from individual partition matrices

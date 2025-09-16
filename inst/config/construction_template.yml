@@ -1,0 +1,26 @@
+default:
+  input_profile:
+    expr_matrix_synid: syn8303260
+    network_methods: ["c3net", "genie3", "megena", "parmigene", "wgcna", "lassoCV", "lassoIC", "ridgeCV", "ridgeIC", "tigress", "vbsr"]
+    na_fill: NULL
+    temp_storage_loc: /home/rstudio/meta_out/temp/
+  output_profile:
+    output_path: /home/rstudio/meta_out/construction/
+    project_id: syn51769643
+  n_parallel_cores: 30
+  # These arguments will be passed to the corresponding algorithm. Additional
+  # algorithms can be added to this list. Along with these default values, any
+  # arguments accepted by the function or its wrapper in this package can be
+  # added here.
+  algorithm_arguments:
+    c3net:
+      alpha: 0.01
+    parmigene:
+      k: 3
+    wgcna:
+      RsquaredCut: 0.85
+    vbsr:
+      fdr: 0.05
+      n_orderings: 12
+    tigress:
+      nsteps_tigress: 10

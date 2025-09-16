@@ -7,11 +7,18 @@
 winsorizeData(x)
 }
 \arguments{
-\item{x}{Gene expression matrix}
+\item{x}{Gene expression matrix where rows are genes and columns are samples}
 }
 \value{
-A winsorized expression matrix
+A winsorized expression matrix, which has been transposed so that
+rows are samples and columns are genes
 }
 \description{
-Will winsorize a given gene expression matrix
+Winsorizes a given gene expression matrix.
+}
+\details{
+The top and bottom 1\% of values for each gene will be replaced with the .99
+and .01 quantile values for that gene, respectively. All NA values for the
+gene are replaced with the mean expression for that gene. The data is then
+scaled and centered on 0.
 }

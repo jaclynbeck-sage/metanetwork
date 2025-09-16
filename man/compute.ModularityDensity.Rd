@@ -2,20 +2,24 @@
 % Please edit documentation in R/compute.ModularityDensity.R
 \name{compute.ModularityDensity}
 \alias{compute.ModularityDensity}
-\title{Find Global Modularity (Qds)}
+\title{Find Modularity Density (Qds)}
 \usage{
-compute.ModularityDensity(adj, mod)
+compute.ModularityDensity(g, mod)
 }
 \arguments{
-\item{adj}{Required. An n x n upper triangular adjacency in the matrix class 
-format.}
+\item{g}{An \code{igraph} graph of the network}
 
-\item{mod}{Required. An n x 3 dimensional data frame with column names as 
-Gene.ID, moduleNumber, and moduleLabel.}
+\item{mod}{A named vector where names are genes and values are module membership}
 }
 \value{
-Qds = module density.
+Qds = modularity density.
 }
 \description{
-This function finds calculates modularity density.
+This function calculates modularity density according to Chen, Nguyen, and
+Szymanski 2013.
+}
+\references{
+Mingming Chen, Tommy Nguyen, Boleslaw K. Szymanski, 2013. A New
+Metric for Quality of Network Community Structure.
+https://doi.org/10.48550/arXiv.1507.04308
 }
